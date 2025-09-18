@@ -47,6 +47,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        tactical: {
+          green: "hsl(var(--tactical-green))",
+          "green-dim": "hsl(var(--tactical-green-dim))",
+          "green-glow": "hsl(var(--tactical-green-glow))",
+          dark: "hsl(var(--tactical-dark))",
+          darker: "hsl(var(--tactical-darker))",
+          surface: "hsl(var(--tactical-surface))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -80,10 +88,34 @@ export default {
             height: "0",
           },
         },
+        "glow-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(var(--tactical-green) / 0.4)",
+          },
+          "50%": {
+            boxShadow: "0 0 40px hsl(var(--tactical-green) / 0.8)",
+          },
+        },
+        "fade-in-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "fade-in-up": "fade-in-up 0.6s ease-out",
+      },
+      backgroundImage: {
+        "gradient-tactical": "var(--gradient-tactical)",
+        "gradient-green": "var(--gradient-green)",
       },
     },
   },
