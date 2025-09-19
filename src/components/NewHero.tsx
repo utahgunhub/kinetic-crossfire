@@ -1,13 +1,12 @@
 import { TacticalButton } from "@/components/TacticalButton";
-import heroBackground from "@/assets/hero-background.jpg";
 
 const NewHero = () => {
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative overflow-hidden" style={{ height: 'calc(100vh - 80px)' }}>
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src={heroBackground}
+          src="/hero-image.png"
           alt="Tactical Operations"
           className="w-full h-full object-cover"
         />
@@ -17,13 +16,27 @@ const NewHero = () => {
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center space-y-8 px-6">
+          <p className="text-tactical-green text-2xl md:text-3xl font-semibold tracking-wider uppercase">
+            Kinetic Crossfire
+          </p>
           <h1 className="text-6xl md:text-8xl font-bold text-foreground tracking-wider">
-            CROSSFIRE IS BACK
+            SLIDE STOCK ASSIST
           </h1>
           
-          <TacticalButton variant="secondary" size="lg" className="text-xl px-12 py-6">
-            SHOP NOW
-          </TacticalButton>
+          <div className="space-y-4">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Enhance your Slide Fire SSAR-15 SBS Stock with rapid, consistent follow-up shots. 
+              No modifications required - Made in USA.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <TacticalButton variant="primary" size="lg" className="text-xl px-12 py-6">
+                ORDER NOW - $19.95
+              </TacticalButton>
+              <p className="text-tactical-green font-semibold">
+                <span className="line-through text-muted-foreground">$23.00</span> Save $3.05
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       

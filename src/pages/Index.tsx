@@ -1,18 +1,24 @@
 import Navigation from "@/components/Navigation";
-import NewHero from "@/components/NewHero";
-import CategorySection from "@/components/CategorySection";
-import ProductShowcase from "@/components/ProductShowcase";
-import ActionSection from "@/components/ActionSection";
+import EpicHero from "@/components/EpicHero";
+import FeatureGrid from "@/components/FeatureGrid";
+import VideoDemo from "@/components/VideoDemo";
+import HowItWorks from "@/components/HowItWorks";
+import SpecsCompatibility from "@/components/SpecsCompatibility";
+import Gallery from "@/components/Gallery";
+import PricingCTA from "@/components/PricingCTA";
 import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <NewHero />
-      <CategorySection />
-      <ProductShowcase />
-      <ActionSection />
+      <EpicHero />
+      <FeatureGrid />
+      <VideoDemo />
+      <HowItWorks />
+      <SpecsCompatibility />
+      <Gallery />
+      <PricingCTA />
       <Footer />
     </div>
   );

@@ -1,22 +1,18 @@
-# Welcome to your Lovable project
+# Kinetic Crossfire
+
+A tactical gear and equipment website built with modern web technologies.
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/b2b23317-4c50-44f9-9080-1b6d501f33c2
+**Project**: Kinetic Crossfire - Tactical Gear and Equipment
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/b2b23317-4c50-44f9-9080-1b6d501f33c2) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to work locally using your own IDE, you can clone this repo and push changes.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -62,12 +58,18 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/b2b23317-4c50-44f9-9080-1b6d501f33c2) and click on Share -> Publish.
+You can deploy this project using various hosting platforms such as Vercel, Netlify, or any other static hosting service.
 
-## Can I connect a custom domain to my Lovable project?
+## Development
 
-Yes, you can!
+To start the development server:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```sh
+npm run dev
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+To build for production:
+
+```sh
+npm run build
+```

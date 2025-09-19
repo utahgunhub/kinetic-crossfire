@@ -8,7 +8,7 @@ const tacticalButtonVariants = cva(
     variants: {
       variant: {
         primary: 
-          "bg-tactical-green text-tactical-dark border-tactical-green hover:bg-tactical-green-glow hover:shadow-[var(--glow-green)] animate-glow-pulse",
+          "bg-tactical-green text-tactical-dark border-tactical-green hover:bg-tactical-green-glow hover:shadow-[var(--glow-green)]",
         secondary: 
           "bg-transparent text-tactical-green border-tactical-green hover:bg-tactical-green hover:text-tactical-dark hover:shadow-[var(--glow-green)]",
         ghost: 
