@@ -112,8 +112,12 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-foreground">Email</h3>
-                        <p className="text-muted-foreground">support@kineticcrossfire.com</p>
-                        <p className="text-muted-foreground">sales@kineticcrossfire.com</p>
+                        <a 
+                          href="mailto:dallansilver@proton.me" 
+                          className="text-tactical-green hover:text-tactical-green/80 transition-colors"
+                        >
+                          dallansilver@proton.me
+                        </a>
                       </div>
                     </div>
                     
