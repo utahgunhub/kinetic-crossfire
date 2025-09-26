@@ -1,4 +1,5 @@
 import { TacticalButton } from "@/components/TacticalButton";
+import { Link } from "react-router-dom";
 
 const EpicHero = () => {
   return (
@@ -27,18 +28,22 @@ const EpicHero = () => {
           </div>
 
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-            A precision-weighted assist for Slide Fire SSAR-15 SBS stocks that delivers
+            A precision-weighted accessory that enhances your Slide Fire SSAR-15 SBS stock for
             blazingly fast, consistent follow-up shots. No tools. No mods. All control.
             Built in the USA.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
-            <TacticalButton variant="primary" size="lg" className="text-lg px-10 py-6">
-              Buy Now — $19.95
-            </TacticalButton>
-            <TacticalButton variant="secondary" size="lg" className="text-lg px-8 py-6">
-              Watch Demo
-            </TacticalButton>
+            <Link to="/product/slide-stock-assist">
+              <TacticalButton variant="primary" size="lg" className="text-lg px-10 py-6">
+                Buy Now — $19.95
+              </TacticalButton>
+            </Link>
+            <Link to="/purchase">
+              <TacticalButton variant="secondary" size="lg" className="text-lg px-8 py-6">
+                Complete Setup
+              </TacticalButton>
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-6 text-center">

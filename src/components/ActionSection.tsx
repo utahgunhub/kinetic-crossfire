@@ -1,4 +1,5 @@
 import { TacticalButton } from "@/components/TacticalButton";
+import { Link } from "react-router-dom";
 
 const ActionSection = () => {
   return (
@@ -66,9 +67,11 @@ const ActionSection = () => {
           </div>
           
           <div className="text-center">
-            <TacticalButton variant="primary" size="lg" className="text-xl px-12 py-6">
-              ORDER NOW - $19.95
-            </TacticalButton>
+            <Link to="/product/slide-stock-assist">
+              <TacticalButton variant="primary" size="lg" className="text-xl px-12 py-6">
+                ORDER NOW - $19.95
+              </TacticalButton>
+            </Link>
           </div>
         </div>
       </div>

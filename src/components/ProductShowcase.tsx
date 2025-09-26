@@ -1,5 +1,6 @@
 import tacticalProduct from "@/assets/tactical-product.jpg";
 import { TacticalButton } from "@/components/TacticalButton";
+import { Link } from "react-router-dom";
 
 const ProductShowcase = () => {
   return (
@@ -53,12 +54,16 @@ const ProductShowcase = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <TacticalButton variant="primary" size="lg" className="text-lg flex-1">
-                ADD TO CART - $19.95
-              </TacticalButton>
-              <TacticalButton variant="secondary" size="lg" className="text-lg">
-                LEARN MORE
-              </TacticalButton>
+              <Link to="/product/slide-stock-assist" className="flex-1">
+                <TacticalButton variant="primary" size="lg" className="text-lg w-full">
+                  ADD TO CART - $19.95
+                </TacticalButton>
+              </Link>
+              <Link to="/product/slide-stock-assist">
+                <TacticalButton variant="secondary" size="lg" className="text-lg">
+                  LEARN MORE
+                </TacticalButton>
+              </Link>
             </div>
           </div>
         </div>

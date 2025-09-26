@@ -64,9 +64,10 @@ const FeatureGrid = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,255,65,0.08),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(0,255,65,0.06),transparent_40%)]" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-wider">Why Slide Stock Assist</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-wider">Enhance Your SSAR-15 SBS</h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Lightweight where it matters, weighted where it counts. Built for control, speed, and repeatability.
+            Our precision accessory transforms your Slide Fire stock into a more consistent, controllable system. 
+            Lightweight where it matters, weighted where it counts.
           </p>
         </div>
 

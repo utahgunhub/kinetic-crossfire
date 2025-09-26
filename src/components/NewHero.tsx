@@ -1,4 +1,5 @@
 import { TacticalButton } from "@/components/TacticalButton";
+import { Link } from "react-router-dom";
 
 const NewHero = () => {
   return (
@@ -29,9 +30,11 @@ const NewHero = () => {
               No modifications required - Made in USA.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <TacticalButton variant="primary" size="lg" className="text-xl px-12 py-6">
-                ORDER NOW - $19.95
-              </TacticalButton>
+              <Link to="/product/slide-stock-assist">
+                <TacticalButton variant="primary" size="lg" className="text-xl px-12 py-6">
+                  ORDER NOW - $19.95
+                </TacticalButton>
+              </Link>
               <p className="text-tactical-green font-semibold">
                 <span className="line-through text-muted-foreground">$23.00</span> Save $3.05
               </p>
