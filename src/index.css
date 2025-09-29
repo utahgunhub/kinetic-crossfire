@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 0 0% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 120 40% 45%;
+    --primary: 195 85% 70%;
     --primary-foreground: 0 0% 4%;
 
     --secondary: 0 0% 10%;
@@ -26,7 +26,7 @@ All colors MUST be HSL.
     --muted: 0 0% 12%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 120 30% 35%;
+    --accent: 195 75% 60%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 60%;
@@ -34,12 +34,12 @@ All colors MUST be HSL.
 
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 120 40% 45%;
+    --ring: 195 85% 70%;
 
-    /* Tactical Green Variants - More Muted */
-    --tactical-green: 120 40% 45%;
-    --tactical-green-dim: 120 35% 25%;
-    --tactical-green-glow: 120 45% 55%;
+    /* Tactical Blue Variants - More Muted */
+    --tactical-green: 195 85% 70%;
+    --tactical-green-dim: 195 75% 50%;
+    --tactical-green-glow: 195 90% 80%;
     
     /* Dark Variants */
     --tactical-dark: 0 0% 4%;
@@ -48,12 +48,12 @@ All colors MUST be HSL.
     
     /* Gradients */
     --gradient-tactical: linear-gradient(135deg, hsl(0 0% 4%), hsl(0 0% 8%));
-    --gradient-green: linear-gradient(135deg, hsl(120 35% 25%), hsl(120 40% 45%));
+    --gradient-green: linear-gradient(135deg, hsl(195 75% 50%), hsl(195 85% 70%));
     
     /* Shadows & Effects */
-    --shadow-tactical: 0 10px 30px -10px hsl(120 40% 45% / 0.3);
-    --glow-green: 0 0 20px hsl(120 40% 45% / 0.4);
-    --glow-green-intense: 0 0 40px hsl(120 45% 55% / 0.6);
+    --shadow-tactical: 0 10px 30px -10px hsl(195 85% 70% / 0.3);
+    --glow-green: 0 0 20px hsl(195 85% 70% / 0.4);
+    --glow-green-intense: 0 0 40px hsl(195 90% 80% / 0.6);
 
     --radius: 0.5rem;
 
