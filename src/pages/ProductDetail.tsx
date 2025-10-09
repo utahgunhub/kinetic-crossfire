@@ -2,12 +2,16 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProductById } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const product = productId ? getProductById(productId) : null;
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -50,6 +54,20 @@ const ProductDetail = () => {
 
   const prevImage = () => {
     setSelectedImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
+  };
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product, quantity);
+      toast.success(`Added ${quantity} ${product.name} to cart!`);
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (product) {
+      addToCart(product, quantity);
+      navigate('/checkout');
+    }
   };
 
   return (
@@ -190,7 +208,12 @@ const ProductDetail = () => {
                     </div>
                   </div>
                   
-                  <TacticalButton variant="primary" size="lg" className="w-full text-xl py-6">
+                  <TacticalButton 
+                    variant="primary" 
+                    size="lg" 
+                    className="w-full text-xl py-6"
+                    onClick={handleAddToCart}
+                  >
                     Add to Cart - ${(product.price * quantity).toFixed(2)}
                   </TacticalButton>
                 </div>

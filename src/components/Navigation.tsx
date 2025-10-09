@@ -1,8 +1,13 @@
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { TacticalButton } from "@/components/TacticalButton";
+import { useCart } from "@/contexts/CartContext";
 
 const Navigation = () => {
+  const { getTotalPrice, getTotalItems } = useCart();
+  const totalPrice = getTotalPrice();
+  const totalItems = getTotalItems();
+
   return (
     <>
       {/* Top banner */}
@@ -41,13 +46,20 @@ const Navigation = () => {
             
             {/* Cart */}
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-tactical-surface px-3 py-2 rounded">
-                <ShoppingCart className="w-4 h-4 text-tactical-green" />
-                <span className="text-foreground font-medium">CART</span>
-                <span className="bg-tactical-green text-tactical-dark px-2 py-1 rounded text-xs font-bold">
-                  $0.00
-                </span>
-              </div>
+              <Link to="/cart">
+                <div className="flex items-center space-x-2 bg-tactical-surface px-3 py-2 rounded hover:bg-tactical-surface/80 transition-colors cursor-pointer relative">
+                  <ShoppingCart className="w-4 h-4 text-tactical-green" />
+                  <span className="text-foreground font-medium">CART</span>
+                  {totalItems > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-tactical-green text-tactical-dark w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                  <span className="bg-tactical-green text-tactical-dark px-2 py-1 rounded text-xs font-bold">
+                    ${totalPrice.toFixed(2)}
+                  </span>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

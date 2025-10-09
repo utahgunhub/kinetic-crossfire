@@ -1,0 +1,27 @@
+# Server directory (not needed for Vercel)
+server/
+
+# Documentation
+*.md
+!README.md
+
+# Development files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+
