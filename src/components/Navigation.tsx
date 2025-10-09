@@ -20,13 +20,13 @@ const Navigation = () => {
         <div className="container mx-auto px-6">
           <div className="relative flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img 
                 src="/kf-logo.png" 
                 alt="Kinetic Crossfire" 
                 className="h-10 w-auto"
               />
-            </div>
+            </Link>
             
             {/* Navigation Links - Absolutely Centered */}
             <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
