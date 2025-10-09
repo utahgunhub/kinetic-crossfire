@@ -1,7 +1,7 @@
-const axios = require('axios');
+import axios from 'axios';
 
 // Vercel serverless function for verifying GunTab transactions
-module.exports = async (req, res) => {
+export default async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
