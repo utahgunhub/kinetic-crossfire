@@ -58,41 +58,34 @@ export default async (req, res) => {
       .map(item => `${item.quantity}x ${item.name} ($${item.price.toFixed(2)} each)`)
       .join(', ');
 
-    // Prepare GunTab transaction data
-    const transactionData = {
-      seller: {
-        email: SELLER_EMAIL
-      },
-      buyer: {
-        email: shippingInfo.email,
-        name: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
-        phone: shippingInfo.phone
-      },
-      merchandise: {
-        title: merchandiseTitle,
-        description: merchandiseDescription,
-        category: 'other',
-        price: subtotal,
-        shipping_price: shipping
-      },
-      shipping_address: {
-        street: shippingInfo.address,
+    // Prepare GunTab invoice data (using their Invoice API)
+    const invoiceData = {
+      buyer_email: shippingInfo.email,
+      merchandise_amount_cents: Math.round(subtotal * 100),
+      shipping_amount_cents: Math.round(shipping * 100),
+      listings: items.map(item => ({
+        listing_type_id: 'other_non_regulated',
+        quantity: item.quantity,
+        title: item.name,
+        description: `${item.name}. High-quality firearm accessory manufactured by Kinetic Crossfire. Made in USA with precision engineering for reliable performance.`
+      })),
+      receiving_address: {
+        line1: shippingInfo.address,
         city: shippingInfo.city,
-        state: shippingInfo.state,
-        zip: shippingInfo.zipCode,
-        country: shippingInfo.country || 'United States'
+        state_code: shippingInfo.state,
+        zip: shippingInfo.zipCode
       }
     };
 
     console.log('📤 Sending to GunTab...');
 
-    // Create transaction with GunTab
+    // Create invoice with GunTab
     const response = await axios.post(
-      `${GUNTAB_API_URL}/purchases`,
-      transactionData,
+      `${GUNTAB_API_URL}/invoices`,
+      invoiceData,
       {
         headers: {
-          'Authorization': `Bearer ${GUNTAB_API_TOKEN}`,
+          'Authorization': `Token ${GUNTAB_API_TOKEN}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         }

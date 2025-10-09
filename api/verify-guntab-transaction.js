@@ -47,12 +47,12 @@ export default async (req, res) => {
       });
     }
 
-    // Get transaction status from GunTab
+    // Get invoice status from GunTab
     const response = await axios.get(
-      `${GUNTAB_API_URL}/purchases/${transactionId}`,
+      `${GUNTAB_API_URL}/invoices/${transactionId}`,
       {
         headers: {
-          'Authorization': `Bearer ${GUNTAB_API_TOKEN}`,
+          'Authorization': `Token ${GUNTAB_API_TOKEN}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         }
