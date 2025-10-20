@@ -26,6 +26,32 @@ const Footer = () => {
               <li><a href="/purchase" className="hover:text-tactical-green transition-colors">Purchase</a></li>
               <li><a href="/contact" className="hover:text-tactical-green transition-colors">Contact</a></li>
             </ul>
+            
+            <div className="pt-4">
+              <h4 className="font-semibold text-foreground mb-2">Legal</h4>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <a 
+                    href="/kinetic-crossfire-privacy.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-tactical-green transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="/kinetic-crossfire-terms.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-tactical-green transition-colors"
+                  >
+                    Terms & Conditions
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
           
           <div className="space-y-6">

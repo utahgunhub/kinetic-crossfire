@@ -4,9 +4,24 @@ import { TacticalButton } from "@/components/TacticalButton";
 import { useCart } from "@/contexts/CartContext";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, getTotalPrice, getTotalItems } = useCart();
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const { toast } = useToast();
+
+  const handleCheckoutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!agreedToTerms) {
+      e.preventDefault();
+      toast({
+        title: "Agreement Required",
+        description: "Please agree to the Terms & Conditions and Privacy Policy to proceed with checkout.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const subtotal = getTotalPrice();
   const shipping = subtotal > 50 ? 0 : 8.00;
@@ -163,24 +178,56 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    <Link to="/checkout" className="block">
-                      <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">
+                    {/* Terms Agreement */}
+                    <div className="mb-4 p-4 bg-tactical-surface rounded border border-tactical-green-dim/30">
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={agreedToTerms}
+                          onChange={(e) => setAgreedToTerms(e.target.checked)}
+                          className="mt-1 w-4 h-4 rounded border-tactical-green-dim/50 bg-tactical-dark text-tactical-green focus:ring-tactical-green focus:ring-offset-tactical-dark cursor-pointer"
+                        />
+                        <span className="text-xs text-muted-foreground leading-relaxed">
+                          I agree to the{' '}
+                          <a 
+                            href="/kinetic-crossfire-terms.pdf" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-tactical-green hover:text-tactical-green/80 underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Terms & Conditions
+                          </a>
+                          {' '}and{' '}
+                          <a 
+                            href="/kinetic-crossfire-privacy.pdf" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-tactical-green hover:text-tactical-green/80 underline"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Privacy Policy
+                          </a>
+                        </span>
+                      </label>
+                    </div>
+
+                    <Link to="/checkout" className="block" onClick={handleCheckoutClick}>
+                      <TacticalButton 
+                        variant="primary" 
+                        size="lg" 
+                        className="w-full text-lg py-4"
+                        disabled={!agreedToTerms}
+                      >
                         Proceed to Checkout
                       </TacticalButton>
                     </Link>
 
-                    <Link to="/purchase" className="block">
+                    <Link to="/purchase" className="block mt-4">
                       <TacticalButton variant="secondary" size="lg" className="w-full">
                         Continue Shopping
                       </TacticalButton>
                     </Link>
-                  </div>
-
-                  {/* Secure Payment Notice */}
-                  <div className="mt-6 p-4 bg-tactical-surface rounded border border-tactical-green-dim/30">
-                    <p className="text-xs text-muted-foreground text-center">
-                      🔒 Secure payment with GunTab escrow
-                    </p>
                   </div>
                 </div>
               </div>

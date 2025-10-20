@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const tacticalButtonVariants = cva(
-  "relative font-semibold tracking-wide uppercase transition-all duration-300 border-2",
+  "relative font-semibold tracking-wide uppercase transition-all duration-300 border-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-tactical-green disabled:hover:shadow-none",
   {
     variants: {
       variant: {
