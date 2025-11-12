@@ -158,7 +158,7 @@ const Contact = () => {
                   <div className="space-y-4">
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Is installation difficult?</h3>
-                      <p className="text-sm text-muted-foreground">No tools required. Simple attachment in minutes.</p>
+                      <p className="text-sm text-muted-foreground">Simple Install. Simple attachment in minutes.</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">What's the return policy?</h3>

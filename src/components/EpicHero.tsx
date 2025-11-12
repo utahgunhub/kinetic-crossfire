@@ -29,7 +29,7 @@ const EpicHero = () => {
 
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
             A precision-weighted accessory that enhances your Slide Fire SSAR-15 SBS stock for
-            blazingly fast, consistent follow-up shots. No tools. No mods. All control.
+            blazingly fast, consistent follow-up shots. Simple Install. No mods. All control.
             Built in the USA.
           </p>
 

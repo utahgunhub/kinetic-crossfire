@@ -28,7 +28,7 @@ export const products: Product[] = [
     price: 19.95,
     originalPrice: 23.00,
     description: "Precision-weighted accessory that enhances Slide Fire SSAR-15 SBS stocks for rapid, consistent follow-up shots.",
-    detailedDescription: "The Slide Stock Assist is a precision-engineered accessory designed specifically to enhance the performance of Slide Fire Solutions SSAR-15 SBS stocks. This simple device attaches to your existing SSAR-15 SBS stock to deliver extremely rapid, consistent follow-up shots. There are no special tools or modifications required for installation, and no additional parts such as full-auto bolt carrier groups or trigger modifications are necessary. The Slide Assist enables all users to operate it without special technique, even one-handed. It is designed to function on all mil-spec parts. Made in the USA by Kinetic Crossfire.",
+    detailedDescription: "The Slide Stock Assist is a precision-weighted spring designed specifically to enhance the performance of Slide Fire Solutions SSAR-15 SBS stocks. This simple device attaches to your existing SSAR-15 SBS stock to deliver extremely rapid, consistent follow-up shots. There are no special tools or modifications required for installation, and no additional parts such as full-auto bolt carrier groups, buffer tube or trigger modifications are necessary. The Slide Assist enables all users to operate it without special technique, even one-handed. It is designed to function on all mil-spec parts. Made in the USA by Kinetic Crossfire.",
     images: [
       { src: "/product-1.png", alt: "Slide Stock Assist - Main View" },
       { src: "/product-2.png", alt: "Slide Stock Assist - Detail View" },
@@ -36,7 +36,7 @@ export const products: Product[] = [
       { src: "/product-4.png", alt: "Slide Stock Assist - Installation View" }
     ],
     features: [
-      "No tools required for installation",
+      "Simple Install - no modifications needed",
       "Rapid, consistent follow-up shots",
       "Compatible with Slide Fire SSAR-15 SBS stocks",
       "Mil-spec AR-15 compatibility",

@@ -4,7 +4,7 @@ import categorySupport from "@/assets/category-support.jpg";
 
 const features = [
   {
-    title: "NO TOOLS",
+    title: "SIMPLE INSTALL",
     subtitle: "REQUIRED",
     image: categoryPrimary,
     alt: "Easy Installation",
