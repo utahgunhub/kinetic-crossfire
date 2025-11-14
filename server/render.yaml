@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: kinetic-crossfire-backend
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: AUTHORIZENET_API_LOGIN_ID
+        sync: false
+      - key: AUTHORIZENET_TRANSACTION_KEY
+        sync: false
+      - key: AUTHORIZENET_ENVIRONMENT
+        value: sandbox
+      - key: FRONTEND_URL
+        sync: false
+    healthCheckPath: /api/health
+

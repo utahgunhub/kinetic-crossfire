@@ -5,12 +5,6 @@ import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-declare global {
-  interface Window {
-    GunTab: any;
-  }
-}
-
 interface ShippingInfo {
   firstName: string;
   lastName: string;
@@ -23,10 +17,27 @@ interface ShippingInfo {
   country: string;
 }
 
+interface CardInfo {
+  cardNumber: string;
+  expirationDate: string;
+  cardCode: string;
+}
+
+interface BillingInfo {
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+}
+
 const Checkout = () => {
   const { items, getTotalPrice, clearCart } = useCart();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [sameAsShipping, setSameAsShipping] = useState(true);
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     firstName: "",
     lastName: "",
@@ -38,15 +49,66 @@ const Checkout = () => {
     zipCode: "",
     country: "United States",
   });
+  const [billingInfo, setBillingInfo] = useState<BillingInfo>({
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "United States",
+  });
+  const [cardInfo, setCardInfo] = useState<CardInfo>({
+    cardNumber: "",
+    expirationDate: "",
+    cardCode: "",
+  });
 
   const subtotal = getTotalPrice();
   const shipping = 8.00; // Standard shipping
   const total = subtotal + shipping;
 
+  // For local development without HTTPS, we'll send card data to backend
+  // In production with HTTPS, you can use Accept.js for additional security
+  useEffect(() => {
+    // Check if we're in a secure context (HTTPS or localhost)
+    console.log('🔒 Secure context:', window.isSecureContext);
+  }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleShippingInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setShippingInfo(prev => ({ ...prev, [name]: value }));
+    // If same as shipping is checked, update billing too
+    if (sameAsShipping && name !== 'email' && name !== 'phone') {
+      setBillingInfo(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleBillingInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setBillingInfo(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCardInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
+    // Format card number with spaces
+    if (name === 'cardNumber') {
+      const cleaned = value.replace(/\s/g, '');
+      const formatted = cleaned.replace(/(\d{4})/g, '$1 ').trim();
+      setCardInfo(prev => ({ ...prev, [name]: formatted }));
+    } 
+    // Format expiration date as MM/YY
+    else if (name === 'expirationDate') {
+      let cleaned = value.replace(/\D/g, '');
+      if (cleaned.length >= 2) {
+        cleaned = cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4);
+      }
+      setCardInfo(prev => ({ ...prev, [name]: cleaned }));
+    } 
+    else {
+      setCardInfo(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,50 +116,91 @@ const Checkout = () => {
     setIsProcessing(true);
 
     try {
-      // TODO: Replace with actual API call to generate GunTab transaction ID
-      // This is a placeholder - you'll need to implement a backend endpoint
-      // that calls the GunTab REST API to create a transaction
-      
-      const response = await fetch('/api/create-guntab-transaction', {
+      console.log('💳 Processing payment...');
+
+      // Validate card info
+      if (!cardInfo.cardNumber || !cardInfo.expirationDate || !cardInfo.cardCode) {
+        throw new Error('Please fill in all card information');
+      }
+
+      // Use billing info (same as shipping if checkbox is checked)
+      const finalBillingInfo = sameAsShipping ? {
+        firstName: shippingInfo.firstName,
+        lastName: shippingInfo.lastName,
+        address: shippingInfo.address,
+        city: shippingInfo.city,
+        state: shippingInfo.state,
+        zipCode: shippingInfo.zipCode,
+        country: shippingInfo.country,
+      } : billingInfo;
+
+      // Send payment data directly to our backend
+      // The backend will securely process it with Authorize.net
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const paymentResponse = await fetch(`${API_URL}/api/process-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          cardData: {
+            cardNumber: cardInfo.cardNumber.replace(/\s/g, ''),
+            expirationDate: cardInfo.expirationDate.replace('/', ''),
+            cardCode: cardInfo.cardCode,
+          },
+          billingInfo: finalBillingInfo,
+          shippingInfo,
           items: items.map(item => ({
+            id: item.product.id,
             productId: item.product.id,
             name: item.product.name,
+            description: item.product.description,
             price: item.product.price,
             quantity: item.quantity,
           })),
-          shippingInfo,
           subtotal,
           shipping,
           total,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create transaction');
+      const paymentData = await paymentResponse.json();
+
+      if (!paymentData.success) {
+        throw new Error(paymentData.error || 'Payment failed');
       }
 
-      const data = await response.json();
-      const transactionId = data.transactionId;
-      const responseUrl = data.transaction?.response_url;
+      console.log('✅ Payment successful!');
+      console.log('Transaction ID:', paymentData.transactionId);
+      console.log('Auth Code:', paymentData.authCode);
 
-      if (!responseUrl) {
-        throw new Error('No payment URL received from GunTab');
-      }
+      // Store order info in sessionStorage for confirmation page
+      const orderData = {
+        transactionId: paymentData.transactionId,
+        authCode: paymentData.authCode,
+        accountNumber: paymentData.accountNumber,
+        items: items,
+        shippingInfo,
+        subtotal,
+        shipping,
+        total,
+        orderDate: new Date().toISOString()
+      };
+      
+      sessionStorage.setItem('lastOrder', JSON.stringify(orderData));
+      console.log('💾 Order data saved to sessionStorage');
 
-      // Clear cart before redirect
+      // Clear cart
       clearCart();
 
-      // Redirect to GunTab payment page
-      window.location.href = responseUrl;
-    } catch (error) {
-      console.error('Checkout error:', error);
-      alert('There was an error processing your payment. Please try again.');
-    } finally {
+      // Small delay to ensure sessionStorage is saved
+      setTimeout(() => {
+        console.log('🚀 Navigating to order confirmation...');
+        navigate('/order-confirmation');
+      }, 100);
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      alert('Payment failed: ' + (error.message || 'Please try again. Make sure all information is correct.'));
       setIsProcessing(false);
     }
   };
@@ -150,7 +253,7 @@ const Checkout = () => {
             </h1>
 
             <div className="grid lg:grid-cols-3 gap-8">
-              {/* Shipping Information Form */}
+              {/* Checkout Form */}
               <div className="lg:col-span-2">
                 <form onSubmit={handleSubmit} className="space-y-8">
                   {/* Shipping Information */}
@@ -166,7 +269,7 @@ const Checkout = () => {
                           type="text"
                           name="firstName"
                           value={shippingInfo.firstName}
-                          onChange={handleInputChange}
+                          onChange={handleShippingInputChange}
                           required
                           className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                         />
@@ -180,7 +283,7 @@ const Checkout = () => {
                           type="text"
                           name="lastName"
                           value={shippingInfo.lastName}
-                          onChange={handleInputChange}
+                          onChange={handleShippingInputChange}
                           required
                           className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                         />
@@ -195,7 +298,7 @@ const Checkout = () => {
                         type="email"
                         name="email"
                         value={shippingInfo.email}
-                        onChange={handleInputChange}
+                        onChange={handleShippingInputChange}
                         required
                         className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                       />
@@ -209,7 +312,7 @@ const Checkout = () => {
                         type="tel"
                         name="phone"
                         value={shippingInfo.phone}
-                        onChange={handleInputChange}
+                        onChange={handleShippingInputChange}
                         required
                         className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                       />
@@ -223,7 +326,7 @@ const Checkout = () => {
                         type="text"
                         name="address"
                         value={shippingInfo.address}
-                        onChange={handleInputChange}
+                        onChange={handleShippingInputChange}
                         required
                         className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                       />
@@ -238,7 +341,7 @@ const Checkout = () => {
                           type="text"
                           name="city"
                           value={shippingInfo.city}
-                          onChange={handleInputChange}
+                          onChange={handleShippingInputChange}
                           required
                           className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                         />
@@ -252,7 +355,7 @@ const Checkout = () => {
                           type="text"
                           name="state"
                           value={shippingInfo.state}
-                          onChange={handleInputChange}
+                          onChange={handleShippingInputChange}
                           required
                           className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                         />
@@ -266,7 +369,7 @@ const Checkout = () => {
                           type="text"
                           name="zipCode"
                           value={shippingInfo.zipCode}
-                          onChange={handleInputChange}
+                          onChange={handleShippingInputChange}
                           required
                           className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                         />
@@ -280,12 +383,199 @@ const Checkout = () => {
                       <select
                         name="country"
                         value={shippingInfo.country}
-                        onChange={handleInputChange}
+                        onChange={handleShippingInputChange}
                         required
                         className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                       >
                         <option value="United States">United States</option>
                       </select>
+                    </div>
+                  </div>
+
+                  {/* Payment Information */}
+                  <div className="bg-tactical-dark rounded-lg p-8 border border-tactical-green-dim/30">
+                    <h2 className="text-2xl font-semibold text-foreground mb-6">Payment Information</h2>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-foreground mb-2">
+                          Card Number *
+                        </label>
+                        <input
+                          type="text"
+                          name="cardNumber"
+                          value={cardInfo.cardNumber}
+                          onChange={handleCardInputChange}
+                          placeholder="1234 5678 9012 3456"
+                          maxLength={19}
+                          required
+                          className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-foreground mb-2">
+                            Expiration Date *
+                          </label>
+                          <input
+                            type="text"
+                            name="expirationDate"
+                            value={cardInfo.expirationDate}
+                            onChange={handleCardInputChange}
+                            placeholder="MM/YY"
+                            maxLength={5}
+                            required
+                            className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-foreground mb-2">
+                            CVV *
+                          </label>
+                          <input
+                            type="text"
+                            name="cardCode"
+                            value={cardInfo.cardCode}
+                            onChange={handleCardInputChange}
+                            placeholder="123"
+                            maxLength={4}
+                            required
+                            className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Billing Address */}
+                    <div className="mt-6">
+                      <div className="flex items-center mb-4">
+                        <input
+                          type="checkbox"
+                          id="sameAsShipping"
+                          checked={sameAsShipping}
+                          onChange={(e) => {
+                            setSameAsShipping(e.target.checked);
+                            if (e.target.checked) {
+                              // Copy shipping to billing
+                              setBillingInfo({
+                                firstName: shippingInfo.firstName,
+                                lastName: shippingInfo.lastName,
+                                address: shippingInfo.address,
+                                city: shippingInfo.city,
+                                state: shippingInfo.state,
+                                zipCode: shippingInfo.zipCode,
+                                country: shippingInfo.country,
+                              });
+                            }
+                          }}
+                          className="w-4 h-4 text-tactical-green bg-tactical-surface border-tactical-green-dim/30 rounded focus:ring-tactical-green focus:ring-2"
+                        />
+                        <label htmlFor="sameAsShipping" className="ml-2 text-sm font-medium text-foreground">
+                          Billing address is same as shipping address
+                        </label>
+                      </div>
+
+                      {!sameAsShipping && (
+                        <div className="space-y-4 p-4 bg-tactical-surface rounded border border-tactical-green-dim/30">
+                          <h3 className="text-lg font-semibold text-foreground mb-4">Billing Address</h3>
+                          
+                          <div className="grid md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-foreground mb-2">
+                                First Name *
+                              </label>
+                              <input
+                                type="text"
+                                name="firstName"
+                                value={billingInfo.firstName}
+                                onChange={handleBillingInputChange}
+                                required={!sameAsShipping}
+                                className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-sm font-medium text-foreground mb-2">
+                                Last Name *
+                              </label>
+                              <input
+                                type="text"
+                                name="lastName"
+                                value={billingInfo.lastName}
+                                onChange={handleBillingInputChange}
+                                required={!sameAsShipping}
+                                className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Street Address *
+                            </label>
+                            <input
+                              type="text"
+                              name="address"
+                              value={billingInfo.address}
+                              onChange={handleBillingInputChange}
+                              required={!sameAsShipping}
+                              className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                            />
+                          </div>
+
+                          <div className="grid md:grid-cols-3 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-foreground mb-2">
+                                City *
+                              </label>
+                              <input
+                                type="text"
+                                name="city"
+                                value={billingInfo.city}
+                                onChange={handleBillingInputChange}
+                                required={!sameAsShipping}
+                                className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-sm font-medium text-foreground mb-2">
+                                State *
+                              </label>
+                              <input
+                                type="text"
+                                name="state"
+                                value={billingInfo.state}
+                                onChange={handleBillingInputChange}
+                                required={!sameAsShipping}
+                                className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-sm font-medium text-foreground mb-2">
+                                ZIP Code *
+                              </label>
+                              <input
+                                type="text"
+                                name="zipCode"
+                                value={billingInfo.zipCode}
+                                onChange={handleBillingInputChange}
+                                required={!sameAsShipping}
+                                className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-6 p-4 bg-tactical-surface rounded border border-tactical-green-dim/30">
+                      <p className="text-xs text-muted-foreground">
+                        🔒 Your payment information is encrypted and secure. We use Authorize.net for payment processing.
+                      </p>
                     </div>
                   </div>
 
@@ -297,8 +587,12 @@ const Checkout = () => {
                     className="w-full text-xl py-6"
                     disabled={isProcessing}
                   >
-                    {isProcessing ? 'Processing...' : 'Proceed to Payment with GunTab'}
+                    {isProcessing ? 'Processing Payment...' : `Pay $${total.toFixed(2)}`}
                   </TacticalButton>
+
+                  <p className="text-xs text-center text-muted-foreground">
+                    By placing this order, you agree to our terms and conditions.
+                  </p>
                 </form>
               </div>
 
@@ -343,11 +637,23 @@ const Checkout = () => {
                     </div>
                   </div>
 
-                  {/* Secure Payment Notice */}
-                  <div className="mt-6 p-4 bg-tactical-surface rounded border border-tactical-green-dim/30">
-                    <p className="text-xs text-muted-foreground text-center">
-                      🔒 Secure payment processed by GunTab escrow service
-                    </p>
+                  {/* Accepted Cards */}
+                  <div className="mt-6 pt-6 border-t border-tactical-green-dim/30">
+                    <p className="text-xs text-muted-foreground mb-3">We Accept:</p>
+                    <div className="flex gap-2">
+                      <div className="px-3 py-2 bg-tactical-surface rounded border border-tactical-green-dim/30 text-xs text-foreground">
+                        Visa
+                      </div>
+                      <div className="px-3 py-2 bg-tactical-surface rounded border border-tactical-green-dim/30 text-xs text-foreground">
+                        Mastercard
+                      </div>
+                      <div className="px-3 py-2 bg-tactical-surface rounded border border-tactical-green-dim/30 text-xs text-foreground">
+                        Amex
+                      </div>
+                      <div className="px-3 py-2 bg-tactical-surface rounded border border-tactical-green-dim/30 text-xs text-foreground">
+                        Discover
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -362,4 +668,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-

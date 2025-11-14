@@ -1,6 +1,8 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
+const ApiContracts = require('authorizenet').APIContracts;
+const ApiControllers = require('authorizenet').APIControllers;
+const SDKConstants = require('authorizenet').Constants;
 require('dotenv').config();
 
 const app = express();
@@ -8,205 +10,351 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:5173'], // Add your frontend URLs
+  origin: [process.env.FRONTEND_URL || 'http://localhost:5173', 'http://localhost:8080'],
   credentials: true
 }));
 
 // Configuration
-const GUNTAB_API_URL = process.env.GUNTAB_API_URL || 'https://api.guntab.com/v1';
-// Use simulated token for testing, switch to live for production
-const GUNTAB_API_TOKEN = process.env.NODE_ENV === 'production' 
-  ? process.env.GUNTAB_API_TOKEN_LIVE 
-  : process.env.GUNTAB_API_TOKEN_SIMULATED;
+const API_LOGIN_ID = process.env.AUTHORIZENET_API_LOGIN_ID;
+const TRANSACTION_KEY = process.env.AUTHORIZENET_TRANSACTION_KEY;
+const ENVIRONMENT = process.env.AUTHORIZENET_ENVIRONMENT || 'sandbox';
 
-const SELLER_EMAIL = 'dallansilver@gmail.com'; // Your seller email
+// Set the API endpoint based on environment
+if (ENVIRONMENT === 'production') {
+  // This sets the endpoint to production
+  process.env.AUTHORIZENET_ENDPOINT = SDKConstants.endpoint.production;
+} else {
+  // This sets the endpoint to sandbox (default)
+  process.env.AUTHORIZENET_ENDPOINT = SDKConstants.endpoint.sandbox;
+}
 
 console.log('🚀 Server starting...');
-console.log('Environment:', process.env.NODE_ENV || 'development');
-console.log('Using API:', GUNTAB_API_URL);
-console.log('Token type:', process.env.NODE_ENV === 'production' ? 'LIVE' : 'SIMULATED');
+console.log('Environment:', ENVIRONMENT);
+console.log('API Login ID configured:', !!API_LOGIN_ID);
+console.log('Transaction Key configured:', !!TRANSACTION_KEY);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
-    message: 'Server is running',
-    environment: process.env.NODE_ENV || 'development',
-    guntabUrl: GUNTAB_API_URL,
-    tokenConfigured: !!GUNTAB_API_TOKEN
+    message: 'Authorize.net server is running',
+    environment: ENVIRONMENT,
+    apiConfigured: !!(API_LOGIN_ID && TRANSACTION_KEY)
   });
 });
 
-// Create GunTab Transaction
-app.post('/api/create-guntab-transaction', async (req, res) => {
+// Get public client key for Accept.js
+app.get('/api/payment/client-key', (req, res) => {
+  res.json({
+    apiLoginId: API_LOGIN_ID,
+    // Accept.js needs the API Login ID on the frontend
+    // The client key is generated client-side by Accept.js
+  });
+});
+
+// Process payment with Authorize.net
+app.post('/api/process-payment', async (req, res) => {
   try {
-    console.log('📦 Creating GunTab transaction...');
-    const { items, shippingInfo, subtotal, shipping, total } = req.body;
+    console.log('💳 Processing payment...');
+    const { cardData, billingInfo, shippingInfo, items, subtotal, shipping, total } = req.body;
 
     // Validate required fields
-    if (!items || !shippingInfo || !subtotal) {
+    if (!cardData || !billingInfo || !shippingInfo || !items || !total) {
+      console.error('❌ Missing required fields:', { 
+        hasCardData: !!cardData, 
+        hasBillingInfo: !!billingInfo, 
+        hasShippingInfo: !!shippingInfo, 
+        hasItems: !!items, 
+        hasTotal: !!total 
+      });
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields'
+        error: 'Missing required payment information'
       });
     }
 
-    if (!GUNTAB_API_TOKEN) {
-      console.error('❌ GunTab API token not configured');
+    if (!API_LOGIN_ID || !TRANSACTION_KEY) {
+      console.error('❌ Authorize.net credentials not configured');
       return res.status(500).json({
         success: false,
-        error: 'Server configuration error: API token not set'
+        error: 'Server configuration error: API credentials not set'
       });
     }
 
-    // Build merchandise description
-    const merchandiseTitle = items.length === 1 
-      ? items[0].name 
-      : `${items.length} Items from Kinetic Crossfire`;
-    
-    const merchandiseDescription = items
-      .map(item => `${item.quantity}x ${item.name} ($${item.price.toFixed(2)} each)`)
+    // Create merchant authentication
+    const merchantAuthenticationType = new ApiContracts.MerchantAuthenticationType();
+    merchantAuthenticationType.setName(API_LOGIN_ID);
+    merchantAuthenticationType.setTransactionKey(TRANSACTION_KEY);
+
+    // Set the payment data (direct card data)
+    const creditCard = new ApiContracts.CreditCardType();
+    creditCard.setCardNumber(cardData.cardNumber);
+    creditCard.setExpirationDate(cardData.expirationDate); // Format: MMYY
+    creditCard.setCardCode(cardData.cardCode);
+
+    const paymentType = new ApiContracts.PaymentType();
+    paymentType.setCreditCard(creditCard);
+
+    // Build order description
+    const orderDescription = items
+      .map(item => `${item.quantity}x ${item.name}`)
       .join(', ');
 
-    // Prepare GunTab invoice data (using their Invoice API)
-    const invoiceData = {
-      buyer_email: shippingInfo.email,
-      merchandise_amount_cents: Math.round(subtotal * 100),
-      shipping_amount_cents: Math.round(shipping * 100),
-      listings: items.map(item => ({
-        listing_type_id: 'other_non_regulated', // Non-regulated parts/accessories
-        quantity: item.quantity,
-        title: item.name,
-        description: `${item.name}. High-quality firearm accessory manufactured by Kinetic Crossfire. Made in USA with precision engineering for reliable performance.` // GunTab requires min 50 chars
-      })),
-      receiving_address: {
-        line1: shippingInfo.address,
-        city: shippingInfo.city,
-        state_code: shippingInfo.state,
-        zip: shippingInfo.zipCode
-      }
-    };
+    // Set order information
+    const orderDetails = new ApiContracts.OrderType();
+    orderDetails.setInvoiceNumber(`KC-${Date.now()}`);
+    orderDetails.setDescription(orderDescription.substring(0, 255)); // Max 255 chars
 
-    console.log('📤 Sending to GunTab:', JSON.stringify(invoiceData, null, 2));
-
-    // Create invoice with GunTab
-    const response = await axios.post(
-      `${GUNTAB_API_URL}/invoices`,
-      invoiceData,
-      {
-        headers: {
-          'Authorization': `Token ${GUNTAB_API_TOKEN}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      }
-    );
-
-    console.log('✅ GunTab transaction created:', response.data.id);
-
-    // Return transaction ID to frontend
-    res.json({
-      success: true,
-      transactionId: response.data.id,
-      transaction: response.data
+    // Add line items (creating array properly)
+    const lineItemList = [];
+    items.forEach(item => {
+      const lineItem = new ApiContracts.LineItemType();
+      lineItem.setItemId((item.productId || item.id).toString().substring(0, 31));
+      lineItem.setName(item.name.substring(0, 31)); // Max 31 chars
+      lineItem.setDescription((item.description || item.name).substring(0, 255));
+      lineItem.setQuantity(item.quantity);
+      lineItem.setUnitPrice(item.price.toFixed(2));
+      lineItemList.push(lineItem);
     });
 
-  } catch (error) {
-    console.error('❌ GunTab API Error:', error.response?.data || error.message);
-    
-    // Log full error for debugging
-    if (error.response) {
-      console.error('Response status:', error.response.status);
-      console.error('Response data:', JSON.stringify(error.response.data, null, 2));
+    // Add shipping as a line item
+    if (shipping > 0) {
+      const shippingLineItem = new ApiContracts.LineItemType();
+      shippingLineItem.setItemId('SHIPPING');
+      shippingLineItem.setName('Shipping');
+      shippingLineItem.setDescription('Standard Shipping');
+      shippingLineItem.setQuantity(1);
+      shippingLineItem.setUnitPrice(shipping.toFixed(2));
+      lineItemList.push(shippingLineItem);
     }
 
-    res.status(500).json({
+    // Create line items container
+    const lineItems = new ApiContracts.ArrayOfLineItem();
+    lineItems.setLineItem(lineItemList);
+
+    // Set billing/shipping information
+    const billTo = new ApiContracts.CustomerAddressType();
+    billTo.setFirstName(billingInfo.firstName);
+    billTo.setLastName(billingInfo.lastName);
+    billTo.setAddress(billingInfo.address);
+    billTo.setCity(billingInfo.city);
+    billTo.setState(billingInfo.state);
+    billTo.setZip(billingInfo.zipCode);
+    billTo.setCountry(billingInfo.country);
+    billTo.setEmail(shippingInfo.email);
+    billTo.setPhoneNumber(shippingInfo.phone);
+
+    const shipTo = new ApiContracts.CustomerAddressType();
+    shipTo.setFirstName(shippingInfo.firstName);
+    shipTo.setLastName(shippingInfo.lastName);
+    shipTo.setAddress(shippingInfo.address);
+    shipTo.setCity(shippingInfo.city);
+    shipTo.setState(shippingInfo.state);
+    shipTo.setZip(shippingInfo.zipCode);
+    shipTo.setCountry(shippingInfo.country);
+
+    // Create transaction request
+    const transactionRequestType = new ApiContracts.TransactionRequestType();
+    transactionRequestType.setTransactionType(ApiContracts.TransactionTypeEnum.AUTHCAPTURETRANSACTION);
+    transactionRequestType.setPayment(paymentType);
+    transactionRequestType.setAmount(total.toFixed(2));
+    transactionRequestType.setOrder(orderDetails);
+    transactionRequestType.setLineItems(lineItems);
+    transactionRequestType.setBillTo(billTo);
+    transactionRequestType.setShipTo(shipTo);
+
+    // Create the API request
+    const createRequest = new ApiContracts.CreateTransactionRequest();
+    createRequest.setMerchantAuthentication(merchantAuthenticationType);
+    createRequest.setTransactionRequest(transactionRequestType);
+
+    console.log('📤 Sending transaction to Authorize.net...');
+
+    // Execute the transaction
+    const ctrl = new ApiControllers.CreateTransactionController(createRequest.getJSON());
+
+    await new Promise((resolve, reject) => {
+      ctrl.execute(() => {
+        const apiResponse = ctrl.getResponse();
+        const response = new ApiContracts.CreateTransactionResponse(apiResponse);
+
+        console.log('📥 Response received from Authorize.net');
+
+        if (response !== null) {
+          if (response.getMessages().getResultCode() === ApiContracts.MessageTypeEnum.OK) {
+            const transactionResponse = response.getTransactionResponse();
+            
+            if (transactionResponse.getMessages() !== null) {
+              console.log('✅ Transaction approved');
+              console.log('Transaction ID:', transactionResponse.getTransId());
+              console.log('Response Code:', transactionResponse.getResponseCode());
+              console.log('Auth Code:', transactionResponse.getAuthCode());
+
+              resolve({
+                success: true,
+                transactionId: transactionResponse.getTransId(),
+                authCode: transactionResponse.getAuthCode(),
+                accountNumber: transactionResponse.getAccountNumber(),
+                accountType: transactionResponse.getAccountType(),
+                message: transactionResponse.getMessages().getMessage()[0].getDescription(),
+                orderInfo: {
+                  items,
+                  shippingInfo,
+                  subtotal,
+                  shipping,
+                  total,
+                  invoiceNumber: orderDetails.getInvoiceNumber()
+                }
+              });
+            } else {
+              console.error('❌ Transaction failed');
+              if (transactionResponse.getErrors() !== null) {
+                const errorCode = transactionResponse.getErrors().getError()[0].getErrorCode();
+                const errorText = transactionResponse.getErrors().getError()[0].getErrorText();
+                console.error('Error Code:', errorCode);
+                console.error('Error Text:', errorText);
+                
+                reject({
+                  success: false,
+                  error: errorText,
+                  errorCode: errorCode
+                });
+              } else {
+                reject({
       success: false,
-      error: error.response?.data?.message || error.message || 'Failed to create transaction',
-      details: error.response?.data
-    });
-  }
-});
-
-// Verify GunTab Transaction
-app.get('/api/verify-guntab-transaction/:transactionId', async (req, res) => {
-  try {
-    console.log('🔍 Verifying transaction:', req.params.transactionId);
-    const { transactionId } = req.params;
-
-    if (!GUNTAB_API_TOKEN) {
-      return res.status(500).json({
+                  error: 'Transaction failed'
+                });
+              }
+            }
+          } else {
+            console.error('❌ Transaction failed - response code not OK');
+            if (response.getTransactionResponse() && response.getTransactionResponse().getErrors()) {
+              const errorCode = response.getTransactionResponse().getErrors().getError()[0].getErrorCode();
+              const errorText = response.getTransactionResponse().getErrors().getError()[0].getErrorText();
+              console.error('Error Code:', errorCode);
+              console.error('Error Text:', errorText);
+              
+              reject({
+                success: false,
+                error: errorText,
+                errorCode: errorCode
+              });
+            } else if (response.getMessages()) {
+              const errorCode = response.getMessages().getMessage()[0].getCode();
+              const errorText = response.getMessages().getMessage()[0].getText();
+              console.error('Error Code:', errorCode);
+              console.error('Error Text:', errorText);
+              
+              reject({
+                success: false,
+                error: errorText,
+                errorCode: errorCode
+              });
+            } else {
+              reject({
         success: false,
-        error: 'Server configuration error: API token not set'
-      });
-    }
-
-    // Get invoice status from GunTab
-    const response = await axios.get(
-      `${GUNTAB_API_URL}/invoices/${transactionId}`,
-      {
-        headers: {
-          'Authorization': `Token ${GUNTAB_API_TOKEN}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+                error: 'Transaction failed'
+              });
+            }
+          }
+        } else {
+          console.error('❌ Null response from Authorize.net');
+          reject({
+            success: false,
+            error: 'No response from payment gateway'
+          });
         }
-      }
-    );
-
-    console.log('📊 Transaction status:', response.data.status);
-
-    // Determine if payment is successful
-    // GunTab statuses: pending, accepted, rejected, expired
-    const isSuccessful = response.data.status === 'accepted';
-
-    res.json({
-      success: isSuccessful,
-      status: response.data.status,
-      transaction: response.data
+      });
+    })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(error => {
+      res.status(400).json(error);
     });
 
   } catch (error) {
-    console.error('❌ GunTab Verification Error:', error.response?.data || error.message);
-    
+    console.error('❌ Payment Processing Error:', error);
     res.status(500).json({
       success: false,
-      error: error.response?.data?.message || 'Failed to verify transaction',
-      details: error.response?.data
+      error: error.message || 'Failed to process payment'
     });
   }
 });
 
-// Get transaction details (optional - for order history)
+// Get transaction details (for order confirmation)
 app.get('/api/transaction/:transactionId', async (req, res) => {
   try {
     const { transactionId } = req.params;
 
-    if (!GUNTAB_API_TOKEN) {
+    if (!API_LOGIN_ID || !TRANSACTION_KEY) {
       return res.status(500).json({
         success: false,
-        error: 'Server configuration error: API token not set'
+        error: 'Server configuration error: API credentials not set'
       });
     }
 
-    const response = await axios.get(
-      `${GUNTAB_API_URL}/invoices/${transactionId}`,
-      {
-        headers: {
-          'Authorization': `Token ${GUNTAB_API_TOKEN}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      }
-    );
+    // Create merchant authentication
+    const merchantAuthenticationType = new ApiContracts.MerchantAuthenticationType();
+    merchantAuthenticationType.setName(API_LOGIN_ID);
+    merchantAuthenticationType.setTransactionKey(TRANSACTION_KEY);
 
-    res.json({
-      success: true,
-      transaction: response.data
+    // Create the request
+    const getRequest = new ApiContracts.GetTransactionDetailsRequest();
+    getRequest.setMerchantAuthentication(merchantAuthenticationType);
+    getRequest.setTransId(transactionId);
+
+    console.log('🔍 Fetching transaction details for:', transactionId);
+
+    const ctrl = new ApiControllers.GetTransactionDetailsController(getRequest.getJSON());
+
+    await new Promise((resolve, reject) => {
+      ctrl.execute(() => {
+        const apiResponse = ctrl.getResponse();
+        const response = new ApiContracts.GetTransactionDetailsResponse(apiResponse);
+
+        if (response !== null) {
+          if (response.getMessages().getResultCode() === ApiContracts.MessageTypeEnum.OK) {
+            console.log('✅ Transaction details retrieved');
+            const transaction = response.getTransaction();
+            
+            resolve({
+              success: true,
+              transaction: {
+                transactionId: transaction.getTransId(),
+                status: transaction.getTransactionStatus(),
+                amount: transaction.getAuthAmount(),
+                customer: {
+                  email: transaction.getBillTo()?.getEmail(),
+                  firstName: transaction.getBillTo()?.getFirstName(),
+                  lastName: transaction.getBillTo()?.getLastName()
+                }
+              }
+            });
+          } else {
+            console.error('❌ Failed to get transaction details');
+            reject({
+              success: false,
+              error: response.getMessages().getMessage()[0].getText()
+            });
+          }
+        } else {
+          reject({
+            success: false,
+            error: 'No response from payment gateway'
+          });
+        }
+      });
+    })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(error => {
+      res.status(400).json(error);
     });
 
   } catch (error) {
-    console.error('❌ Error fetching transaction:', error.response?.data || error.message);
-    
+    console.error('❌ Error fetching transaction:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to fetch transaction details'
@@ -225,19 +373,22 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
+  const host = process.env.RENDER ? 'Render.com' : `localhost:${PORT}`;
   console.log('');
-  console.log('✅ Backend server running!');
-  console.log(`🌐 URL: http://localhost:${PORT}`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
+  console.log('✅ Authorize.net Backend Server Running!');
+  console.log(`🌐 Host: ${host}`);
+  console.log(`🏥 Health check: /api/health`);
   console.log('');
   console.log('Available endpoints:');
-  console.log(`  POST   http://localhost:${PORT}/api/create-guntab-transaction`);
-  console.log(`  GET    http://localhost:${PORT}/api/verify-guntab-transaction/:id`);
-  console.log(`  GET    http://localhost:${PORT}/api/transaction/:id`);
   console.log(`  GET    http://localhost:${PORT}/api/health`);
+  console.log(`  GET    http://localhost:${PORT}/api/payment/client-key`);
+  console.log(`  POST   http://localhost:${PORT}/api/process-payment`);
+  console.log(`  GET    http://localhost:${PORT}/api/transaction/:id`);
+  console.log('');
+  console.log('💳 Payment Gateway: Authorize.net');
+  console.log(`🔧 Environment: ${ENVIRONMENT}`);
   console.log('');
 });
 
 module.exports = app;
-

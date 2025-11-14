@@ -1,53 +1,91 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const OrderConfirmation = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { transactionId, shippingInfo, items, total } = location.state || {};
+  const [orderData, setOrderData] = useState<any>(null);
 
-  // Redirect to home if no order data
+  // Load order data from sessionStorage
   useEffect(() => {
-    if (!transactionId) {
+    const lastOrderStr = sessionStorage.getItem('lastOrder');
+    if (!lastOrderStr) {
+      console.log('No order data found, redirecting to home');
+      navigate('/');
+      return;
+    }
+    
+    try {
+      const lastOrder = JSON.parse(lastOrderStr);
+      console.log('✅ Order data loaded:', lastOrder);
+      setOrderData(lastOrder);
+    } catch (error) {
+      console.error('Failed to parse order data:', error);
       navigate('/');
     }
-  }, [transactionId, navigate]);
+  }, [navigate]);
 
-  if (!transactionId) {
+  if (!orderData) {
     return null;
   }
+
+  const { transactionId, authCode, shippingInfo, items, subtotal, shipping, total } = orderData;
 
   return (
     <div className="min-h-screen">
       <Navigation />
       
       {/* Confirmation Section */}
-      <section className="py-24 bg-tactical-surface">
-        <div className="container mx-auto px-6">
+      <section className="py-24 bg-tactical-surface relative overflow-hidden">
+        {/* Success Background Effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-tactical-green/10 via-transparent to-tactical-green/5 pointer-events-none" />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
+            {/* Success Badge */}
+            <div className="mb-6 inline-block px-6 py-3 bg-tactical-green/20 border-2 border-tactical-green rounded-full">
+              <p className="text-tactical-green font-bold text-lg tracking-wider">
+                ✓ PAYMENT SUCCESSFUL
+              </p>
+            </div>
+
             {/* Success Icon */}
-            <div className="mb-8 flex justify-center">
-              <CheckCircle2 className="w-24 h-24 text-tactical-green" />
+            <div className="mb-8 flex justify-center animate-in zoom-in duration-500">
+              <div className="relative">
+                <CheckCircle2 className="w-32 h-32 text-tactical-green drop-shadow-[0_0_25px_rgba(0,255,65,0.5)]" />
+                <div className="absolute inset-0 bg-tactical-green/20 rounded-full blur-2xl animate-pulse" />
+              </div>
             </div>
 
             {/* Success Message */}
-            <h1 className="text-4xl font-bold text-foreground tracking-wider mb-4">
+            <h1 className="text-5xl font-bold text-foreground tracking-wider mb-4 animate-in slide-in-from-bottom-4 duration-700">
               Order Confirmed!
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
-              Thank you for your purchase. Your order has been successfully placed.
+            <p className="text-xl text-muted-foreground mb-8 animate-in fade-in duration-700 delay-150">
+              Thank you for your purchase. Your order has been successfully placed and payment confirmed.
             </p>
 
-            {/* Transaction ID */}
+            {/* Transaction Details */}
             <div className="bg-tactical-dark rounded-lg p-6 border border-tactical-green-dim/30 mb-8">
-              <p className="text-sm text-muted-foreground mb-2">Transaction ID</p>
-              <p className="text-lg font-mono text-tactical-green break-all">
-                {transactionId}
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">Transaction ID</p>
+                  <p className="text-lg font-mono text-tactical-green break-all">
+                    {transactionId}
+                  </p>
+                </div>
+                {authCode && (
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">Authorization Code</p>
+                    <p className="text-lg font-mono text-tactical-green">
+                      {authCode}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* What's Next */}
@@ -61,9 +99,9 @@ const OrderConfirmation = () => {
                     1
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">Payment Processing</h3>
+                    <h3 className="font-semibold text-foreground mb-1">✅ Payment Confirmed</h3>
                     <p className="text-sm text-muted-foreground">
-                      Your payment is being processed through GunTab's secure escrow service.
+                      Your payment has been successfully processed through Authorize.net.
                     </p>
                   </div>
                 </div>
