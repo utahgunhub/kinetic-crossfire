@@ -150,12 +150,12 @@ Use these test cards in sandbox environment:
 ### Testing the Server
 
 1. Start the backend server:
-   ```bash
+```bash
    npm run dev
    ```
 
 2. Start the frontend (in a separate terminal):
-   ```bash
+```bash
    cd ..
    npm run dev
    ```

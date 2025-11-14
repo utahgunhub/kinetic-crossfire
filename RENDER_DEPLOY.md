@@ -36,20 +36,30 @@ Start Command: npm start
 
 Click **"Advanced"** → Add these variables:
 
+**Choose ONE option:**
+
+**Option A - Testing (Sandbox):**
 ```env
 NODE_ENV=production
-PORT=3001
-
-# Your Authorize.net Sandbox Credentials
 AUTHORIZENET_API_LOGIN_ID=2fR2j4vRPVBR
 AUTHORIZENET_TRANSACTION_KEY=8yH6d8nW4GD2r997
 AUTHORIZENET_ENVIRONMENT=sandbox
-
-# Frontend URL (update after deploying frontend)
 FRONTEND_URL=http://localhost:5173
 ```
 
-**Important:** Click the 🔒 icon to keep credentials secret!
+**Option B - Live Payments (Production):**
+```env
+NODE_ENV=production
+AUTHORIZENET_API_LOGIN_ID=your_production_api_login_id
+AUTHORIZENET_TRANSACTION_KEY=your_production_transaction_key
+AUTHORIZENET_ENVIRONMENT=production
+FRONTEND_URL=http://localhost:5173
+```
+
+**Important:** 
+- Click the 🔒 icon to keep credentials secret!
+- Do NOT add PORT - Render sets this automatically
+- Update FRONTEND_URL after deploying frontend
 
 ### 4️⃣ Deploy!
 

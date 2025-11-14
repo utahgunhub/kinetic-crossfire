@@ -64,16 +64,28 @@ Your backend is already configured! Files ready:
 5. **Add Environment Variables:**
    Click "Advanced" → "Add Environment Variable" for each:
 
+   **For Testing (Sandbox):**
    ```env
    NODE_ENV=production
-   PORT=3001
    AUTHORIZENET_API_LOGIN_ID=2fR2j4vRPVBR
    AUTHORIZENET_TRANSACTION_KEY=8yH6d8nW4GD2r997
    AUTHORIZENET_ENVIRONMENT=sandbox
    FRONTEND_URL=https://your-site.vercel.app
    ```
 
-   **Important:** Keep these as "Secret" (not visible in logs)
+   **For Live Payments (Production):**
+   ```env
+   NODE_ENV=production
+   AUTHORIZENET_API_LOGIN_ID=your_production_api_login_id
+   AUTHORIZENET_TRANSACTION_KEY=your_production_transaction_key
+   AUTHORIZENET_ENVIRONMENT=production
+   FRONTEND_URL=https://your-site.vercel.app
+   ```
+
+   **Important:** 
+   - Keep these as "Secret" (not visible in logs)
+   - Do NOT set PORT - Render assigns this automatically
+   - Update FRONTEND_URL after deploying frontend
 
 6. **Click "Create Web Service"**
 
@@ -110,13 +122,7 @@ Create `/.env` (in the ROOT of your project, not in server):
 VITE_API_URL=https://your-backend-url.onrender.com
 ```
 
-### Step 2: Update Checkout.tsx
-
-We need to change the hardcoded `localhost:3001` URLs to use the environment variable.
-
-I'll do this for you in a moment!
-
-### Step 3: Deploy Frontend to Vercel
+### Step 2: Deploy Frontend to Vercel
 
 1. **Go to:** https://vercel.com/
 
@@ -156,23 +162,29 @@ Once you have your Vercel URL, update Render environment variables:
 
 ---
 
-## Part 4: Going Live with Real Payments
+## Part 4: Production vs Sandbox
 
-### When Ready for Production (Real Payments):
+### 🧪 Sandbox (Testing)
+Use sandbox credentials if you want to test without real charges:
+- Free testing
+- Test card numbers work (4111111111111111)
+- No real money charged
+- Transactions appear in sandbox.authorize.net
 
-1. **Enable Transaction Processing in Authorize.net:**
-   - Log into https://account.authorize.net/
-   - Go to Account → Settings → General Security Settings
-   - Enable "Transaction Processing Mode"
+### 💰 Production (Real Payments)
+Use production credentials for live payments:
+- **Required:** Enable "Transaction Processing Mode" in Authorize.net
+- Real credit cards
+- Real charges
+- Transactions appear in account.authorize.net
 
-2. **Update Render Environment Variables:**
-   ```env
-   AUTHORIZENET_API_LOGIN_ID=your_production_api_login_id
-   AUTHORIZENET_TRANSACTION_KEY=your_production_transaction_key
-   AUTHORIZENET_ENVIRONMENT=production
-   ```
-
-3. **Save and redeploy**
+**To Enable Production:**
+1. Log into https://account.authorize.net/
+2. Go to Account → Settings → General Security Settings
+3. Enable "Transaction Processing Mode"
+4. Get your production API credentials
+5. Update Render environment variables
+6. Redeploy
 
 ---
 
