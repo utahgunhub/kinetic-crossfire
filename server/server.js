@@ -9,8 +9,30 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+
+// CORS configuration - allow multiple origins
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL?.replace(/\/$/, ''), // Without trailing slash
+  'http://localhost:5173',
+  'http://localhost:8080',
+  'https://www.kinetic-crossfire.com',
+  'https://kinetic-crossfire.com', // Without www
+].filter(Boolean); // Remove undefined values
+
 app.use(cors({
-  origin: [process.env.FRONTEND_URL || 'http://localhost:5173', 'http://localhost:8080'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked origin:', origin);
+      console.log('Allowed origins:', allowedOrigins);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
