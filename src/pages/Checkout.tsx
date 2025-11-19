@@ -166,8 +166,11 @@ const Checkout = () => {
 
       const paymentData = await paymentResponse.json();
 
-      if (!paymentData.success) {
-        throw new Error(paymentData.error || 'Payment failed');
+      // Check for both HTTP errors and API-level errors
+      if (!paymentResponse.ok || !paymentData.success) {
+        const errorMsg = paymentData.error || paymentData.message || 'Payment failed';
+        console.error('Payment failed:', errorMsg);
+        throw new Error(errorMsg);
       }
 
       console.log('✅ Payment successful!');
