@@ -42,11 +42,17 @@ const TRANSACTION_KEY = process.env.AUTHORIZENET_TRANSACTION_KEY;
 const ENVIRONMENT = process.env.AUTHORIZENET_ENVIRONMENT || 'sandbox';
 
 // CRITICAL: Set SDK endpoint BEFORE any API calls
-// The SDK uses process.env.AUTHORIZENET_ENDPOINT to determine which server to hit
+// The SDK reads from Constants.endpoint
 if (ENVIRONMENT === 'production') {
+  SDKConstants.endpoint.production = 'https://api.authorize.net/xml/v1/request.api';
   process.env.AUTHORIZENET_ENDPOINT = 'https://api.authorize.net/xml/v1/request.api';
+  // Force SDK to use production
+  ApiContracts.Constants.endpoint = SDKConstants.endpoint.production;
 } else {
+  SDKConstants.endpoint.sandbox = 'https://apitest.authorize.net/xml/v1/request.api';
   process.env.AUTHORIZENET_ENDPOINT = 'https://apitest.authorize.net/xml/v1/request.api';
+  // Force SDK to use sandbox
+  ApiContracts.Constants.endpoint = SDKConstants.endpoint.sandbox;
 }
 
 const API_ENDPOINT = process.env.AUTHORIZENET_ENDPOINT;
@@ -63,8 +69,55 @@ app.get('/api/health', (req, res) => {
     status: 'ok', 
     message: 'Authorize.net server is running',
     environment: ENVIRONMENT,
+    endpoint: API_ENDPOINT,
     apiConfigured: !!(API_LOGIN_ID && TRANSACTION_KEY)
   });
+});
+
+// Test Authorize.net connectivity
+app.get('/api/test-connection', async (req, res) => {
+  try {
+    const https = require('https');
+    const url = ENVIRONMENT === 'production' 
+      ? 'https://api.authorize.net/xml/v1/request.api'
+      : 'https://apitest.authorize.net/xml/v1/request.api';
+    
+    console.log('🧪 Testing connection to:', url);
+    
+    const startTime = Date.now();
+    https.get(url, (response) => {
+      const elapsed = Date.now() - startTime;
+      console.log('✅ Connection successful! Status:', response.statusCode, 'Time:', elapsed + 'ms');
+      res.json({
+        success: true,
+        url,
+        statusCode: response.statusCode,
+        elapsed: elapsed + 'ms'
+      });
+    }).on('error', (error) => {
+      const elapsed = Date.now() - startTime;
+      console.error('❌ Connection failed:', error.message, 'Time:', elapsed + 'ms');
+      res.json({
+        success: false,
+        url,
+        error: error.message,
+        elapsed: elapsed + 'ms'
+      });
+    }).setTimeout(10000, function() {
+      console.error('❌ Connection timeout after 10 seconds');
+      this.destroy();
+      res.json({
+        success: false,
+        url,
+        error: 'Timeout after 10 seconds'
+      });
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 // Get public client key for Accept.js
