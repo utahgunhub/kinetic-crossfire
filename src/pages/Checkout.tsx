@@ -137,6 +137,8 @@ const Checkout = () => {
       // Send payment data directly to our backend
       // The backend will securely process it with Authorize.net
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      console.log('🌐 Sending payment to:', `${API_URL}/api/process-payment`);
+      
       const paymentResponse = await fetch(`${API_URL}/api/process-payment`, {
         method: 'POST',
         headers: {
@@ -202,8 +204,18 @@ const Checkout = () => {
         navigate('/order-confirmation');
       }, 100);
     } catch (error: any) {
-      console.error('Payment error:', error);
-      alert('Payment failed: ' + (error.message || 'Please try again. Make sure all information is correct.'));
+      console.error('❌ Payment error:', error);
+      console.error('Error type:', error.name);
+      console.error('Error message:', error.message);
+      
+      let errorMessage = 'Payment failed: ';
+      if (error.message === 'Failed to fetch') {
+        errorMessage += 'Unable to connect to payment server. Please check your internet connection and try again.';
+      } else {
+        errorMessage += (error.message || 'Please try again. Make sure all information is correct.');
+      }
+      
+      alert(errorMessage);
       setIsProcessing(false);
     }
   };

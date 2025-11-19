@@ -200,15 +200,32 @@ app.post('/api/process-payment', async (req, res) => {
     createRequest.setTransactionRequest(transactionRequestType);
 
     console.log('📤 Sending transaction to Authorize.net...');
+    console.log('🎯 Using endpoint:', SDKConstants.endpoint);
+    console.log('🔑 Environment:', ENVIRONMENT);
 
-    // Execute the transaction
+    // Execute the transaction with timeout
     const ctrl = new ApiControllers.CreateTransactionController(createRequest.getJSON());
+    console.log('✅ Controller created, executing...');
 
     await new Promise((resolve, reject) => {
-      ctrl.execute(() => {
-        const apiResponse = ctrl.getResponse();
-        const response = new ApiContracts.CreateTransactionResponse(apiResponse);
+      // Set 30 second timeout
+      const timeout = setTimeout(() => {
+        console.error('❌ Authorize.net request timed out after 30 seconds');
+        reject({
+          success: false,
+          error: 'Payment gateway timeout. Please try again.'
+        });
+      }, 30000);
 
+      ctrl.execute(() => {
+        clearTimeout(timeout); // Clear timeout if we get a response
+        
+        console.log('📥 Callback fired from Authorize.net SDK');
+        
+        const apiResponse = ctrl.getResponse();
+        console.log('📋 API Response received:', apiResponse ? 'Yes' : 'No');
+        
+        const response = new ApiContracts.CreateTransactionResponse(apiResponse);
         console.log('📥 Response received from Authorize.net');
 
         if (response !== null) {
