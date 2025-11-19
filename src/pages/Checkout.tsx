@@ -65,7 +65,7 @@ const Checkout = () => {
   });
 
   const subtotal = getTotalPrice();
-  const shipping = 8.00; // Standard shipping
+  const shipping = 0.00; // Free shipping
   const total = subtotal + shipping;
 
   // For local development without HTTPS, we'll send card data to backend

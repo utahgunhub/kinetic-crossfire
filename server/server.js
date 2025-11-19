@@ -103,6 +103,14 @@ app.post('/api/process-payment', async (req, res) => {
       });
     }
 
+    // Log credentials (masked) for debugging
+    console.log('🔑 Using API Login ID:', API_LOGIN_ID);
+    console.log('🔑 Transaction Key length:', TRANSACTION_KEY?.length, 'chars');
+    console.log('🔑 Transaction Key (first 4):', TRANSACTION_KEY?.substring(0, 4) + '...');
+    console.log('🔑 Transaction Key (last 4):', '...' + TRANSACTION_KEY?.substring(TRANSACTION_KEY.length - 4));
+    console.log('🌍 Environment:', ENVIRONMENT);
+    console.log('🎯 API Endpoint:', process.env.AUTHORIZENET_ENDPOINT);
+
     // Create merchant authentication
     const merchantAuthenticationType = new ApiContracts.MerchantAuthenticationType();
     merchantAuthenticationType.setName(API_LOGIN_ID);
@@ -228,26 +236,28 @@ app.post('/api/process-payment', async (req, res) => {
                   invoiceNumber: orderDetails.getInvoiceNumber()
                 }
               });
+          } else {
+            console.error('❌ Transaction failed');
+            if (transactionResponse.getErrors() !== null) {
+              const errorCode = transactionResponse.getErrors().getError()[0].getErrorCode();
+              const errorText = transactionResponse.getErrors().getError()[0].getErrorText();
+              console.error('Error Code:', errorCode);
+              console.error('Error Text:', errorText);
+              console.error('💡 If E00007: Check API Login ID and Transaction Key are correct');
+              console.error('💡 If E00027: Transaction Key might be expired or invalid');
+              
+              reject({
+                success: false,
+                error: errorText,
+                errorCode: errorCode
+              });
             } else {
-              console.error('❌ Transaction failed');
-              if (transactionResponse.getErrors() !== null) {
-                const errorCode = transactionResponse.getErrors().getError()[0].getErrorCode();
-                const errorText = transactionResponse.getErrors().getError()[0].getErrorText();
-                console.error('Error Code:', errorCode);
-                console.error('Error Text:', errorText);
-                
-                reject({
-                  success: false,
-                  error: errorText,
-                  errorCode: errorCode
-                });
-              } else {
-                reject({
-      success: false,
-                  error: 'Transaction failed'
-                });
-              }
+              reject({
+                success: false,
+                error: 'Transaction failed'
+              });
             }
+          }
           } else {
             console.error('❌ Transaction failed - response code not OK');
             if (response.getTransactionResponse() && response.getTransactionResponse().getErrors()) {
@@ -255,6 +265,7 @@ app.post('/api/process-payment', async (req, res) => {
               const errorText = response.getTransactionResponse().getErrors().getError()[0].getErrorText();
               console.error('Error Code:', errorCode);
               console.error('Error Text:', errorText);
+              console.error('💡 Tip: Check error code at https://developer.authorize.net/api/reference/responseCodes.html');
               
               reject({
                 success: false,
@@ -267,6 +278,17 @@ app.post('/api/process-payment', async (req, res) => {
               console.error('Error Code:', errorCode);
               console.error('Error Text:', errorText);
               
+              // Extra debugging for authentication errors
+              if (errorCode === 'E00007') {
+                console.error('🔍 AUTHENTICATION ERROR DEBUG:');
+                console.error('   API Login ID being used:', API_LOGIN_ID);
+                console.error('   Transaction Key length:', TRANSACTION_KEY?.length);
+                console.error('   Environment:', ENVIRONMENT);
+                console.error('   Expected: production credentials from account.authorize.net');
+                console.error('   ⚠️  Check: Did you generate a NEW transaction key recently?');
+                console.error('   ⚠️  Check: Is Transaction Processing Mode ENABLED in your account?');
+              }
+              
               reject({
                 success: false,
                 error: errorText,
@@ -274,7 +296,7 @@ app.post('/api/process-payment', async (req, res) => {
               });
             } else {
               reject({
-        success: false,
+                success: false,
                 error: 'Transaction failed'
               });
             }
