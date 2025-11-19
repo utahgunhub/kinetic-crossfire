@@ -42,13 +42,14 @@ const TRANSACTION_KEY = process.env.AUTHORIZENET_TRANSACTION_KEY;
 const ENVIRONMENT = process.env.AUTHORIZENET_ENVIRONMENT || 'sandbox';
 
 // CRITICAL: Set SDK endpoint BEFORE any API calls
-// Must be done at startup, not in request handlers
-const API_ENDPOINT = ENVIRONMENT === 'production' 
-  ? 'https://api.authorize.net/xml/v1/request.api'
-  : 'https://apitest.authorize.net/xml/v1/request.api';
+// The SDK uses process.env.AUTHORIZENET_ENDPOINT to determine which server to hit
+if (ENVIRONMENT === 'production') {
+  process.env.AUTHORIZENET_ENDPOINT = 'https://api.authorize.net/xml/v1/request.api';
+} else {
+  process.env.AUTHORIZENET_ENDPOINT = 'https://apitest.authorize.net/xml/v1/request.api';
+}
 
-// Set the endpoint for the SDK
-SDKConstants.endpoint = API_ENDPOINT;
+const API_ENDPOINT = process.env.AUTHORIZENET_ENDPOINT;
 
 console.log('🚀 Server starting...');
 console.log('Environment:', ENVIRONMENT);
