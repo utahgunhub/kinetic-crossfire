@@ -181,6 +181,9 @@ app.post('/api/process-payment', async (req, res) => {
               cardCode: cardData.cardCode
             }
           },
+          customer: {
+            email: shippingInfo.email
+          },
           order: {
             invoiceNumber: `KC-${Date.now()}`,
             description: orderDescription.substring(0, 255)
@@ -192,9 +195,7 @@ app.post('/api/process-payment', async (req, res) => {
             city: billingInfo.city,
             state: billingInfo.state,
             zip: billingInfo.zipCode,
-            country: billingInfo.country,
-            email: shippingInfo.email,
-            phoneNumber: shippingInfo.phone
+            country: billingInfo.country
           },
           shipTo: {
             firstName: shippingInfo.firstName,
