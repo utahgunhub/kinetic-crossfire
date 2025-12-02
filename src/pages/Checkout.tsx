@@ -4,6 +4,7 @@ import { TacticalButton } from "@/components/TacticalButton";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { sendOrderConfirmationEmail } from "@/lib/emailService";
 
 interface ShippingInfo {
   firstName: string;
@@ -194,6 +195,27 @@ const Checkout = () => {
       
       sessionStorage.setItem('lastOrder', JSON.stringify(orderData));
       console.log('💾 Order data saved to sessionStorage');
+
+      // Send order confirmation email
+      const customerName = `${shippingInfo.firstName} ${shippingInfo.lastName}`;
+      const shippingAddressFormatted = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zipCode}, ${shippingInfo.country}`;
+      
+      await sendOrderConfirmationEmail({
+        transactionId: paymentData.transactionId,
+        customerName,
+        customerEmail: shippingInfo.email,
+        customerPhone: shippingInfo.phone,
+        shippingAddress: shippingAddressFormatted,
+        items: items.map(item => ({
+          productName: item.product.name,
+          quantity: item.quantity,
+          pricePerItem: item.product.price,
+          totalForItem: item.product.price * item.quantity,
+        })),
+        subtotal,
+        shipping,
+        total,
+      });
 
       // Clear cart
       clearCart();

@@ -1,0 +1,52 @@
+================================================================================
+HOW TO SETUP YOUR EMAILJS TEMPLATE - STEP BY STEP
+================================================================================
+
+1. Go to: https://dashboard.emailjs.com/admin/templates/template_xba6pcp
+
+2. In the EmailJS template editor:
+   
+   A. SUBJECT LINE:
+      Order Confirmation - {{order_number}} - Kinetic Crossfire
+   
+   B. CONTENT (Switch to HTML editor):
+      - Open the file: emailjs-template.html
+      - Copy ALL the contents
+      - Paste into the HTML editor in EmailJS
+   
+   C. SETTINGS:
+      - To Email: {{to_email}}
+      - From Name: Kinetic Crossfire
+      - Reply To: Your support email address
+
+3. Click "Save"
+
+4. Test it by placing an order on your website!
+
+================================================================================
+IMPORTANT VARIABLES (Already in the HTML template):
+================================================================================
+{{to_email}}           - Where to send the email
+{{customer_name}}      - Customer's full name
+{{order_number}}       - Transaction/Order ID
+{{customer_email}}     - Customer's email
+{{customer_phone}}     - Customer's phone number
+{{shipping_address}}   - Full shipping address
+{{items_list}}         - All ordered items with details
+{{subtotal}}           - Subtotal amount
+{{shipping}}           - Shipping cost
+{{total}}              - Total amount paid
+
+================================================================================
+DESIGN FEATURES:
+================================================================================
+✓ Matches your website's tactical dark theme
+✓ Cyan/blue accent colors (#5dceeb)
+✓ Professional layout
+✓ Mobile responsive
+✓ Clear order information
+✓ All customer details included
+✓ Itemized product list
+
+================================================================================
+

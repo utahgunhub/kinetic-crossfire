@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0a; color: #fafafa;">
+    
+    <!-- Main Container -->
+    <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #0a0a0a;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                
+                <!-- Email Content Wrapper -->
+                <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse; background-color: #141414; border: 1px solid #2d5a6e; border-radius: 8px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #0a0a0a, #141414); padding: 40px 30px; text-align: center; border-bottom: 2px solid #5dceeb;">
+                            <h1 style="margin: 0; color: #5dceeb; font-size: 28px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 0 20px rgba(93, 206, 235, 0.4);">
+                                KINETIC CROSSFIRE
+                            </h1>
+                            <p style="margin: 10px 0 0 0; color: #a6a6a6; font-size: 14px; letter-spacing: 1px;">
+                                ORDER CONFIRMATION
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Success Badge -->
+                    <tr>
+                        <td style="padding: 30px 30px 20px 30px; text-align: center;">
+                            <div style="display: inline-block; background-color: rgba(93, 206, 235, 0.1); border: 2px solid #5dceeb; border-radius: 25px; padding: 10px 25px;">
+                                <span style="color: #5dceeb; font-weight: bold; font-size: 16px; letter-spacing: 1px;">
+                                    ✓ ORDER CONFIRMED
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Greeting -->
+                    <tr>
+                        <td style="padding: 20px 30px;">
+                            <p style="margin: 0 0 15px 0; color: #fafafa; font-size: 16px; line-height: 1.6;">
+                                Hello <strong style="color: #5dceeb;">{{customer_name}}</strong>,
+                            </p>
+                            <p style="margin: 0 0 15px 0; color: #fafafa; font-size: 15px; line-height: 1.7;">
+                                Thank you for placing an order with Kinetic Crossfire, we will process it and ship it in the next two business days. Please remember that your bolt must be clean and lubricated more than usual, and to use .556 ammunition for best results with higher weight springs. Have fun on the range!
+                            </p>
+                            <p style="margin: 15px 0 0 0; color: #a6a6a6; font-size: 14px; font-style: italic;">
+                                - Kinetic Crossfire
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 30px;">
+                            <div style="height: 1px; background: linear-gradient(90deg, transparent, #2d5a6e, transparent);"></div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Order Details -->
+                    <tr>
+                        <td style="padding: 30px 30px 20px 30px;">
+                            <h2 style="margin: 0 0 20px 0; color: #5dceeb; font-size: 20px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+                                Order Details
+                            </h2>
+                            
+                            <!-- Order Number -->
+                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                <tr>
+                                    <td style="padding: 8px 0; color: #a6a6a6; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; width: 140px;">
+                                        Order Number:
+                                    </td>
+                                    <td style="padding: 8px 0; color: #5dceeb; font-size: 14px; font-family: 'Courier New', monospace; font-weight: bold;">
+                                        {{order_number}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #a6a6a6; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Customer Name:
+                                    </td>
+                                    <td style="padding: 8px 0; color: #fafafa; font-size: 14px;">
+                                        {{customer_name}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #a6a6a6; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Email:
+                                    </td>
+                                    <td style="padding: 8px 0; color: #fafafa; font-size: 14px;">
+                                        {{customer_email}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #a6a6a6; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        Phone:
+                                    </td>
+                                    <td style="padding: 8px 0; color: #fafafa; font-size: 14px;">
+                                        {{customer_phone}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Shipping Address -->
+                    <tr>
+                        <td style="padding: 20px 30px;">
+                            <div style="background-color: #0a0a0a; border: 1px solid #2d5a6e; border-radius: 6px; padding: 15px;">
+                                <p style="margin: 0 0 8px 0; color: #5dceeb; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold;">
+                                    Shipping Address
+                                </p>
+                                <p style="margin: 0; color: #fafafa; font-size: 14px; line-height: 1.6; white-space: pre-line;">{{shipping_address}}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 30px;">
+                            <div style="height: 1px; background: linear-gradient(90deg, transparent, #2d5a6e, transparent);"></div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Items Ordered -->
+                    <tr>
+                        <td style="padding: 30px 30px 20px 30px;">
+                            <h2 style="margin: 0 0 20px 0; color: #5dceeb; font-size: 20px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+                                Items Ordered
+                            </h2>
+                            <div style="background-color: #0a0a0a; border: 1px solid #2d5a6e; border-radius: 6px; padding: 20px;">
+                                <pre style="margin: 0; color: #fafafa; font-size: 13px; line-height: 1.8; font-family: 'Courier New', monospace; white-space: pre-wrap; word-wrap: break-word;">{{items_list}}</pre>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 30px;">
+                            <div style="height: 1px; background: linear-gradient(90deg, transparent, #2d5a6e, transparent);"></div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Order Summary -->
+                    <tr>
+                        <td style="padding: 30px 30px 20px 30px;">
+                            <h2 style="margin: 0 0 20px 0; color: #5dceeb; font-size: 20px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+                                Order Summary
+                            </h2>
+                            
+                            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="padding: 10px 0; color: #a6a6a6; font-size: 15px; border-top: 1px solid #2d5a6e;">
+                                        Subtotal:
+                                    </td>
+                                    <td style="padding: 10px 0; color: #fafafa; font-size: 15px; text-align: right; border-top: 1px solid #2d5a6e;">
+                                        {{subtotal}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 0; color: #a6a6a6; font-size: 15px;">
+                                        Shipping:
+                                    </td>
+                                    <td style="padding: 10px 0; color: #fafafa; font-size: 15px; text-align: right;">
+                                        {{shipping}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 15px 0 10px 0; color: #5dceeb; font-size: 18px; font-weight: bold; border-top: 2px solid #5dceeb;">
+                                        TOTAL:
+                                    </td>
+                                    <td style="padding: 15px 0 10px 0; color: #5dceeb; font-size: 18px; font-weight: bold; text-align: right; border-top: 2px solid #5dceeb;">
+                                        {{total}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- What's Next -->
+                    <tr>
+                        <td style="padding: 20px 30px 30px 30px;">
+                            <div style="background-color: rgba(93, 206, 235, 0.05); border: 1px solid #2d5a6e; border-radius: 6px; padding: 20px;">
+                                <h3 style="margin: 0 0 15px 0; color: #5dceeb; font-size: 16px; font-weight: bold; letter-spacing: 0.5px;">
+                                    WHAT'S NEXT?
+                                </h3>
+                                <ul style="margin: 0; padding-left: 20px; color: #a6a6a6; font-size: 14px; line-height: 1.8;">
+                                    <li style="margin-bottom: 8px;">Your payment has been successfully processed</li>
+                                    <li style="margin-bottom: 8px;">We'll prepare your order for shipment</li>
+                                    <li style="margin-bottom: 8px;">You'll receive tracking information within 1-2 business days</li>
+                                    <li style="margin-bottom: 0;">Your order will be delivered to the address above</li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #0a0a0a; padding: 30px; text-align: center; border-top: 2px solid #2d5a6e;">
+                            <p style="margin: 0 0 10px 0; color: #fafafa; font-size: 14px;">
+                                Thank you for your order!
+                            </p>
+                            <p style="margin: 0 0 20px 0; color: #5dceeb; font-size: 16px; font-weight: bold; letter-spacing: 1px;">
+                                KINETIC CROSSFIRE
+                            </p>
+                            <p style="margin: 0; color: #a6a6a6; font-size: 12px; line-height: 1.6;">
+                                Questions about your order? Reply to this email or visit our website.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>
+
