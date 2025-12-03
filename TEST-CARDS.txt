@@ -1,0 +1,71 @@
+═══════════════════════════════════════════════════════════════════
+                   AUTHORIZE.NET SANDBOX TEST CARDS
+═══════════════════════════════════════════════════════════════════
+
+✅ YOUR CREDENTIALS ARE WORKING! ✅
+
+Use these EXACT card numbers for testing:
+
+───────────────────────────────────────────────────────────────────
+VISA (APPROVED)
+───────────────────────────────────────────────────────────────────
+Card Number:  4111111111111111
+Expiration:   12/25 (any future date)
+CVV:          123 (any 3 digits)
+
+───────────────────────────────────────────────────────────────────
+MASTERCARD (APPROVED)
+───────────────────────────────────────────────────────────────────
+Card Number:  5424000000000015
+Expiration:   12/25
+CVV:          123
+
+───────────────────────────────────────────────────────────────────
+AMERICAN EXPRESS (APPROVED)
+───────────────────────────────────────────────────────────────────
+Card Number:  370000000000002
+Expiration:   12/25
+CVV:          1234 (any 4 digits)
+
+───────────────────────────────────────────────────────────────────
+DISCOVER (APPROVED)
+───────────────────────────────────────────────────────────────────
+Card Number:  6011000000000012
+Expiration:   12/25
+CVV:          123
+
+───────────────────────────────────────────────────────────────────
+TEST DECLINED (for error testing)
+───────────────────────────────────────────────────────────────────
+Card Number:  4000300011112220
+Result:       This will be declined
+
+───────────────────────────────────────────────────────────────────
+IMPORTANT NOTES:
+───────────────────────────────────────────────────────────────────
+❌ Don't use random card numbers like 1234...
+❌ Don't use real card numbers in sandbox
+✅ Only use the test cards listed above
+✅ You can use any name, address, etc.
+✅ Expiration just needs to be in the future
+
+───────────────────────────────────────────────────────────────────
+TESTING CHECKLIST:
+───────────────────────────────────────────────────────────────────
+□ Backend server running (npm start in /server)
+□ Frontend server running (npm run dev)
+□ Using test card from list above
+□ Filling in all required fields
+□ Checking browser console for errors
+□ Checking backend terminal for logs
+
+═══════════════════════════════════════════════════════════════════
+
+Quick Test:
+cd server && node test-sandbox-auth.js
+
+Should show: "🎉 Your Authorize.net credentials are working correctly!"
+
+═══════════════════════════════════════════════════════════════════
+
+

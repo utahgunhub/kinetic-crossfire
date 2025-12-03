@@ -109,3 +109,4 @@ After setting up:
 - If email sending fails, the order still completes successfully
 - Email failures are logged in the browser console but don't block the checkout
 
+
