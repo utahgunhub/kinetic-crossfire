@@ -110,3 +110,4 @@ After setting up:
 - Email failures are logged in the browser console but don't block the checkout
 
 
+
