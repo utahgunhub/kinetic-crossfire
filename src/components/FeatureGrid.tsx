@@ -61,7 +61,7 @@ const features = [
 const FeatureGrid = () => {
   return (
     <section className="py-24 bg-tactical-dark relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,255,65,0.08),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(0,255,65,0.06),transparent_40%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(102,204,230,0.08),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(102,204,230,0.06),transparent_40%)]" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground tracking-wider">Enhance Your SSAR-15 SBS</h2>

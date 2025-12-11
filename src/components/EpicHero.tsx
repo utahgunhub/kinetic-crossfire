@@ -7,7 +7,7 @@ const EpicHero = () => {
       {/* Background image with vignette and parallax hint */}
       <div className="absolute inset-0">
         <img
-          src="/hero-image.png"
+          src="/hero-image-new.png"
           alt="Kinetic Crossfire - Slide Stock Assist"
           className="w-full h-full object-cover scale-105"
         />
