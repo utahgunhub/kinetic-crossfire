@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 const EpicHero = () => {
   return (
     <section className="relative min-h-[calc(100vh-80px)] overflow-hidden">
-      {/* Background image with vignette and parallax hint */}
+      {/* Background video with vignette */}
       <div className="absolute inset-0">
-        <img
-          src="/hero-image-new.png"
-          alt="Kinetic Crossfire - Slide Stock Assist"
+        <video
+          src="/hero-video.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
           className="w-full h-full object-cover scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80"></div>
