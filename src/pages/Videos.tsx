@@ -2,16 +2,30 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const Videos = () => {
-  const videoData = [
+  const thompsonVideos = [
     {
-      id: "QNSrcbG65AE",
-      title: "Slide Stock Assist - Main Demo",
-      description: "Watch the Slide Stock Assist deliver rapid, consistent follow-up shots with precision control.",
-      featured: true
+      id: "7VWUIwBz-4o",
+      title: "Thompson Blow-Back Trigger Demo",
+      description: "See the Thompson Blow-Back Trigger running live and get a feel for the platform in action.",
+      embedUrl: "https://www.youtube.com/embed/7VWUIwBz-4o?si=Wg_EWjsqsfOb_7MO",
+      link: "https://www.youtube.com/watch?v=7VWUIwBz-4o",
+    },
+    {
+      id: "YPdIYC9JDAo",
+      title: "Thompson Blow-Back Trigger Install",
+      description: "Walk through the installation process before starting your Thompson build.",
+      embedUrl: "https://www.youtube.com/embed/YPdIYC9JDAo?si=heETHq9WWsuwzee7",
+      link: "https://www.youtube.com/watch?v=YPdIYC9JDAo",
     }
   ];
 
-  const allVideos = [
+  const arVideos = [
+    {
+      thumbnail: "/video-demo.png",
+      title: "Slide Stock Assist - Main Demo",
+      description: "Watch the Slide Stock Assist deliver rapid, consistent follow-up shots with precision control.",
+      link: "https://www.youtube.com/watch?v=QNSrcbG65AE"
+    },
     {
       thumbnail: "/video-frt.png",
       title: "Field Range Testing",
@@ -44,49 +58,65 @@ const Videos = () => {
               Video Library
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Watch the Slide Stock Assist in action. From installation to performance testing, 
-              see why this precision accessory delivers unmatched rapid-fire control.
+              Watch Thompson and AR videos, including installs, demos, and range footage.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Featured Video */}
+      {/* Thompson Videos */}
       <section className="py-16 bg-tactical-surface">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-tactical-green mb-8 text-center tracking-wider">
-              Featured Demo
+              Thompson Videos
             </h2>
-            <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${videoData[0].id}?si=xBvDXYz2b6fK-n9T`}
-                title={videoData[0].title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="absolute inset-0"
-              />
-            </div>
-            <div className="mt-6 text-center">
-              <h3 className="text-2xl font-semibold text-foreground mb-2">{videoData[0].title}</h3>
-              <p className="text-muted-foreground">{videoData[0].description}</p>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {thompsonVideos.map((video) => (
+                <div key={video.id} className="bg-tactical-dark rounded-lg p-6 border border-tactical-green-dim/30">
+                  <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={video.embedUrl}
+                      title={video.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                      className="absolute inset-0"
+                    />
+                  </div>
+                  <div className="mt-6">
+                    <h3 className="text-2xl font-semibold text-foreground mb-2">{video.title}</h3>
+                    <p className="text-muted-foreground mb-4">{video.description}</p>
+                    <a
+                      href={video.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-tactical-green hover:text-tactical-green-glow transition-colors font-semibold"
+                    >
+                      Watch on YouTube
+                      <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Video Grid */}
+      {/* AR Video Grid */}
       <section className="py-16 bg-tactical-dark">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-foreground mb-12 text-center tracking-wider">
-            All Videos
+            AR Videos
           </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {allVideos.map((video, index) => (
+          {arVideos.map((video, index) => (
             <a 
               key={index} 
               href={video.link}

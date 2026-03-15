@@ -8,7 +8,7 @@ const Footer = () => {
               KINETIC CROSSFIRE
             </h3>
             <p className="text-muted-foreground max-w-md">
-              Recreational firearm accessories designed for AR-15 platforms. Made in USA.
+              Recreational firearm accessories for Thompson and AR platforms. Made in USA.
             </p>
             <div className="bg-tactical-surface border border-tactical-green-dim/50 rounded p-4 max-w-md">
               <h4 className="font-semibold text-tactical-green text-sm mb-2 uppercase tracking-wide">Important Disclaimer</h4>
@@ -23,7 +23,7 @@ const Footer = () => {
             <ul className="space-y-2 text-muted-foreground">
               <li><a href="/" className="hover:text-tactical-green transition-colors">Home</a></li>
               <li><a href="/videos" className="hover:text-tactical-green transition-colors">Videos</a></li>
-              <li><a href="/purchase" className="hover:text-tactical-green transition-colors">Purchase</a></li>
+              <li><a href="/shop" className="hover:text-tactical-green transition-colors">Shop</a></li>
               <li><a href="/contact" className="hover:text-tactical-green transition-colors">Contact</a></li>
             </ul>
             
@@ -90,7 +90,7 @@ const Footer = () => {
             {/* Logo */}
             <div className="pt-4">
               <img 
-                src="/kf-logo.png" 
+                src="/new-logo.png" 
                 alt="Kinetic Crossfire Logo" 
                 className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity"
               />

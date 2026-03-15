@@ -6,6 +6,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProductById } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
+import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -15,6 +16,24 @@ const ProductDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const shopPath = product?.category === "thompson" ? "/shop" : "/shop/ar";
+  const shopLabel = product?.category === "thompson" ? "Shop" : "Shop AR";
+  const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
+  const productDescription = isThompsonProduct
+    ? "Forced reset trigger system for Auto Ordnance and Kahr Arms Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools."
+    : product.detailedDescription;
+  const displayFeatures = isThompsonProduct
+    ? [
+        "Smooth forced reset operation with a fast, authentic Thompson feel",
+        "Durable steel alloy construction for rapid fire and high heat use",
+        "Straightforward installation with minimal tools",
+      ]
+    : product.features;
+  const specificationEntries = product.specifications
+    ? Object.entries(product.specifications).filter(([key]) =>
+        isThompsonProduct ? !["Compatibility", "Shipping"].includes(key) : true
+      )
+    : [];
 
   if (!product) {
     return (
@@ -26,7 +45,7 @@ const ProductDetail = () => {
             <p className="text-muted-foreground mb-8">
               The product you're looking for doesn't exist.
             </p>
-            <Link to="/purchase">
+            <Link to="/shop">
               <TacticalButton variant="primary">
                 Back to Products
               </TacticalButton>
@@ -80,7 +99,7 @@ const ProductDetail = () => {
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Link to="/" className="hover:text-tactical-green transition-colors">Home</Link>
             <span>/</span>
-            <Link to="/purchase" className="hover:text-tactical-green transition-colors">Purchase</Link>
+            <Link to={shopPath} className="hover:text-tactical-green transition-colors">{shopLabel}</Link>
             <span>/</span>
             <span className="text-foreground">{product.name}</span>
           </div>
@@ -145,13 +164,26 @@ const ProductDetail = () => {
                       </>
                     )}
                   </div>
+                  {product.isKineticCrossfireProduct && (
+                    <div className="flex flex-wrap gap-3 mb-2">
+                      <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green text-sm font-semibold">
+                        Free Shipping
+                      </span>
+                      <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
+                        Patent Pending
+                      </span>
+                      <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
+                        Made in USA
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Product Description */}
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold text-foreground">Product Description</h2>
                   <p className="text-muted-foreground leading-relaxed">
-                    {product.detailedDescription}
+                    {productDescription}
                   </p>
                 </div>
 
@@ -159,7 +191,7 @@ const ProductDetail = () => {
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold text-foreground">Key Features:</h2>
                   <ul className="space-y-2 text-muted-foreground">
-                    {product.features.map((feature, index) => (
+                    {displayFeatures.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <span className="mt-1 w-2 h-2 bg-tactical-green rounded-full flex-shrink-0"></span>
                         <span>{feature}</span>
@@ -169,12 +201,12 @@ const ProductDetail = () => {
                 </div>
 
                 {/* Specifications */}
-                {product.specifications && (
+                {specificationEntries.length > 0 && (
                   <div className="space-y-4">
                     <h2 className="text-xl font-semibold text-foreground">Specifications:</h2>
                     <div className="bg-tactical-dark/50 rounded-lg p-6 border border-tactical-green-dim/30">
                       <div className="grid grid-cols-1 gap-3">
-                        {Object.entries(product.specifications).map(([key, value]) => (
+                        {specificationEntries.map(([key, value]) => (
                           <div key={key} className="flex justify-between items-center">
                             <span className="text-muted-foreground">{key}:</span>
                             <span className="text-foreground font-medium">{value}</span>
@@ -223,9 +255,16 @@ const ProductDetail = () => {
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• 30-day return policy</li>
                     <li>• Ships within 1-2 business days</li>
-                    <li>• Free shipping on orders over $50</li>
+                    {product.isKineticCrossfireProduct && <li>• Free shipping included</li>}
                     <li>• Secure packaging and tracking included</li>
                   </ul>
+                </div>
+
+                <div className="bg-tactical-dark/50 rounded-lg p-6 border border-red-500/30">
+                  <h3 className="font-semibold text-red-400 mb-2">Shipping Restriction</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    This product cannot be shipped to {restrictedShippingStatesText}.
+                  </p>
                 </div>
               </div>
             </div>
@@ -257,6 +296,58 @@ const ProductDetail = () => {
                       <li key={index}>• {note}</li>
                     ))}
                   </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {isThompsonProduct && (
+        <section className="py-16 bg-tactical-surface">
+          <div className="container mx-auto px-6">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-10">
+                <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Video Guides</p>
+                <h2 className="text-3xl font-bold text-foreground mb-4">Watch the Install or Demo</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Choose the install walkthrough or the live demo.
+                </p>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-foreground">Install Video</h3>
+                  <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/YPdIYC9JDAo?si=heETHq9WWsuwzee7"
+                      title="Thompson Blow-Back Trigger Install Video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-foreground">Demo Video</h3>
+                  <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/7VWUIwBz-4o?si=Wg_EWjsqsfOb_7MO"
+                      title="Thompson Blow-Back Trigger Demo Video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

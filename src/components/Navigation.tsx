@@ -22,7 +22,7 @@ const Navigation = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <img 
-                src="/kf-logo.png" 
+                src="/new-logo.png" 
                 alt="Kinetic Crossfire" 
                 className="h-10 w-auto"
               />
@@ -36,8 +36,8 @@ const Navigation = () => {
               <Link to="/videos" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
                 Videos
               </Link>
-              <Link to="/purchase" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
-                Purchase
+              <Link to="/shop" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
+                Shop
               </Link>
               <Link to="/contact" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
                 Contact

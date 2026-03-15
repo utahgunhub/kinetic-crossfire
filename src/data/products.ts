@@ -1,6 +1,7 @@
 export interface Product {
   id: string;
   name: string;
+  category: "thompson" | "ar";
   price: number;
   originalPrice?: number;
   description: string;
@@ -23,8 +24,58 @@ export interface Product {
 
 export const products: Product[] = [
   {
+    id: "thompson-blow-back-trigger",
+    name: "Thompson Blow-Back Trigger",
+    category: "thompson",
+    price: 275.00,
+    description: "Forced reset trigger system for Auto Ordnance and Kahr Arms Thompson carbines and pistols with free shipping included.",
+    detailedDescription: "The Thompson Blow-Back Trigger is an FRT designed to work on all Auto Ordnance and Kahr Arms Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools and no previous experience working on guns required. Turn your Thompson into the gun it was meant to be.",
+    images: [
+      { src: "/thompson-frt/product-picture.jpg", alt: "Thompson Blow-Back Trigger - Main Product View" },
+      { src: "/thompson-frt/thompson-gun-2.JPG", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
+      { src: "/thompson-frt/thompson-gun-3.JPG", alt: "Thompson Blow-Back Trigger - Installed Detail" },
+      { src: "/thompson-frt/thompson-gun-4.JPG", alt: "Thompson Blow-Back Trigger - Range Configuration" },
+      { src: "/thompson-frt/thompson-gun-5.JPG", alt: "Thompson Blow-Back Trigger - Close-Up View" }
+    ],
+    features: [
+      "Designed for Auto Ordnance and Kahr Arms Thompson carbines and pistols",
+      "Blistering rate of fire with a smooth forced reset trigger feel",
+      "Machined from durable steel alloy for rapid fire and high heat use",
+      "Simple installation with minimal tools and no prior gunsmithing experience",
+      "Made in the USA",
+      "Free shipping included"
+    ],
+    compatibility: {
+      compatibleWith: [
+        "Auto Ordnance Thompson carbines",
+        "Kahr Arms Thompson carbines",
+        "Auto Ordnance Thompson pistols",
+        "Kahr Arms Thompson pistols",
+        ".45 ACP ball ammunition"
+      ],
+      usageNotes: [
+        "Use only .45 ACP ball ammunition; hollow points and specialty ammunition may cause feeding issues",
+        "Oil the bolt more than usual and prefer thicker oils",
+        "Changing bolt spring weight can alter the rate of fire",
+        "Use thread locker on stock and grip bolts because rapid follow-up shots can loosen hardware",
+        "Aluminum receivers require extra caution because the experience is tuned around original steel-gun behavior"
+      ]
+    },
+    specifications: {
+      "Platform": "Thompson carbine and pistol variants",
+      "Compatibility": "Auto Ordnance / Kahr Arms",
+      "Ammunition": ".45 ACP ball",
+      "Material": "High-strength steel alloy",
+      "Tools Required": "Flathead screwdriver, punch, hammer or similar",
+      "Shipping": "Free shipping"
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true
+  },
+  {
     id: "slide-stock-assist",
     name: "Slide Stock Assist",
+    category: "ar",
     price: 19.95,
     originalPrice: 23.00,
     description: "Precision-weighted accessory that enhances Slide Fire SSAR-15 SBS stocks for rapid, consistent follow-up shots.",
@@ -64,6 +115,7 @@ export const products: Product[] = [
   {
     id: "ssar-15-sbs",
     name: "Slide Fire SSAR-15 SBS",
+    category: "ar",
     price: 199.00,
     description: "Premium bump stock by Slide Fire Solutions for AR-15 platforms. Works perfectly with our Slide Stock Assist accessory.",
     detailedDescription: "The SSAR-15 SBS by Slide Fire Solutions is a precision-engineered bump stock designed for AR-15 platforms with carbine-style buffer tubes. This stock delivers smooth and reliable bump-fire operation with enhanced user features. Engineered for precision and built for performance, it provides the foundation for enhanced shooting experiences. For maximum performance, pair with our Kinetic Crossfire Slide Stock Assist accessory for even more rapid, consistent follow-up shots.",

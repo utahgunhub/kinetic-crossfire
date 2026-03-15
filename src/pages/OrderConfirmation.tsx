@@ -203,7 +203,7 @@ const OrderConfirmation = () => {
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/purchase">
+              <Link to="/shop">
                 <TacticalButton variant="primary" size="lg">
                   Continue Shopping
                 </TacticalButton>

@@ -42,7 +42,7 @@ const SpecsCompatibility = () => {
               Don't have the SSAR-15 SBS stock yet? We've got you covered with the complete setup.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/purchase" className="inline-block">
+              <a href="/shop/ar#products" className="inline-block">
                 <button className="bg-tactical-green text-tactical-dark px-8 py-4 rounded font-semibold hover:bg-tactical-green/90 transition-colors">
                   View Complete Setup
                 </button>

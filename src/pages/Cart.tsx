@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, getTotalPrice, getTotalItems } = useCart();
@@ -24,7 +25,7 @@ const Cart = () => {
   };
 
   const subtotal = getTotalPrice();
-  const shipping = subtotal > 50 ? 0 : 8.00;
+  const shipping = 0.00;
   const total = subtotal + shipping;
 
   if (items.length === 0) {
@@ -37,7 +38,7 @@ const Cart = () => {
             <p className="text-muted-foreground mb-8">
               Looks like you haven't added any items to your cart yet.
             </p>
-            <Link to="/purchase">
+            <Link to="/shop">
               <TacticalButton variant="primary">
                 Browse Products
               </TacticalButton>
@@ -155,6 +156,13 @@ const Cart = () => {
                   <h2 className="text-2xl font-semibold text-foreground mb-6">Order Summary</h2>
                   
                   <div className="space-y-4">
+                    <div className="rounded-lg border border-red-500/30 bg-tactical-surface p-4">
+                      <p className="text-sm font-semibold text-red-400 mb-2">Shipping Restriction</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Orders cannot be shipped to {restrictedShippingStatesText}.
+                      </p>
+                    </div>
+
                     <div className="flex justify-between text-muted-foreground">
                       <span>Subtotal</span>
                       <span>${subtotal.toFixed(2)}</span>
@@ -165,12 +173,6 @@ const Cart = () => {
                       <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
                     </div>
 
-                    {shipping > 0 && (
-                      <p className="text-xs text-muted-foreground">
-                        💡 Add ${(50 - subtotal).toFixed(2)} more for free shipping!
-                      </p>
-                    )}
-                    
                     <div className="border-t border-tactical-green-dim/30 pt-4">
                       <div className="flex justify-between text-2xl font-bold">
                         <span className="text-foreground">Total</span>
@@ -223,7 +225,7 @@ const Cart = () => {
                       </TacticalButton>
                     </Link>
 
-                    <Link to="/purchase" className="block mt-4">
+                    <Link to="/shop" className="block mt-4">
                       <TacticalButton variant="secondary" size="lg" className="w-full">
                         Continue Shopping
                       </TacticalButton>

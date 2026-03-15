@@ -42,7 +42,7 @@ const EpicHero = () => {
                 Buy Now — $19.95
               </TacticalButton>
             </Link>
-            <Link to="/purchase">
+            <Link to="/shop/ar#products">
               <TacticalButton variant="secondary" size="lg" className="text-lg px-8 py-6">
                 Complete Setup
               </TacticalButton>

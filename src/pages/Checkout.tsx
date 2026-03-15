@@ -5,6 +5,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { sendOrderConfirmationEmail } from "@/lib/emailService";
+import { getRestrictedShippingState, restrictedShippingStatesText } from "@/lib/shippingRestrictions";
 
 interface ShippingInfo {
   firstName: string;
@@ -68,6 +69,9 @@ const Checkout = () => {
   const subtotal = getTotalPrice();
   const shipping = 0.00; // Free shipping
   const total = subtotal + shipping;
+  const restrictedShippingState = getRestrictedShippingState(shippingInfo.state);
+  const hasRestrictedShippingState =
+    shippingInfo.country === "United States" && restrictedShippingState !== null;
 
   // For local development without HTTPS, we'll send card data to backend
   // In production with HTTPS, you can use Accept.js for additional security
@@ -122,6 +126,10 @@ const Checkout = () => {
       // Validate card info
       if (!cardInfo.cardNumber || !cardInfo.expirationDate || !cardInfo.cardCode) {
         throw new Error('Please fill in all card information');
+      }
+
+      if (hasRestrictedShippingState) {
+        throw new Error(`We cannot ship orders to ${restrictedShippingState}. Please use a different shipping state.`);
       }
 
       // Use billing info (same as shipping if checkbox is checked)
@@ -252,7 +260,7 @@ const Checkout = () => {
             <p className="text-muted-foreground mb-8">
               Add some items to your cart before checking out.
             </p>
-            <Link to="/purchase">
+            <Link to="/shop">
               <TacticalButton variant="primary">
                 Browse Products
               </TacticalButton>
@@ -296,6 +304,13 @@ const Checkout = () => {
                   {/* Shipping Information */}
                   <div className="bg-tactical-dark rounded-lg p-8 border border-tactical-green-dim/30">
                     <h2 className="text-2xl font-semibold text-foreground mb-6">Shipping Information</h2>
+
+                    <div className="mb-6 rounded-lg border border-red-500/30 bg-tactical-surface p-4">
+                      <p className="text-sm font-semibold text-red-400 mb-2">Shipping Restriction</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        We cannot ship orders to {restrictedShippingStatesText}.
+                      </p>
+                    </div>
                     
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -394,8 +409,17 @@ const Checkout = () => {
                           value={shippingInfo.state}
                           onChange={handleShippingInputChange}
                           required
-                          className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                          className={`w-full px-4 py-2 bg-tactical-surface border rounded focus:outline-none text-foreground ${
+                            hasRestrictedShippingState
+                              ? "border-red-500 focus:border-red-400"
+                              : "border-tactical-green-dim/30 focus:border-tactical-green"
+                          }`}
                         />
+                        {hasRestrictedShippingState && (
+                          <p className="mt-2 text-sm text-red-400">
+                            We cannot ship this order to {restrictedShippingState}.
+                          </p>
+                        )}
                       </div>
                       
                       <div>
@@ -622,7 +646,7 @@ const Checkout = () => {
                     variant="primary" 
                     size="lg" 
                     className="w-full text-xl py-6"
-                    disabled={isProcessing}
+                    disabled={isProcessing || hasRestrictedShippingState}
                   >
                     {isProcessing ? 'Processing Payment...' : `Pay $${total.toFixed(2)}`}
                   </TacticalButton>
@@ -660,6 +684,11 @@ const Checkout = () => {
 
                   {/* Price Breakdown */}
                   <div className="border-t border-tactical-green-dim/30 pt-4 space-y-2">
+                    <div className="rounded border border-red-500/30 bg-tactical-surface p-3 mb-2">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Cannot ship to {restrictedShippingStatesText}.
+                      </p>
+                    </div>
                     <div className="flex justify-between text-muted-foreground">
                       <span>Subtotal</span>
                       <span>${subtotal.toFixed(2)}</span>

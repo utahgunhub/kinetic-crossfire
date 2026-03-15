@@ -39,7 +39,7 @@ const PricingCTA = () => {
                 <span className="text-3xl font-bold text-tactical-green">$218.95</span>
                 <p className="text-xs text-muted-foreground">Everything you need</p>
               </div>
-              <Link to="/purchase">
+              <Link to="/shop/ar#products">
                 <TacticalButton variant="primary" size="lg" className="w-full">View Complete Setup</TacticalButton>
               </Link>
             </div>
