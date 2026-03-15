@@ -20,12 +20,15 @@ const Navigation = () => {
         <div className="container mx-auto px-6">
           <div className="relative flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center gap-2">
               <img 
                 src="/new-logo.png" 
                 alt="Kinetic Crossfire" 
                 className="h-10 w-auto"
               />
+              <span className="text-foreground font-semibold tracking-wide uppercase">
+                KINETIC CROSSFIRE
+              </span>
             </Link>
             
             {/* Navigation Links - Absolutely Centered */}
