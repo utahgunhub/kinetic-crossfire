@@ -3,12 +3,15 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { Link } from "react-router-dom";
 import { getProductById } from "@/data/products";
+import { Star, Quote } from "lucide-react";
 
 const Index = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const arProduct = getProductById("ssar-15-sbs");
+  const slideStockAssist = getProductById("slide-stock-assist");
+  const homepageThompsonTitle = "Thompson FRT";
 
-  if (!thompsonProduct || !arProduct) {
+  if (!thompsonProduct || !arProduct || !slideStockAssist) {
     return null;
   }
 
@@ -23,8 +26,8 @@ const Index = () => {
       <section className="relative min-h-[calc(100vh-64px)] overflow-hidden">
         <div className="absolute inset-0">
           <video
-            src="/thompson-frt/thompson-frt-demo-1.mp4"
-            poster="/thompson-frt/product-picture.jpg"
+            src="/thompson-frt/new-hero-video.mp4"
+            poster="/thompson-frt/new-hero-image.png"
             autoPlay
             muted
             loop
@@ -42,7 +45,7 @@ const Index = () => {
                 New Product Release
               </p>
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6">
-                Thompson Blow-Back Trigger
+                {homepageThompsonTitle}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
                 An FRT for Auto Ordnance and Kahr Arms Thompson carbines and pistols, built to deliver
@@ -100,7 +103,7 @@ const Index = () => {
                 />
                 <div className="p-8 flex flex-col flex-1">
                   <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Thompson Platform</p>
-                  <h3 className="text-3xl font-bold text-foreground mb-3">{thompsonProduct.name}</h3>
+                  <h3 className="text-3xl font-bold text-foreground mb-3">{homepageThompsonTitle}</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
                     Designed for Auto Ordnance and Kahr Arms Thompson carbines and pistols, with durable
                     steel construction and installation that stays straightforward.
@@ -121,16 +124,83 @@ const Index = () => {
                 />
                 <div className="p-8 flex flex-col flex-1">
                   <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">AR Platform</p>
-                  <h3 className="text-3xl font-bold text-foreground mb-3">Slide Fire SSAR-15 SBS</h3>
+                  <h3 className="text-3xl font-bold text-foreground mb-3">{slideStockAssist.name}</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
-                    Premium bump stock by Slide Fire Solutions for AR-15 platforms. Works perfectly
-                    with our Slide Stock Assist accessory.
+                    {slideStockAssist.description}
                   </p>
-                  <Link to="/shop/ar">
+                  <Link to={`/product/${slideStockAssist.id}`}>
                     <TacticalButton variant="secondary" size="lg" className="w-full">
                       Shop AR
                     </TacticalButton>
                   </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-20 pt-16 border-t border-tactical-green-dim/30">
+              <div className="text-center mb-14">
+                <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Customer Reviews</p>
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                  What Customers Say
+                </h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Real feedback from customers who run our products.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="group relative rounded-2xl border border-tactical-green-dim/40 bg-gradient-to-b from-tactical-surface/90 to-tactical-dark/80 p-8 flex flex-col shadow-lg hover:shadow-[0_0_30px_-5px_hsl(var(--tactical-green)_/_0.15)] hover:border-tactical-green/40 transition-all duration-300">
+                  <div className="absolute top-6 right-6 text-tactical-green/20 group-hover:text-tactical-green/35 transition-colors">
+                    <Quote className="w-12 h-12" strokeWidth={1.5} aria-hidden />
+                  </div>
+                  <div className="flex gap-1 mb-5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-tactical-green text-tactical-green shrink-0" aria-hidden />
+                    ))}
+                  </div>
+                  <p className="text-foreground/95 leading-relaxed flex-1 mb-6 text-[15px]">
+                    The Thompson FRT runs incredibly smooth! I love that thing. It doesn't require any special technique, just a regular trigger press and you hardly can tell its not a full auto! I was surprised at how much control I still had. I would definitely recommend!
+                  </p>
+                  <div className="flex items-center justify-between gap-3 pt-4 border-t border-tactical-green-dim/30">
+                    <span className="font-semibold text-foreground uppercase tracking-wider text-sm">J. Nelson</span>
+                    <span className="text-xs uppercase tracking-wider text-tactical-green/80 bg-tactical-green/10 px-2.5 py-1 rounded-full">Thompson FRT</span>
+                  </div>
+                </div>
+
+                <div className="group relative rounded-2xl border border-tactical-green-dim/40 bg-gradient-to-b from-tactical-surface/90 to-tactical-dark/80 p-8 flex flex-col shadow-lg hover:shadow-[0_0_30px_-5px_hsl(var(--tactical-green)_/_0.15)] hover:border-tactical-green/40 transition-all duration-300">
+                  <div className="absolute top-6 right-6 text-tactical-green/20 group-hover:text-tactical-green/35 transition-colors">
+                    <Quote className="w-12 h-12" strokeWidth={1.5} aria-hidden />
+                  </div>
+                  <div className="flex gap-1 mb-5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-tactical-green text-tactical-green shrink-0" aria-hidden />
+                    ))}
+                  </div>
+                  <p className="text-foreground/95 leading-relaxed flex-1 mb-6 text-[15px]">
+                    My name is Larry and I would like to say a couple of things about kinetic crossfire. First you need to know that ALL of their equipment is top notch manufacturing. They also stand behind their product with 110% after sales... I will definitely purchase from them again.
+                  </p>
+                  <div className="flex items-center justify-between gap-3 pt-4 border-t border-tactical-green-dim/30">
+                    <span className="font-semibold text-foreground uppercase tracking-wider text-sm">Larry</span>
+                    <span className="text-xs uppercase tracking-wider text-tactical-green/80 bg-tactical-green/10 px-2.5 py-1 rounded-full">Thompson</span>
+                  </div>
+                </div>
+
+                <div className="group relative rounded-2xl border border-tactical-green-dim/40 bg-gradient-to-b from-tactical-surface/90 to-tactical-dark/80 p-8 flex flex-col shadow-lg hover:shadow-[0_0_30px_-5px_hsl(var(--tactical-green)_/_0.15)] hover:border-tactical-green/40 transition-all duration-300">
+                  <div className="absolute top-6 right-6 text-tactical-green/20 group-hover:text-tactical-green/35 transition-colors">
+                    <Quote className="w-12 h-12" strokeWidth={1.5} aria-hidden />
+                  </div>
+                  <div className="flex gap-1 mb-5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-tactical-green text-tactical-green shrink-0" aria-hidden />
+                    ))}
+                  </div>
+                  <p className="text-foreground/95 leading-relaxed flex-1 mb-6 text-[15px]">
+                    Dallan’s product for my AR has been a solid addition, and despite a few user-generated hiccups, his commitment to support stood out. He took the time to troubleshoot, even dedicating his own time to come to the range, analyze the issue, and formulate a concrete plan to resolve it. The product itself is great, and I’m looking forward to trying more of the products he develops.
+                  </p>
+                  <div className="flex items-center justify-between gap-3 pt-4 border-t border-tactical-green-dim/30">
+                    <span className="font-semibold text-foreground uppercase tracking-wider text-sm">C. Martin</span>
+                    <span className="text-xs uppercase tracking-wider text-tactical-green/80 bg-tactical-green/10 px-2.5 py-1 rounded-full">Slide Stock Assist</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -196,7 +266,7 @@ const Index = () => {
               See It In Action
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Watch the Thompson Blow-Back Trigger deliver the fast, authentic feel it was built for.
+              Watch the Thompson FRT deliver the fast, authentic feel it was built for.
             </p>
           </div>
 
@@ -206,7 +276,7 @@ const Index = () => {
                 width="100%"
                 height="100%"
                 src="https://www.youtube.com/embed/7VWUIwBz-4o?si=Wg_EWjsqsfOb_7MO"
-                title="Thompson Blow-Back Trigger Demo"
+                title="Thompson FRT Demo"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
@@ -236,7 +306,7 @@ const Index = () => {
 
       <section className="py-16 bg-tactical-dark">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_1fr] gap-10 items-start">
             <div className="bg-tactical-surface rounded-2xl border border-tactical-green-dim/30 overflow-hidden">
               <img
                 src={thompsonProduct.images[0].src}
@@ -245,7 +315,7 @@ const Index = () => {
               />
               <div className="p-8">
                 <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
-                  <h2 className="text-3xl font-bold text-foreground">{thompsonProduct.name}</h2>
+                  <h2 className="text-3xl font-bold text-foreground">{homepageThompsonTitle}</h2>
                   <span className="bg-tactical-green text-tactical-dark px-3 py-1 rounded text-sm font-bold">
                     ${thompsonProduct.price.toFixed(2)} with free shipping
                   </span>
@@ -279,19 +349,22 @@ const Index = () => {
 
             <div className="space-y-6">
               <div className="rounded-2xl border border-tactical-green-dim/30 bg-tactical-surface p-8">
+                <h3 className="text-2xl font-bold text-foreground mb-4">Usage Notes</h3>
+                <ul className="space-y-3 text-muted-foreground">
+                  {thompsonProduct.compatibility?.usageNotes.map((note) => (
+                    <li key={note} className="flex items-start gap-3">
+                      <span className="mt-1.5 w-2 h-2 bg-tactical-green rounded-full flex-shrink-0"></span>
+                      <span>{note}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-2xl border border-tactical-green-dim/30 bg-tactical-surface p-8">
                 <h3 className="text-2xl font-bold text-foreground mb-4">Tools Required</h3>
                 <p className="text-muted-foreground">
                   Flathead screwdriver, punch and hammer or similar.
                 </p>
-              </div>
-
-              <div className="rounded-2xl border border-tactical-green-dim/30 bg-tactical-surface p-8">
-                <h3 className="text-2xl font-bold text-foreground mb-4">Compatibility</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  {thompsonProduct.compatibility?.compatibleWith.map((item) => (
-                    <li key={item}>• {item}</li>
-                  ))}
-                </ul>
               </div>
 
               <div className="rounded-2xl border border-tactical-green-dim/30 bg-tactical-surface p-8">
@@ -301,30 +374,6 @@ const Index = () => {
                   <li>• Free shipping included</li>
                 </ul>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-tactical-dark">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Attention</p>
-              <h2 className="text-4xl font-bold text-foreground mb-4">
-                Best-Use Considerations
-              </h2>
-              <p className="text-muted-foreground max-w-3xl mx-auto">
-                These recommendations are important for the ideal Thompson Blow-Back Trigger experience.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {thompsonProduct.compatibility?.usageNotes.map((note) => (
-                <div key={note} className="rounded-xl border border-tactical-green-dim/30 bg-tactical-surface/80 p-6">
-                  <p className="text-muted-foreground leading-relaxed">{note}</p>
-                </div>
-              ))}
             </div>
           </div>
         </div>

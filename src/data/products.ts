@@ -31,7 +31,7 @@ export const products: Product[] = [
     description: "Forced reset trigger system for Auto Ordnance and Kahr Arms Thompson carbines and pistols with free shipping included.",
     detailedDescription: "The Thompson Blow-Back Trigger is an FRT designed to work on all Auto Ordnance and Kahr Arms Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools and no previous experience working on guns required. Turn your Thompson into the gun it was meant to be.",
     images: [
-      { src: "/thompson-frt/product-picture.jpg", alt: "Thompson Blow-Back Trigger - Main Product View" },
+      { src: "/thompson-frt/new-product-image.jpg", alt: "Thompson Blow-Back Trigger - Main Product View" },
       { src: "/thompson-frt/thompson-gun-2.JPG", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
       { src: "/thompson-frt/thompson-gun-3.JPG", alt: "Thompson Blow-Back Trigger - Installed Detail" },
       { src: "/thompson-frt/thompson-gun-4.JPG", alt: "Thompson Blow-Back Trigger - Range Configuration" },

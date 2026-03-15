@@ -185,6 +185,21 @@ const ProductDetail = () => {
                   <p className="text-muted-foreground leading-relaxed">
                     {productDescription}
                   </p>
+                  {isThompsonProduct && product.compatibility?.usageNotes && (
+                    <div className="pt-2">
+                      <h3 className="text-sm font-semibold text-tactical-green uppercase tracking-wider mb-3">
+                        Usage Notes
+                      </h3>
+                      <ul className="space-y-2 text-muted-foreground">
+                        {product.compatibility.usageNotes.map((note, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <span className="mt-1.5 w-2 h-2 bg-tactical-green rounded-full flex-shrink-0"></span>
+                            <span>{note}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 {/* Key Features */}
@@ -273,7 +288,7 @@ const ProductDetail = () => {
       </section>
 
       {/* Compatibility Section */}
-      {product.compatibility && (
+      {product.compatibility && !isThompsonProduct && (
         <section className="py-16 bg-tactical-dark">
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto">
