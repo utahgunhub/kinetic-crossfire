@@ -55,6 +55,7 @@ export const products: Product[] = [
       ],
       usageNotes: [
         "Use only .45 ACP ball ammunition; hollow points and specialty ammunition may cause feeding issues",
+        "Do not load reproduction magazines to maximum capacity; heavier springs can cause feed issues, so leave 3-5 rounds out",
         "Oil the bolt more than usual and prefer thicker oils",
         "Changing bolt spring weight can alter the rate of fire",
         "Use thread locker on stock and grip bolts because rapid follow-up shots can loosen hardware",
