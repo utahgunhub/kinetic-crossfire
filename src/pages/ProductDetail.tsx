@@ -19,6 +19,7 @@ const ProductDetail = () => {
   const shopPath = product?.category === "thompson" ? "/shop" : "/shop/ar";
   const shopLabel = product?.category === "thompson" ? "Shop" : "Shop AR";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
+  const isOutOfStock = isThompsonProduct;
   const productDescription = isThompsonProduct
     ? "Forced reset trigger system for Auto Ordnance and Kahr Arms Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools."
     : product.detailedDescription;
@@ -76,6 +77,11 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = () => {
+    if (isOutOfStock) {
+      toast.error("This product is currently out of stock.");
+      return;
+    }
+
     if (product) {
       addToCart(product, quantity);
       toast.success(`Added ${quantity} ${product.name} to cart!`);
@@ -164,6 +170,13 @@ const ProductDetail = () => {
                       </>
                     )}
                   </div>
+                  {isOutOfStock && (
+                    <div className="mb-4">
+                      <span className="px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-semibold uppercase tracking-wider">
+                        Out of Stock
+                      </span>
+                    </div>
+                  )}
                   {product.isKineticCrossfireProduct && (
                     <div className="flex flex-wrap gap-3 mb-2">
                       <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green text-sm font-semibold">
@@ -234,35 +247,43 @@ const ProductDetail = () => {
 
                 {/* Quantity and Add to Cart */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <label className="text-foreground font-medium">Quantity:</label>
-                    <div className="flex items-center border border-tactical-green-dim/30 rounded">
-                      <button 
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="px-3 py-2 hover:bg-tactical-green/20 transition-colors"
-                      >
-                        -
-                      </button>
-                      <span className="px-4 py-2 text-foreground min-w-[60px] text-center">
-                        {quantity}
-                      </span>
-                      <button 
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="px-3 py-2 hover:bg-tactical-green/20 transition-colors"
-                      >
-                        +
-                      </button>
+                  {!isOutOfStock && (
+                    <div className="flex items-center gap-4">
+                      <label className="text-foreground font-medium">Quantity:</label>
+                      <div className="flex items-center border border-tactical-green-dim/30 rounded">
+                        <button 
+                          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                          className="px-3 py-2 hover:bg-tactical-green/20 transition-colors"
+                        >
+                          -
+                        </button>
+                        <span className="px-4 py-2 text-foreground min-w-[60px] text-center">
+                          {quantity}
+                        </span>
+                        <button 
+                          onClick={() => setQuantity(quantity + 1)}
+                          className="px-3 py-2 hover:bg-tactical-green/20 transition-colors"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   
                   <TacticalButton 
                     variant="primary" 
                     size="lg" 
-                    className="w-full text-xl py-6"
+                    className="w-full text-xl py-6 disabled:cursor-not-allowed disabled:opacity-60"
                     onClick={handleAddToCart}
+                    disabled={isOutOfStock}
                   >
-                    Add to Cart - ${(product.price * quantity).toFixed(2)}
+                    {isOutOfStock ? "Out of Stock" : `Add to Cart - $${(product.price * quantity).toFixed(2)}`}
                   </TacticalButton>
+                  {isOutOfStock && (
+                    <p className="text-sm text-muted-foreground">
+                      This item is currently unavailable and cannot be ordered online right now.
+                    </p>
+                  )}
                 </div>
 
                 <div className="bg-tactical-dark/50 rounded-lg p-6 border border-tactical-green-dim/30">
