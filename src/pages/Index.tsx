@@ -48,8 +48,8 @@ const Index = () => {
                 {homepageThompsonTitle}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
-                An FRT for Auto Ordnance and Kahr Arms Thompson carbines and pistols, built to deliver
-                blistering follow-up shots with a feel true to the original Thompson platform.
+                An FRT for Thompson carbines and pistols, built to deliver blistering follow-up shots
+                with a feel true to the original Thompson platform.
               </p>
 
               <div className="flex flex-wrap gap-3 mb-8">
@@ -105,8 +105,8 @@ const Index = () => {
                   <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Thompson Platform</p>
                   <h3 className="text-3xl font-bold text-foreground mb-3">{homepageThompsonTitle}</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
-                    Designed for Auto Ordnance and Kahr Arms Thompson carbines and pistols, with durable
-                    steel construction and installation that stays straightforward.
+                    Designed for Thompson carbines and pistols, with durable steel construction and installation
+                    that stays straightforward, though fitment may require a gunsmith.
                   </p>
                   <Link to={`/product/${thompsonProduct.id}`}>
                     <TacticalButton variant="primary" size="lg" className="w-full">
@@ -221,8 +221,8 @@ const Index = () => {
                   {thompsonProduct.detailedDescription}
                 </p>
                 <p>
-                  Installation only requires a flathead screwdriver plus a punch and hammer or similar tool,
-                  making the product approachable even for customers without prior firearm assembly experience.
+                  Installation only requires a flathead screwdriver plus a punch and hammer or similar tool, but
+                  fitment may require a gunsmith depending on the gun.
                 </p>
               </div>
             </div>
@@ -231,7 +231,7 @@ const Index = () => {
               <div className="rounded-xl border border-tactical-green-dim/30 bg-tactical-dark p-6">
                 <h3 className="text-xl font-semibold text-foreground mb-3">Platform Fit</h3>
                 <p className="text-muted-foreground text-sm">
-                  Works across Auto Ordnance and Kahr Arms Thompson carbines and pistols.
+                  Built for Thompson carbines and pistols.
                 </p>
               </div>
               <div className="rounded-xl border border-tactical-green-dim/30 bg-tactical-dark p-6">
@@ -243,13 +243,14 @@ const Index = () => {
               <div className="rounded-xl border border-tactical-green-dim/30 bg-tactical-dark p-6">
                 <h3 className="text-xl font-semibold text-foreground mb-3">Simple Install</h3>
                 <p className="text-muted-foreground text-sm">
-                  Minimal tools, straightforward installation, and no deep prior experience required.
+                  Minimal tools and straightforward installation, though fitment may require a gunsmith.
                 </p>
               </div>
               <div className="rounded-xl border border-tactical-green-dim/30 bg-tactical-dark p-6">
-                <h3 className="text-xl font-semibold text-foreground mb-3">Free Shipping</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-3">Shipping</h3>
                 <p className="text-muted-foreground text-sm">
-                  Thompson orders are priced at $275 with free shipping already included.
+                  Thompson orders are priced at $275 with free shipping included. Shipping times are 3-5 days,
+                  but due to the current high volume of orders this may be longer.
                 </p>
               </div>
             </div>
@@ -358,6 +359,18 @@ const Index = () => {
                     </li>
                   ))}
                 </ul>
+                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                  For GI spec chamber reaming or barrel work, customers can contact Dan Block at{" "}
+                  <a
+                    href="https://thompsonstocks.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
+                  >
+                    thompsonstocks.com
+                  </a>
+                  .
+                </p>
               </div>
 
               <div className="rounded-2xl border border-tactical-green-dim/30 bg-tactical-surface p-8">

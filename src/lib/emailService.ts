@@ -12,6 +12,7 @@ interface OrderEmailParams {
   customerPhone: string;
   shippingAddress: string;
   items: Array<{
+    productId: string;
     productName: string;
     quantity: number;
     pricePerItem: number;
@@ -29,6 +30,10 @@ interface OrderEmailParams {
  */
 export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): Promise<void> => {
   try {
+    const includesThompsonFRT = orderData.items.some(
+      (item) => item.productId === "thompson-blow-back-trigger"
+    );
+
     // Format the items list for the email
     const itemsList = orderData.items.map((item, index) => 
       `${index + 1}. ${item.productName}
@@ -36,6 +41,10 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
    - Price per item: $${item.pricePerItem.toFixed(2)}
    - Total: $${item.totalForItem.toFixed(2)}`
     ).join('\n\n');
+
+    const itemsListWithGuide = includesThompsonFRT
+      ? `${itemsList}\n\nThompson FRT Troubleshooting Guide:\nhttps://kinetic-crossfire.com/thompson-frt-troubleshooting-guide.pdf`
+      : itemsList;
 
     // Prepare the email template parameters
     const templateParams = {
@@ -45,7 +54,7 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
       customer_email: orderData.customerEmail,
       customer_phone: orderData.customerPhone,
       shipping_address: orderData.shippingAddress,
-      items_list: itemsList,
+      items_list: itemsListWithGuide,
       subtotal: `$${orderData.subtotal.toFixed(2)}`,
       shipping: `$${orderData.shipping.toFixed(2)}`,
       total: `$${orderData.total.toFixed(2)}`,

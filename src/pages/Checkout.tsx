@@ -215,6 +215,7 @@ const Checkout = () => {
         customerPhone: shippingInfo.phone,
         shippingAddress: shippingAddressFormatted,
         items: items.map(item => ({
+          productId: item.product.id,
           productName: item.product.name,
           quantity: item.quantity,
           pricePerItem: item.product.price,

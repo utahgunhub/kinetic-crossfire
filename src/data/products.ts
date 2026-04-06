@@ -28,8 +28,8 @@ export const products: Product[] = [
     name: "Thompson Blow-Back Trigger",
     category: "thompson",
     price: 275.00,
-    description: "Forced reset trigger system for Auto Ordnance and Kahr Arms Thompson carbines and pistols with free shipping included.",
-    detailedDescription: "The Thompson Blow-Back Trigger is an FRT designed to work on all Auto Ordnance and Kahr Arms Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools and no previous experience working on guns required. Turn your Thompson into the gun it was meant to be.",
+    description: "Forced reset trigger system for Thompson carbines and pistols with free shipping included.",
+    detailedDescription: "The Thompson Blow-Back Trigger is an FRT designed for Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith. Turn your Thompson into the gun it was meant to be.",
     images: [
       { src: "/thompson-frt/new-product-image.jpg", alt: "Thompson Blow-Back Trigger - Main Product View" },
       { src: "/thompson-frt/thompson-gun-2.JPG", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
@@ -38,10 +38,10 @@ export const products: Product[] = [
       { src: "/thompson-frt/thompson-gun-5.JPG", alt: "Thompson Blow-Back Trigger - Close-Up View" }
     ],
     features: [
-      "Designed for Auto Ordnance and Kahr Arms Thompson carbines and pistols",
+      "Designed for Thompson carbines and pistols",
       "Blistering rate of fire with a smooth forced reset trigger feel",
       "Machined from durable steel alloy for rapid fire and high heat use",
-      "Simple installation with minimal tools and no prior gunsmithing experience",
+      "Simple installation with minimal tools, though fitment may require a gunsmith",
       "Made in the USA",
       "Free shipping included"
     ],
@@ -56,6 +56,7 @@ export const products: Product[] = [
       usageNotes: [
         "Use only .45 ACP ball ammunition; hollow points and specialty ammunition may cause feeding issues",
         "Do not load reproduction magazines to maximum capacity; heavier springs can cause feed issues, so leave 3-5 rounds out",
+        "Full auto chamber specs are required; while some semi-auto chambers are loose enough, it is recommended you have your barrel reamed or replaced with GI spec chambering",
         "Oil the bolt more than usual and prefer thicker oils",
         "Changing bolt spring weight can alter the rate of fire",
         "Use thread locker on stock and grip bolts because rapid follow-up shots can loosen hardware",

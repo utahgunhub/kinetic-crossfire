@@ -21,13 +21,13 @@ const ProductDetail = () => {
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
   const isOutOfStock = isThompsonProduct;
   const productDescription = isThompsonProduct
-    ? "Forced reset trigger system for Auto Ordnance and Kahr Arms Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools."
+    ? "Forced reset trigger system for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
     : product.detailedDescription;
   const displayFeatures = isThompsonProduct
     ? [
         "Smooth forced reset operation with a fast, authentic Thompson feel",
         "Durable steel alloy construction for rapid fire and high heat use",
-        "Straightforward installation with minimal tools",
+        "Straightforward installation with minimal tools, though fitment may require a gunsmith",
       ]
     : product.features;
   const specificationEntries = product.specifications
@@ -211,6 +211,30 @@ const ProductDetail = () => {
                           </li>
                         ))}
                       </ul>
+                      <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                        For GI spec chamber reaming or barrel work, customers can contact Dan Block at{" "}
+                        <a
+                          href="https://thompsonstocks.com/"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
+                        >
+                          thompsonstocks.com
+                        </a>
+                        .
+                      </p>
+                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                        Download the{" "}
+                        <a
+                          href="/thompson-frt-troubleshooting-guide.pdf"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
+                        >
+                          Thompson FRT Troubleshooting Guide
+                        </a>
+                        {" "}for additional setup and troubleshooting help.
+                      </p>
                     </div>
                   )}
                 </div>
@@ -290,7 +314,12 @@ const ProductDetail = () => {
                   <h3 className="font-semibold text-tactical-green mb-2">Shipping & Returns</h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• 30-day return policy</li>
-                    <li>• Ships within 1-2 business days</li>
+                    <li>
+                      •{" "}
+                      {isThompsonProduct
+                        ? "Shipping times are 3-5 days, but due to the current high volume of orders this may be longer"
+                        : "Ships within 1-2 business days"}
+                    </li>
                     {product.isKineticCrossfireProduct && <li>• Free shipping included</li>}
                     <li>• Secure packaging and tracking included</li>
                   </ul>
