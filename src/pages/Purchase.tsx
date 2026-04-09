@@ -129,9 +129,9 @@ const Purchase = () => {
                 <div className="w-12 h-12 bg-tactical-green rounded-full mx-auto mb-4 flex items-center justify-center">
                   <span className="text-tactical-dark font-bold text-xl">🛡️</span>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">30-Day Returns</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-3">No Returns</h3>
                 <p className="text-muted-foreground text-sm">
-                  Not satisfied? Return your purchase within 30 days for a full refund.
+                  All sales are final. We do not accept returns or offer refunds.
                 </p>
               </div>
             </div>

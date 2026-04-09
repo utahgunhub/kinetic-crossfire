@@ -162,7 +162,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">What's the return policy?</h3>
-                      <p className="text-sm text-muted-foreground">30-day return policy for unused items.</p>
+                      <p className="text-sm text-muted-foreground">All sales are final—we do not accept returns.</p>
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Is it legal in my state?</h3>

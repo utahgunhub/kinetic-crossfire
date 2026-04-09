@@ -192,7 +192,7 @@ const Cart = () => {
                         <span className="text-xs text-muted-foreground leading-relaxed">
                           I agree to the{' '}
                           <a 
-                            href="/kinetic-new-terms.pdf" 
+                            href="/terms.pdf" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="text-tactical-green hover:text-tactical-green/80 underline"

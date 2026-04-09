@@ -42,7 +42,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a 
-                    href="/kinetic-new-terms.pdf" 
+                    href="/terms.pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-tactical-green transition-colors"

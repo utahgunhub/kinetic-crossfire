@@ -226,7 +226,7 @@ const ProductDetail = () => {
                       <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                         Download the{" "}
                         <a
-                          href="/thompson-frt-troubleshooting-guide.pdf"
+                          href="/trouble-shooting.pdf"
                           target="_blank"
                           rel="noreferrer"
                           className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
@@ -313,7 +313,7 @@ const ProductDetail = () => {
                 <div className="bg-tactical-dark/50 rounded-lg p-6 border border-tactical-green-dim/30">
                   <h3 className="font-semibold text-tactical-green mb-2">Shipping & Returns</h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• 30-day return policy</li>
+                    <li>• All sales final—no returns</li>
                     <li>
                       •{" "}
                       {isThompsonProduct

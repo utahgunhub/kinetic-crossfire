@@ -214,7 +214,7 @@ const OrderConfirmation = () => {
                 </p>
                 <div className="mt-6 flex justify-center">
                   <a
-                    href="/thompson-frt-troubleshooting-guide.pdf"
+                    href="/trouble-shooting.pdf"
                     target="_blank"
                     rel="noreferrer"
                   >
