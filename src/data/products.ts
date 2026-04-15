@@ -55,7 +55,7 @@ export const products: Product[] = [
       ],
       usageNotes: [
         "Use only .45 ACP ball ammunition; hollow points and specialty ammunition may cause feeding issues",
-        "Full auto chamber specs are required; while some semi-auto chambers are loose enough, it is recommended you have your barrel reamed or replaced with GI spec chambering",
+        "While some semi-auto chambers are loose enough, it is recommended you have your barrel reamed or replaced with GI spec chambering",
         "Oil the bolt more than usual and prefer thicker oils",
         "Aluminum receivers require extra caution because the experience is tuned around original steel-gun behavior"
       ]

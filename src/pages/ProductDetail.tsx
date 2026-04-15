@@ -19,7 +19,7 @@ const ProductDetail = () => {
   const shopPath = product?.category === "thompson" ? "/shop" : "/shop/ar";
   const shopLabel = product?.category === "thompson" ? "Shop" : "Shop AR";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
-  const isOutOfStock = isThompsonProduct;
+  const isOutOfStock = false;
   const productDescription = isThompsonProduct
     ? "Forced reset trigger system for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
     : product.detailedDescription;
