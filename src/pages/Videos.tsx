@@ -4,6 +4,13 @@ import Footer from "@/components/Footer";
 const Videos = () => {
   const thompsonVideos = [
     {
+      id: "IlFFwhKGK2g",
+      title: "Thompson Troubleshooting",
+      description: "There is a lot to talk about with these guns, this has been condensed and contains only the most important information. To show the replacement of pawl springs, and answer questions like why aluminum receivers are to be avoided, and why one of the bolts has an extended groove cut, more videos will be made.",
+      embedUrl: "https://www.youtube.com/embed/IlFFwhKGK2g?si=gkaLUUI_-LjP_tIi",
+      link: "https://www.youtube.com/watch?v=IlFFwhKGK2g",
+    },
+    {
       id: "7VWUIwBz-4o",
       title: "Thompson Blow-Back Trigger Demo",
       description: "See the Thompson Blow-Back Trigger running live and get a feel for the platform in action.",
