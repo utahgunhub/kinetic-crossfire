@@ -3,6 +3,7 @@ import emailjs from '@emailjs/browser';
 // EmailJS Configuration (hardcoded)
 const EMAILJS_SERVICE_ID = 'service_4s5lsdc';
 const EMAILJS_TEMPLATE_ID = 'template_xba6pcp';
+const EMAILJS_CONTACT_TEMPLATE_ID = 'template_ryrhhem';
 const EMAILJS_PUBLIC_KEY = 'LHhhab8fiZXeSNaGT';
 
 interface OrderEmailParams {
@@ -21,6 +22,14 @@ interface OrderEmailParams {
   subtotal: number;
   shipping: number;
   total: number;
+}
+
+interface ContactEmailParams {
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string;
+  message: string;
 }
 
 /**
@@ -76,6 +85,31 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
     // Don't throw the error - we don't want to block the order if email fails
     // The order was already successful, email is just a nice-to-have
   }
+};
+
+/**
+ * Sends a contact form submission email
+ * @param contactData - Contact form information to send
+ * @returns Promise that resolves when email is sent
+ */
+export const sendContactEmail = async (contactData: ContactEmailParams): Promise<void> => {
+  const fullName = `${contactData.firstName} ${contactData.lastName}`.trim();
+  const templateParams = {
+    from_name: fullName,
+    first_name: contactData.firstName,
+    last_name: contactData.lastName,
+    reply_to: contactData.email,
+    from_email: contactData.email,
+    subject: contactData.subject,
+    message: contactData.message,
+  };
+
+  await emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_CONTACT_TEMPLATE_ID,
+    templateParams,
+    EMAILJS_PUBLIC_KEY
+  );
 };
 
 

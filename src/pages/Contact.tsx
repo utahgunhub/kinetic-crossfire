@@ -1,8 +1,54 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
+import { useState } from "react";
+import { toast } from "sonner";
+import { sendContactEmail } from "@/lib/emailService";
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "General Inquiry",
+    message: "",
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.message) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await sendContactEmail(formData);
+      toast.success("Message sent successfully. We'll get back to you soon.");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        subject: "General Inquiry",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Failed to send contact form email:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -32,7 +78,7 @@ const Contact = () => {
                 <h2 className="text-2xl font-bold text-foreground mb-6 tracking-wider">
                   Send Us a Message
                 </h2>
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
@@ -40,8 +86,12 @@ const Contact = () => {
                       </label>
                       <input
                         type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
                         className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground placeholder-muted-foreground focus:border-tactical-green focus:outline-none"
                         placeholder="John"
+                        required
                       />
                     </div>
                     <div>
@@ -50,8 +100,12 @@ const Contact = () => {
                       </label>
                       <input
                         type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
                         className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground placeholder-muted-foreground focus:border-tactical-green focus:outline-none"
                         placeholder="Doe"
+                        required
                       />
                     </div>
                   </div>
@@ -62,8 +116,12 @@ const Contact = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground placeholder-muted-foreground focus:border-tactical-green focus:outline-none"
                       placeholder="john@example.com"
+                      required
                     />
                   </div>
                   
@@ -71,7 +129,12 @@ const Contact = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Subject
                     </label>
-                    <select className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground focus:border-tactical-green focus:outline-none">
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground focus:border-tactical-green focus:outline-none"
+                    >
                       <option>General Inquiry</option>
                       <option>Technical Support</option>
                       <option>Compatibility Question</option>
@@ -86,13 +149,23 @@ const Contact = () => {
                     </label>
                     <textarea
                       rows={6}
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground placeholder-muted-foreground focus:border-tactical-green focus:outline-none resize-none"
                       placeholder="Tell us how we can help..."
+                      required
                     />
                   </div>
                   
-                  <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">
-                    Send Message
+                  <TacticalButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full text-lg py-4"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </TacticalButton>
                 </form>
               </div>
