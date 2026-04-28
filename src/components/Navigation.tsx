@@ -1,22 +1,48 @@
+import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { TacticalButton } from "@/components/TacticalButton";
 import { useCart } from "@/contexts/CartContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const Navigation = () => {
   const { getTotalPrice, getTotalItems } = useCart();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
+  const [isBackorderModalOpen, setIsBackorderModalOpen] = useState(false);
+
+  useEffect(() => {
+    const popupDelayMs = 8000;
+    const popupTimer = window.setTimeout(() => {
+      setIsBackorderModalOpen(true);
+    }, popupDelayMs);
+
+    return () => {
+      window.clearTimeout(popupTimer);
+    };
+  }, []);
 
   return (
     <>
-      {/* Top banner */}
-      {/* <div className="bg-tactical-green text-tactical-dark text-center py-2 text-sm font-semibold tracking-wide">
-        USE CODE SAVE20 FOR 20% OFF AT CHECKOUT
-      </div> */}
-      
-      {/* Main navigation */}
+      {/* Top alert bar + main navigation */}
       <nav className="bg-tactical-darker border-b border-tactical-green-dim/30 sticky top-0 z-50">
+        <button
+          type="button"
+          onClick={() => setIsBackorderModalOpen(true)}
+          className="w-full bg-tactical-green hover:bg-tactical-green-glow text-tactical-dark text-xs md:text-sm font-semibold tracking-wide px-4 py-2 transition-colors"
+          aria-label="Open full backorder notice"
+        >
+          Backorder notice: shipping may take 1-2 weeks.{" "}
+          <span className="underline underline-offset-2">Click for full details.</span>
+        </button>
+
         <div className="container mx-auto px-6">
           <div className="relative flex items-center justify-between h-16">
             {/* Logo */}
@@ -67,6 +93,28 @@ const Navigation = () => {
           </div>
         </div>
       </nav>
+
+      <Dialog open={isBackorderModalOpen} onOpenChange={setIsBackorderModalOpen}>
+        <DialogContent className="max-w-xl border-tactical-green-dim/30 bg-tactical-dark">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-foreground">Backorder Notice</DialogTitle>
+            <DialogDescription className="text-base leading-relaxed text-muted-foreground">
+              We are back ordered, but moving quickly. Wolff springs are being added to kits,
+              which is also causing some delay. Please wait at least 1-2 weeks before asking
+              about your order. Thank you for being patient.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              onClick={() => setIsBackorderModalOpen(false)}
+              className="bg-tactical-green text-tactical-dark hover:bg-tactical-green-glow"
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
