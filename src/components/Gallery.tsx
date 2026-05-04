@@ -1,31 +1,31 @@
 const images = [
   {
-    src: "/1.png",
+    src: "/1.webp",
     alt: "Slide Stock Assist in action",
     link: "https://www.instagram.com/p/DOM4XcMjKyk/"
   },
   {
-    src: "/2.png", 
+    src: "/2.webp", 
     alt: "Desert landscape with rifle",
     link: "https://www.instagram.com/p/DOKHkMsjyF8/"
   },
   {
-    src: "/3.png",
+    src: "/3.webp",
     alt: "Rifle with badlands background",
     link: "https://www.instagram.com/p/DN_pyVlEg6f/"
   },
   {
-    src: "/4.png",
+    src: "/4.webp",
     alt: "Shooting range environment",
     link: "https://www.instagram.com/p/DNt5HmzXv75/"
   },
   {
-    src: "/5.png",
+    src: "/5.webp",
     alt: "Tactical gear in field",
     link: "https://www.instagram.com/p/DNrQ2im3rdf/"
   },
   {
-    src: "/6.png",
+    src: "/6.webp",
     alt: "Outdoor shooting setup",
     link: "https://www.instagram.com/p/DNo6mD_M0Fo/"
   }

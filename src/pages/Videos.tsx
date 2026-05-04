@@ -28,25 +28,25 @@ const Videos = () => {
 
   const arVideos = [
     {
-      thumbnail: "/video-demo.png",
+      thumbnail: "/video-demo.webp",
       title: "Slide Stock Assist - Main Demo",
       description: "Watch the Slide Stock Assist deliver rapid, consistent follow-up shots with precision control.",
       link: "https://www.youtube.com/watch?v=QNSrcbG65AE"
     },
     {
-      thumbnail: "/video-frt.png",
+      thumbnail: "/video-frt.webp",
       title: "Field Range Testing",
       description: "Comprehensive field testing of the Slide Stock Assist in real-world conditions.",
       link: "https://www.youtube.com/watch?v=p990usZwfbk"
     },
     {
-      thumbnail: "/video-intro.png", 
+      thumbnail: "/video-intro.webp", 
       title: "Introduction Video",
       description: "Learn about the Slide Stock Assist and its key features and benefits.",
       link: "https://www.youtube.com/watch?v=gAF4w6rUJsI"
     },
     {
-      thumbnail: "/video-demo.png",
+      thumbnail: "/video-demo.webp",
       title: "Product Demo",
       description: "Detailed demonstration of the Slide Stock Assist in action.",
       link: "https://www.youtube.com/watch?v=Am5li4Rnk7k"

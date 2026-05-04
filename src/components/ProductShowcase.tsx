@@ -1,4 +1,4 @@
-import tacticalProduct from "@/assets/tactical-product.jpg";
+import tacticalProduct from "@/assets/tactical-product.webp";
 import { TacticalButton } from "@/components/TacticalButton";
 import { Link } from "react-router-dom";
 

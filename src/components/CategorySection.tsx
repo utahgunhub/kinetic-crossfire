@@ -1,6 +1,6 @@
-import categoryPrimary from "@/assets/category-primary.jpg";
-import categoryAccessories from "@/assets/category-accessories.jpg";
-import categorySupport from "@/assets/category-support.jpg";
+import categoryPrimary from "@/assets/category-primary.webp";
+import categoryAccessories from "@/assets/category-accessories.webp";
+import categorySupport from "@/assets/category-support.webp";
 
 const features = [
   {

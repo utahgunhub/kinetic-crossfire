@@ -48,7 +48,7 @@ const Navigation = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <img 
-                src="/new-logo.png" 
+                src="/new-logo.webp" 
                 alt="Kinetic Crossfire" 
                 className="h-10 w-auto"
               />

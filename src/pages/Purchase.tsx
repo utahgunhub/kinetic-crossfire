@@ -38,7 +38,7 @@ const Purchase = () => {
             <div className="grid lg:grid-cols-2 gap-8">
               <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
                 <img
-                  src="/thompson-frt/new-product-image.jpg"
+                  src="/thompson-frt/new-product-image.webp"
                   alt="Thompson Blow-Back Trigger"
                   className="w-full h-80 object-cover"
                 />

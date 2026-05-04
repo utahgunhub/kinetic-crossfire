@@ -31,11 +31,11 @@ export const products: Product[] = [
     description: "Forced reset trigger system for Thompson carbines and pistols with free shipping included.",
     detailedDescription: "The Thompson Blow-Back Trigger is an FRT designed for Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith. Turn your Thompson into the gun it was meant to be.",
     images: [
-      { src: "/thompson-frt/new-product-image.jpg", alt: "Thompson Blow-Back Trigger - Main Product View" },
-      { src: "/thompson-frt/thompson-gun-2.JPG", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
-      { src: "/thompson-frt/thompson-gun-3.JPG", alt: "Thompson Blow-Back Trigger - Installed Detail" },
-      { src: "/thompson-frt/thompson-gun-4.JPG", alt: "Thompson Blow-Back Trigger - Range Configuration" },
-      { src: "/thompson-frt/thompson-gun-5.JPG", alt: "Thompson Blow-Back Trigger - Close-Up View" }
+      { src: "/thompson-frt/new-product-image.webp", alt: "Thompson Blow-Back Trigger - Main Product View" },
+      { src: "/thompson-frt/thompson-gun-2.webp", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
+      { src: "/thompson-frt/thompson-gun-3.webp", alt: "Thompson Blow-Back Trigger - Installed Detail" },
+      { src: "/thompson-frt/thompson-gun-4.webp", alt: "Thompson Blow-Back Trigger - Range Configuration" },
+      { src: "/thompson-frt/thompson-gun-5.webp", alt: "Thompson Blow-Back Trigger - Close-Up View" }
     ],
     features: [
       "Designed for Thompson carbines and pistols",
@@ -80,10 +80,10 @@ export const products: Product[] = [
     description: "Precision-weighted accessory that enhances Slide Fire SSAR-15 SBS stocks for rapid, consistent follow-up shots.",
     detailedDescription: "The Slide Stock Assist is a precision-weighted spring designed specifically to enhance the performance of Slide Fire Solutions SSAR-15 SBS stocks. This simple device attaches to your existing SSAR-15 SBS stock to deliver extremely rapid, consistent follow-up shots. There are no special tools or modifications required for installation, and no additional parts such as full-auto bolt carrier groups, buffer tube or trigger modifications are necessary. The Slide Assist enables all users to operate it without special technique, even one-handed. It is designed to function on all mil-spec parts. Made in the USA by Kinetic Crossfire.",
     images: [
-      { src: "/product-1.png", alt: "Slide Stock Assist - Main View" },
-      { src: "/product-2.png", alt: "Slide Stock Assist - Detail View" },
-      { src: "/product-3.png", alt: "Slide Stock Assist - Side View" },
-      { src: "/product-4.png", alt: "Slide Stock Assist - Installation View" }
+      { src: "/product-1.webp", alt: "Slide Stock Assist - Main View" },
+      { src: "/product-2.webp", alt: "Slide Stock Assist - Detail View" },
+      { src: "/product-3.webp", alt: "Slide Stock Assist - Side View" },
+      { src: "/product-4.webp", alt: "Slide Stock Assist - Installation View" }
     ],
     features: [
       "Simple Install - no modifications needed",
@@ -119,10 +119,10 @@ export const products: Product[] = [
     description: "Premium bump stock by Slide Fire Solutions for AR-15 platforms. Works perfectly with our Slide Stock Assist accessory.",
     detailedDescription: "The SSAR-15 SBS by Slide Fire Solutions is a precision-engineered bump stock designed for AR-15 platforms with carbine-style buffer tubes. This stock delivers smooth and reliable bump-fire operation with enhanced user features. Engineered for precision and built for performance, it provides the foundation for enhanced shooting experiences. For maximum performance, pair with our Kinetic Crossfire Slide Stock Assist accessory for even more rapid, consistent follow-up shots.",
     images: [
-      { src: "/product-2-1.png", alt: "Slide Fire SSAR-15 SBS - Main View" },
-      { src: "/product-2-2.png", alt: "Slide Fire SSAR-15 SBS - Side View" },
-      { src: "/product-2-3.png", alt: "Slide Fire SSAR-15 SBS - Detail View" },
-      { src: "/product-2-4.png", alt: "Slide Fire SSAR-15 SBS - Installation View" }
+      { src: "/product-2-1.webp", alt: "Slide Fire SSAR-15 SBS - Main View" },
+      { src: "/product-2-2.webp", alt: "Slide Fire SSAR-15 SBS - Side View" },
+      { src: "/product-2-3.webp", alt: "Slide Fire SSAR-15 SBS - Detail View" },
+      { src: "/product-2-4.webp", alt: "Slide Fire SSAR-15 SBS - Installation View" }
     ],
     features: [
       "Built for AR-15 Platforms: Compatible with carbine-style buffer tubes for easy integration",

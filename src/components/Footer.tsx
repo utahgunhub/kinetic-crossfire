@@ -90,7 +90,7 @@ const Footer = () => {
             {/* Logo */}
             <div className="pt-4">
               <img 
-                src="/new-logo.png" 
+                src="/new-logo.webp" 
                 alt="Kinetic Crossfire Logo" 
                 className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity"
               />

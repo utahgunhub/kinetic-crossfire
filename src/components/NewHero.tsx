@@ -7,7 +7,7 @@ const NewHero = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="/hero-image.png"
+          src="/hero-image.webp"
           alt="Tactical Operations"
           className="w-full h-full object-cover"
         />
