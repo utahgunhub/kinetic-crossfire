@@ -19,6 +19,9 @@ const ProductDetail = () => {
   const shopPath = product?.category === "thompson" ? "/shop" : "/shop/ar";
   const shopLabel = product?.category === "thompson" ? "Shop" : "Shop AR";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
+  const isMadeInUSA = product?.features.some((feature) =>
+    feature.toLowerCase().includes("made in usa")
+  );
   const isOutOfStock = false;
   const productDescription = isThompsonProduct
     ? "Forced reset trigger system for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
@@ -182,12 +185,16 @@ const ProductDetail = () => {
                       <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green text-sm font-semibold">
                         Free Shipping
                       </span>
-                      <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
-                        Patent Pending
-                      </span>
-                      <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
-                        Made in USA
-                      </span>
+                      {isThompsonProduct && (
+                        <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
+                          Patent Pending
+                        </span>
+                      )}
+                      {isMadeInUSA && (
+                        <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
+                          Made in USA
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>

@@ -6,9 +6,10 @@ import { Link } from "react-router-dom";
 
 const Purchase = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
+  const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const arProduct = getProductById("slide-stock-assist");
 
-  if (!thompsonProduct || !arProduct) {
+  if (!thompsonProduct || !thompsonChargingHandle || !arProduct) {
     return null;
   }
 
@@ -66,6 +67,34 @@ const Purchase = () => {
               </div>
 
               <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
+                <img
+                  src={thompsonChargingHandle.images[0].src}
+                  alt={thompsonChargingHandle.images[0].alt}
+                  className="w-full h-80 object-cover bg-white"
+                />
+                <div className="p-8 flex flex-col flex-grow">
+                  <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Thompson Platform</p>
+                  <h2 className="text-3xl font-bold text-foreground mb-3">{thompsonChargingHandle.name}</h2>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    Lightweight black anodized aluminum upgrade for easier M1 Thompson charging handle operation.
+                  </p>
+                  <div className="flex items-center gap-3 mb-6 flex-wrap">
+                    <span className="text-3xl font-bold text-tactical-green">
+                      ${thompsonChargingHandle.price.toFixed(2)}
+                    </span>
+                    <span className="bg-tactical-green/15 text-tactical-green px-2 py-1 rounded text-xs font-bold border border-tactical-green/30">
+                      Free Shipping
+                    </span>
+                  </div>
+                  <Link to={`/product/${thompsonChargingHandle.id}`} className="mt-auto">
+                    <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">
+                      View Charging Handle
+                    </TacticalButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col lg:col-span-2 lg:w-[calc(50%-1rem)] lg:mx-auto">
                 <img
                   src={arProduct.images[0].src}
                   alt={arProduct.images[0].alt}

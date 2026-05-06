@@ -7,11 +7,12 @@ import { Star, Quote } from "lucide-react";
 
 const Index = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
+  const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const arProduct = getProductById("ssar-15-sbs");
   const slideStockAssist = getProductById("slide-stock-assist");
   const homepageThompsonTitle = "Thompson FRT";
 
-  if (!thompsonProduct || !arProduct || !slideStockAssist) {
+  if (!thompsonProduct || !thompsonChargingHandle || !arProduct || !slideStockAssist) {
     return null;
   }
 
@@ -90,7 +91,7 @@ const Index = () => {
                 Thompson Leads, AR Still Available
               </h2>
               <p className="text-muted-foreground max-w-3xl mx-auto">
-                The homepage now centers the Thompson FRT while keeping the AR lineup easy to find for returning customers.
+                The homepage now centers the Thompson lineup while keeping the AR products easy to find for returning customers.
               </p>
             </div>
 
@@ -117,6 +118,26 @@ const Index = () => {
               </div>
 
               <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
+                <img
+                  src={thompsonChargingHandle.images[0].src}
+                  alt={thompsonChargingHandle.images[0].alt}
+                  className="w-full h-72 object-cover bg-white"
+                />
+                <div className="p-8 flex flex-col flex-1">
+                  <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Thompson Platform</p>
+                  <h3 className="text-3xl font-bold text-foreground mb-3">{thompsonChargingHandle.name}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
+                    {thompsonChargingHandle.description}
+                  </p>
+                  <Link to={`/product/${thompsonChargingHandle.id}`}>
+                    <TacticalButton variant="primary" size="lg" className="w-full">
+                      Shop Charging Handle
+                    </TacticalButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full lg:col-span-2 lg:w-[calc(50%-1rem)] lg:mx-auto">
                 <img
                   src={arProduct.images[0].src}
                   alt={arProduct.images[0].alt}

@@ -72,6 +72,45 @@ export const products: Product[] = [
     isKineticCrossfireProduct: true
   },
   {
+    id: "thompson-charging-handle",
+    name: "Extended Thompson Charging Handle",
+    category: "thompson",
+    price: 42.50,
+    description: "Extended, lightweight anodized aluminum charging handle for the M1 Thompson Auto Ordnance rifle with free shipping included.",
+    detailedDescription: "An extended, lightweight anodized aluminum charging handle for the M1 Thompson Auto Ordnance rifle. It is a tasteful upgrade for anyone who finds the small stock charging handle difficult to use. Machined from aluminum and anodized with a black finish.",
+    images: [
+      { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Charging Handle - Main Product View" },
+      { src: "/thompson-charging-handle/Handle4.jpg", alt: "Extended Thompson Charging Handle - Side View" },
+      { src: "/thompson-charging-handle/Handle5.jpg", alt: "Extended Thompson Charging Handle - Detail View" }
+    ],
+    features: [
+      "Extended handle for easier operation than the small stock charging handle",
+      "Lightweight aluminum construction",
+      "Black anodized finish",
+      "Designed for the M1 Thompson Auto Ordnance rifle",
+      "Free shipping included"
+    ],
+    compatibility: {
+      compatibleWith: [
+        "M1 Thompson Auto Ordnance rifle"
+      ],
+      usageNotes: [
+        "Intended as a tasteful replacement upgrade for the stock charging handle",
+        "Confirm fitment with your rifle before installation"
+      ]
+    },
+    specifications: {
+      "Platform": "M1 Thompson Auto Ordnance rifle",
+      "Material": "Anodized aluminum",
+      "Finish": "Black anodized",
+      "Overall Length": "1 15/16 in.",
+      "Handle Grip Length": "1 3/8 in.",
+      "Shipping": "Free shipping"
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true
+  },
+  {
     id: "slide-stock-assist",
     name: "Slide Stock Assist",
     category: "ar",

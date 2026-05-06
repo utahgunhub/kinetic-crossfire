@@ -12,16 +12,28 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
+const BACKORDER_MODAL_SESSION_KEY = "backorderNoticeShown";
+
 const Navigation = () => {
   const { getTotalPrice, getTotalItems } = useCart();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
   const [isBackorderModalOpen, setIsBackorderModalOpen] = useState(false);
+  const openBackorderModal = () => {
+    setIsBackorderModalOpen(true);
+    window.sessionStorage.setItem(BACKORDER_MODAL_SESSION_KEY, "true");
+  };
 
   useEffect(() => {
+    const hasShownBackorderNotice =
+      window.sessionStorage.getItem(BACKORDER_MODAL_SESSION_KEY) === "true";
+    if (hasShownBackorderNotice) {
+      return;
+    }
+
     const popupDelayMs = 8000;
     const popupTimer = window.setTimeout(() => {
-      setIsBackorderModalOpen(true);
+      openBackorderModal();
     }, popupDelayMs);
 
     return () => {
@@ -35,7 +47,7 @@ const Navigation = () => {
       <nav className="bg-tactical-darker border-b border-tactical-green-dim/30 sticky top-0 z-50">
         <button
           type="button"
-          onClick={() => setIsBackorderModalOpen(true)}
+          onClick={openBackorderModal}
           className="w-full bg-tactical-green hover:bg-tactical-green-glow text-tactical-dark text-xs md:text-sm font-semibold tracking-wide px-4 py-2 transition-colors"
           aria-label="Open full backorder notice"
         >
