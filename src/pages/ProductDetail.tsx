@@ -394,10 +394,10 @@ const ProductDetail = () => {
                     <iframe
                       width="560"
                       height="315"
-                      src="https://www.youtube.com/embed/YPdIYC9JDAo?si=heETHq9WWsuwzee7"
-                      title="Thompson Blow-Back Trigger Install Video"
+                      src="https://player.vimeo.com/video/1190161863?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
+                      title="Thompson FRT How it Works"
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
                       className="absolute inset-0 h-full w-full"

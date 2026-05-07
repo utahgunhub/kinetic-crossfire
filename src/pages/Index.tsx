@@ -297,10 +297,10 @@ const Index = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/7VWUIwBz-4o?si=Wg_EWjsqsfOb_7MO"
-                title="Thompson FRT Demo"
+                src="https://player.vimeo.com/video/1190161997?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
+                title="Thompson FRT Demonstration"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 className="absolute inset-0"
