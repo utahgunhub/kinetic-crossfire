@@ -12,6 +12,14 @@ const Videos = () => {
       linkLabel: "Watch on Vimeo",
     },
     {
+      id: "1194096597",
+      title: "Out of Battery Troubleshooting",
+      description: "Troubleshooting guide for out-of-battery issues and how to safely deal with them on the Thompson platform.",
+      embedUrl: "https://player.vimeo.com/video/1194096597?badge=0&autopause=0&player_id=0&app_id=58479",
+      link: "https://vimeo.com/1194096597",
+      linkLabel: "Watch on Vimeo",
+    },
+    {
       id: "1190161997",
       title: "Thompson Blow-Back Trigger Demo",
       description: "See the Thompson Blow-Back Trigger running live and get a feel for the platform in action.",
