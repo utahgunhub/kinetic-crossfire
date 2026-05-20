@@ -43,6 +43,34 @@ const API_ENDPOINT = ENVIRONMENT === 'production'
   ? { hostname: 'api.authorize.net', path: '/xml/v1/request.api' }
   : { hostname: 'apitest.authorize.net', path: '/xml/v1/request.api' };
 
+const restrictedShippingStateAliases = {
+  ca: 'California',
+  california: 'California',
+  ct: 'Connecticut',
+  connecticut: 'Connecticut',
+  de: 'Delaware',
+  delaware: 'Delaware',
+  hi: 'Hawaii',
+  hawaii: 'Hawaii',
+  il: 'Illinois',
+  illinois: 'Illinois',
+  md: 'Maryland',
+  maryland: 'Maryland',
+  ma: 'Massachusetts',
+  massachusetts: 'Massachusetts',
+  nj: 'New Jersey',
+  'new jersey': 'New Jersey',
+  ny: 'New York',
+  'new york': 'New York',
+  wa: 'Washington',
+  washington: 'Washington',
+};
+
+function getRestrictedShippingState(value = '') {
+  const normalizedValue = String(value).trim().toLowerCase();
+  return restrictedShippingStateAliases[normalizedValue] || null;
+}
+
 console.log('🚀 Server starting...');
 console.log('Environment:', ENVIRONMENT);
 console.log('API Endpoint:', `https://${API_ENDPOINT.hostname}${API_ENDPOINT.path}`);
@@ -149,6 +177,16 @@ app.post('/api/process-payment', async (req, res) => {
       return res.status(500).json({
         success: false,
         error: 'Server configuration error: API credentials not set'
+      });
+    }
+
+    const shippingCountry = String(shippingInfo.country || '').trim().toLowerCase();
+    const restrictedShippingState = getRestrictedShippingState(shippingInfo.state);
+    if (shippingCountry === 'united states' && restrictedShippingState) {
+      console.warn(`🚫 Blocked restricted shipping state: ${restrictedShippingState}`);
+      return res.status(400).json({
+        success: false,
+        error: `We cannot ship orders to ${restrictedShippingState}. Please use a different shipping state.`
       });
     }
 
