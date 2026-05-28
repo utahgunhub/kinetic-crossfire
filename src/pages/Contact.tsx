@@ -120,7 +120,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground placeholder-muted-foreground focus:border-tactical-green focus:outline-none"
-                      placeholder="john@example.com"
+                      placeholder="support@kinetic-crossfire.com"
                       required
                     />
                   </div>
@@ -186,10 +186,10 @@ const Contact = () => {
                       <div>
                         <h3 className="font-semibold text-foreground">Email</h3>
                         <a 
-                          href="mailto:dallansilver@proton.me" 
+                          href="mailto:support@kinetic-crossfire.com"
                           className="text-tactical-green hover:text-tactical-green/80 transition-colors"
                         >
-                          dallansilver@proton.me
+                          support@kinetic-crossfire.com
                         </a>
                       </div>
                     </div>

@@ -1,10 +1,10 @@
 import emailjs from '@emailjs/browser';
 
 // EmailJS Configuration (hardcoded)
-const EMAILJS_SERVICE_ID = 'service_4s5lsdc';
-const EMAILJS_TEMPLATE_ID = 'template_xba6pcp';
-const EMAILJS_CONTACT_TEMPLATE_ID = 'template_ryrhhem';
-const EMAILJS_PUBLIC_KEY = 'LHhhab8fiZXeSNaGT';
+const EMAILJS_SERVICE_ID = 'service_2333go7';
+const EMAILJS_ORDER_TEMPLATE_ID = 'template_tl7gbn7';
+const EMAILJS_CONTACT_TEMPLATE_ID = 'template_9bb08pc';
+const EMAILJS_PUBLIC_KEY = 'fHx6hqplnCkUeAcXP';
 
 interface OrderEmailParams {
   transactionId: string;
@@ -74,7 +74,7 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
     // Send email using EmailJS
     const response = await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
+      EMAILJS_ORDER_TEMPLATE_ID,
       templateParams,
       EMAILJS_PUBLIC_KEY
     );
