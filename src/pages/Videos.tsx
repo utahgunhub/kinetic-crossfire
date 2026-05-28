@@ -28,11 +28,11 @@ const Videos = () => {
       linkLabel: "Watch on Vimeo",
     },
     {
-      id: "1190161863",
+      id: "1196397310",
       title: "Thompson Blow-Back Trigger Install",
       description: "Walk through the installation process before starting your Thompson build.",
-      embedUrl: "https://player.vimeo.com/video/1190161863?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      link: "https://vimeo.com/1190161863",
+      embedUrl: "https://player.vimeo.com/video/1196397310?badge=0&autopause=0&player_id=0&app_id=58479",
+      link: "https://vimeo.com/1196397310",
       linkLabel: "Watch on Vimeo",
     }
   ];

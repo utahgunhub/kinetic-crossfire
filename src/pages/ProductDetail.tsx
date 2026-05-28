@@ -394,8 +394,8 @@ const ProductDetail = () => {
                     <iframe
                       width="560"
                       height="315"
-                      src="https://player.vimeo.com/video/1190161863?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
-                      title="Thompson FRT How it Works"
+                      src="https://player.vimeo.com/video/1196397310?badge=0&autopause=0&player_id=0&app_id=58479"
+                      title="Thompson FRT Install"
                       frameBorder="0"
                       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"
