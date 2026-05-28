@@ -5,7 +5,12 @@ import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { sendOrderConfirmationEmail } from "@/lib/emailService";
-import { getRestrictedShippingState, restrictedShippingStatesText } from "@/lib/shippingRestrictions";
+import {
+  allowedShippingStates,
+  getRestrictedShippingState,
+  restrictedShippingStatesText,
+  usStates,
+} from "@/lib/shippingRestrictions";
 
 interface ShippingInfo {
   firstName: string;
@@ -404,23 +409,20 @@ const Checkout = () => {
                         <label className="block text-sm font-medium text-foreground mb-2">
                           State *
                         </label>
-                        <input
-                          type="text"
+                        <select
                           name="state"
                           value={shippingInfo.state}
                           onChange={handleShippingInputChange}
                           required
-                          className={`w-full px-4 py-2 bg-tactical-surface border rounded focus:outline-none text-foreground ${
-                            hasRestrictedShippingState
-                              ? "border-red-500 focus:border-red-400"
-                              : "border-tactical-green-dim/30 focus:border-tactical-green"
-                          }`}
-                        />
-                        {hasRestrictedShippingState && (
-                          <p className="mt-2 text-sm text-red-400">
-                            We cannot ship this order to {restrictedShippingState}.
-                          </p>
-                        )}
+                          className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
+                        >
+                          <option value="">Select a state</option>
+                          {allowedShippingStates.map((state) => (
+                            <option key={state} value={state}>
+                              {state}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       
                       <div>
@@ -606,14 +608,20 @@ const Checkout = () => {
                               <label className="block text-sm font-medium text-foreground mb-2">
                                 State *
                               </label>
-                              <input
-                                type="text"
+                              <select
                                 name="state"
                                 value={billingInfo.state}
                                 onChange={handleBillingInputChange}
                                 required={!sameAsShipping}
                                 className="w-full px-4 py-2 bg-tactical-dark border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
-                              />
+                              >
+                                <option value="">Select a state</option>
+                                {usStates.map((state) => (
+                                  <option key={state} value={state}>
+                                    {state}
+                                  </option>
+                                ))}
+                              </select>
                             </div>
                             
                             <div>
@@ -647,7 +655,7 @@ const Checkout = () => {
                     variant="primary" 
                     size="lg" 
                     className="w-full text-xl py-6"
-                    disabled={isProcessing || hasRestrictedShippingState}
+                    disabled={isProcessing || !shippingInfo.state}
                   >
                     {isProcessing ? 'Processing Payment...' : `Pay $${total.toFixed(2)}`}
                   </TacticalButton>
