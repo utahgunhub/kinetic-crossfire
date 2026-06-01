@@ -381,16 +381,19 @@ const Index = () => {
                   ))}
                 </ul>
                 <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-                  For GI spec chamber reaming or barrel work, customers can contact Dan Block at{" "}
+                  Read the User&apos;s Guide before installing and operating this product.
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                  Download the{" "}
                   <a
-                    href="https://thompsonstocks.com/"
+                    href="/user-guide.pdf"
                     target="_blank"
                     rel="noreferrer"
                     className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
                   >
-                    thompsonstocks.com
+                    Thompson FRT User&apos;s Guide
                   </a>
-                  .
+                  {" "}for additional setup and troubleshooting help.
                 </p>
               </div>
 

@@ -52,7 +52,7 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
     ).join('\n\n');
 
     const itemsListWithGuide = includesThompsonFRT
-      ? `${itemsList}\n\nThompson FRT Troubleshooting Guide:\nhttps://kinetic-crossfire.com/trouble-shooting.pdf`
+      ? `${itemsList}\n\nThompson FRT User's Guide:\nhttps://kinetic-crossfire.com/user-guide.pdf`
       : itemsList;
 
     // Prepare the email template parameters

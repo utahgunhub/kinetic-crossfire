@@ -219,26 +219,17 @@ const ProductDetail = () => {
                         ))}
                       </ul>
                       <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-                        For GI spec chamber reaming or barrel work, customers can contact Dan Block at{" "}
-                        <a
-                          href="https://thompsonstocks.com/"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
-                        >
-                          thompsonstocks.com
-                        </a>
-                        .
+                        Read the User&apos;s Guide before installing and operating this product.
                       </p>
                       <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                         Download the{" "}
                         <a
-                          href="/trouble-shooting.pdf"
+                          href="/user-guide.pdf"
                           target="_blank"
                           rel="noreferrer"
                           className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
                         >
-                          Thompson FRT Troubleshooting Guide
+                          Thompson FRT User&apos;s Guide
                         </a>
                         {" "}for additional setup and troubleshooting help.
                       </p>
@@ -409,10 +400,10 @@ const ProductDetail = () => {
                   <h3 className="text-xl font-semibold text-foreground">Demo Video</h3>
                   <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
                     <iframe
-                      width="560"
-                      height="315"
-                      src="https://www.youtube.com/embed/7VWUIwBz-4o?si=Wg_EWjsqsfOb_7MO"
-                      title="Thompson Blow-Back Trigger Demo Video"
+                      width="100%"
+                      height="100%"
+                      src="https://player.vimeo.com/video/1190161997?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
+                      title="Thompson Blow-Back Trigger Demo"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       referrerPolicy="strict-origin-when-cross-origin"

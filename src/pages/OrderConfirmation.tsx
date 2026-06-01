@@ -128,7 +128,7 @@ const OrderConfirmation = () => {
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Email Confirmation</h3>
                     <p className="text-sm text-muted-foreground">
-                      You'll receive an email confirmation{includesThompsonFRT ? " and troubleshooting guide access" : " with tracking information"} at{' '}
+                      You'll receive an email confirmation{includesThompsonFRT ? " and User's Guide access" : " with tracking information"} at{' '}
                       <span className="text-tactical-green">{shippingInfo?.email}</span>
                     </p>
                   </div>
@@ -207,19 +207,19 @@ const OrderConfirmation = () => {
             {includesThompsonFRT && (
               <div className="bg-tactical-dark rounded-lg p-8 border border-tactical-green-dim/30 mb-8 text-left">
                 <h2 className="text-xl font-semibold text-foreground mb-4 text-center">
-                  Thompson FRT Troubleshooting Guide
+                  Thompson FRT User&apos;s Guide
                 </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed text-center">
-                  Download the guide here if you need setup or troubleshooting help.
+                  Read the User&apos;s Guide before installing or operating your Thompson FRT.
                 </p>
                 <div className="mt-6 flex justify-center">
                   <a
-                    href="/trouble-shooting.pdf"
+                    href="/user-guide.pdf"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <TacticalButton variant="secondary" size="lg">
-                      Open Troubleshooting Guide
+                      Open User&apos;s Guide
                     </TacticalButton>
                   </a>
                 </div>
