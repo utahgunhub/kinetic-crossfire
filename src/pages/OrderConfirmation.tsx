@@ -32,7 +32,7 @@ const OrderConfirmation = () => {
     return null;
   }
 
-  const { transactionId, authCode, shippingInfo, items, subtotal, shipping, total } = orderData;
+  const { transactionId, authCode, shippingInfo, items, subtotal, shipping, discount, total } = orderData;
   const includesThompsonFRT = items?.some(
     (item: any) => item.product?.id === "thompson-blow-back-trigger"
   );
@@ -174,8 +174,26 @@ const OrderConfirmation = () => {
                   ))}
                 </div>
 
-                <div className="border-t border-tactical-green-dim/30 pt-4">
-                  <div className="flex justify-between text-xl font-bold">
+                <div className="border-t border-tactical-green-dim/30 pt-4 space-y-2">
+                  {subtotal != null && (
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                  )}
+                  {shipping != null && (
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Shipping</span>
+                      <span>${shipping.toFixed(2)}</span>
+                    </div>
+                  )}
+                  {discount > 0 && (
+                    <div className="flex justify-between text-sm text-tactical-green">
+                      <span>Discount</span>
+                      <span>-${discount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-xl font-bold pt-2 border-t border-tactical-green-dim/30">
                     <span className="text-foreground">Total Paid</span>
                     <span className="text-tactical-green">${total?.toFixed(2)}</span>
                   </div>

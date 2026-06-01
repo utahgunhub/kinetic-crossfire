@@ -21,6 +21,7 @@ interface OrderEmailParams {
   }>;
   subtotal: number;
   shipping: number;
+  discount?: number;
   total: number;
 }
 
@@ -66,6 +67,9 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
       items_list: itemsListWithGuide,
       subtotal: `$${orderData.subtotal.toFixed(2)}`,
       shipping: `$${orderData.shipping.toFixed(2)}`,
+      discount: orderData.discount && orderData.discount > 0
+        ? `-$${orderData.discount.toFixed(2)}`
+        : '$0.00',
       total: `$${orderData.total.toFixed(2)}`,
     };
 

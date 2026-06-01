@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
+const { validateCoupon, calculateOrderTotals } = require('./coupons');
 require('dotenv').config();
 
 const app = express();
@@ -151,24 +152,84 @@ app.get('/api/payment/client-key', (req, res) => {
   });
 });
 
+// Validate a coupon code and return the calculated discount
+app.post('/api/validate-coupon', (req, res) => {
+  try {
+    const { couponCode, items, shipping = 0 } = req.body;
+
+    if (!couponCode || !items?.length) {
+      return res.status(400).json({
+        success: false,
+        error: 'Coupon code and cart items are required',
+      });
+    }
+
+    const coupon = validateCoupon(couponCode);
+    if (!coupon) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid coupon code',
+      });
+    }
+
+    const totals = calculateOrderTotals(items, shipping, coupon.code);
+
+    res.json({
+      success: true,
+      discount: totals.discount,
+      subtotal: totals.subtotal,
+      shipping: totals.shipping,
+      total: totals.total,
+    });
+  } catch (error) {
+    console.error('❌ Coupon validation error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to validate coupon code',
+    });
+  }
+});
+
 // Process payment with Authorize.net
 app.post('/api/process-payment', async (req, res) => {
   try {
     console.log('💳 Processing payment...');
-    const { cardData, billingInfo, shippingInfo, items, subtotal, shipping, total } = req.body;
+    const { cardData, billingInfo, shippingInfo, items, shipping, couponCode } = req.body;
 
     // Validate required fields
-    if (!cardData || !billingInfo || !shippingInfo || !items || !total) {
+    if (!cardData || !billingInfo || !shippingInfo || !items?.length) {
       console.error('❌ Missing required fields:', { 
         hasCardData: !!cardData, 
         hasBillingInfo: !!billingInfo, 
         hasShippingInfo: !!shippingInfo, 
-        hasItems: !!items, 
-        hasTotal: !!total 
+        hasItems: !!items?.length,
       });
       return res.status(400).json({
         success: false,
         error: 'Missing required payment information'
+      });
+    }
+
+    const shippingCost = Number(shipping) || 0;
+    const normalizedCouponCode = couponCode ? String(couponCode).trim() : null;
+
+    if (normalizedCouponCode && !validateCoupon(normalizedCouponCode)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid coupon code',
+      });
+    }
+
+    const { subtotal, discount, total } = calculateOrderTotals(
+      items,
+      shippingCost,
+      normalizedCouponCode
+    );
+
+    if (total <= 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Order total must be greater than zero',
       });
     }
 
@@ -201,6 +262,11 @@ app.post('/api/process-payment', async (req, res) => {
     const orderDescription = items
       .map(item => `${item.quantity}x ${item.name}`)
       .join(', ');
+
+    console.log('💰 Order totals:', { subtotal, shipping: shippingCost, discount, total });
+    if (normalizedCouponCode) {
+      console.log('🎟️ Coupon applied:', normalizedCouponCode.toUpperCase());
+    }
 
     // Build request payload for direct API call
     const requestPayload = {
@@ -261,7 +327,11 @@ app.post('/api/process-payment', async (req, res) => {
             authCode: txn.authCode,
             accountNumber: txn.accountNumber,
             accountType: txn.accountType,
-            message: txn.messages?.[0]?.description || 'Transaction approved'
+            message: txn.messages?.[0]?.description || 'Transaction approved',
+            subtotal,
+            shipping: shippingCost,
+            discount,
+            total,
           });
         } else {
           // Declined or error
@@ -396,6 +466,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('Available endpoints:');
   console.log(`  GET    /api/health`);
   console.log(`  GET    /api/payment/client-key`);
+  console.log(`  POST   /api/validate-coupon`);
   console.log(`  POST   /api/process-payment`);
   console.log(`  GET    /api/transaction/:id`);
   console.log('');

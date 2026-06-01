@@ -5,6 +5,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { sendOrderConfirmationEmail } from "@/lib/emailService";
+import { useToast } from "@/hooks/use-toast";
 import {
   allowedShippingStates,
   getRestrictedShippingState,
@@ -43,8 +44,13 @@ interface BillingInfo {
 const Checkout = () => {
   const { items, getTotalPrice, clearCart } = useCart();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [sameAsShipping, setSameAsShipping] = useState(true);
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCouponCode, setAppliedCouponCode] = useState<string | null>(null);
+  const [discount, setDiscount] = useState(0);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     firstName: "",
     lastName: "",
@@ -73,10 +79,78 @@ const Checkout = () => {
 
   const subtotal = getTotalPrice();
   const shipping = 0.00; // Free shipping
-  const total = subtotal + shipping;
+  const total = subtotal + shipping - discount;
   const restrictedShippingState = getRestrictedShippingState(shippingInfo.state);
   const hasRestrictedShippingState =
     shippingInfo.country === "United States" && restrictedShippingState !== null;
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
+  const orderItems = items.map(item => ({
+    id: item.product.id,
+    productId: item.product.id,
+    name: item.product.name,
+    description: item.product.description,
+    price: item.product.price,
+    quantity: item.quantity,
+  }));
+
+  const handleApplyCoupon = async () => {
+    const trimmedCode = couponInput.trim();
+    if (!trimmedCode) {
+      toast({
+        title: "Coupon Required",
+        description: "Please enter a coupon code.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsApplyingCoupon(true);
+
+    try {
+      const response = await fetch(`${API_URL}/api/validate-coupon`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          couponCode: trimmedCode,
+          items: orderItems,
+          shipping,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Invalid coupon code');
+      }
+
+      setAppliedCouponCode(trimmedCode);
+      setDiscount(data.discount);
+      toast({
+        title: "Coupon Applied",
+        description: `You saved $${data.discount.toFixed(2)} on this order.`,
+      });
+    } catch (error: any) {
+      setAppliedCouponCode(null);
+      setDiscount(0);
+      toast({
+        title: "Invalid Coupon",
+        description: error.message || 'That coupon code is not valid.',
+        variant: "destructive",
+      });
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCouponCode(null);
+    setDiscount(0);
+    setCouponInput("");
+  };
 
   // For local development without HTTPS, we'll send card data to backend
   // In production with HTTPS, you can use Accept.js for additional security
@@ -150,7 +224,6 @@ const Checkout = () => {
 
       // Send payment data directly to our backend
       // The backend will securely process it with Authorize.net
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
       console.log('🌐 Sending payment to:', `${API_URL}/api/process-payment`);
       
       const paymentResponse = await fetch(`${API_URL}/api/process-payment`, {
@@ -166,17 +239,9 @@ const Checkout = () => {
           },
           billingInfo: finalBillingInfo,
           shippingInfo,
-          items: items.map(item => ({
-            id: item.product.id,
-            productId: item.product.id,
-            name: item.product.name,
-            description: item.product.description,
-            price: item.product.price,
-            quantity: item.quantity,
-          })),
-          subtotal,
+          items: orderItems,
           shipping,
-          total,
+          couponCode: appliedCouponCode,
         }),
       });
 
@@ -200,9 +265,10 @@ const Checkout = () => {
         accountNumber: paymentData.accountNumber,
         items: items,
         shippingInfo,
-        subtotal,
-        shipping,
-        total,
+        subtotal: paymentData.subtotal ?? subtotal,
+        shipping: paymentData.shipping ?? shipping,
+        discount: paymentData.discount ?? discount,
+        total: paymentData.total ?? total,
         orderDate: new Date().toISOString()
       };
       
@@ -226,9 +292,10 @@ const Checkout = () => {
           pricePerItem: item.product.price,
           totalForItem: item.product.price * item.quantity,
         })),
-        subtotal,
-        shipping,
-        total,
+        subtotal: paymentData.subtotal ?? subtotal,
+        shipping: paymentData.shipping ?? shipping,
+        discount: paymentData.discount ?? discount,
+        total: paymentData.total ?? total,
       });
 
       // Clear cart
@@ -698,6 +765,41 @@ const Checkout = () => {
                         Cannot ship to {restrictedShippingStatesText}.
                       </p>
                     </div>
+
+                    <div className="mb-4 pb-4 border-b border-tactical-green-dim/30">
+                      <label className="block text-sm font-medium text-foreground mb-2">
+                        Coupon Code
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value)}
+                          disabled={!!appliedCouponCode || isApplyingCoupon}
+                          placeholder="Enter code"
+                          className="flex-1 px-3 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground text-sm disabled:opacity-60"
+                        />
+                        {appliedCouponCode ? (
+                          <button
+                            type="button"
+                            onClick={handleRemoveCoupon}
+                            className="px-3 py-2 text-sm text-muted-foreground hover:text-red-400 transition-colors"
+                          >
+                            Remove
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={handleApplyCoupon}
+                            disabled={isApplyingCoupon || !couponInput.trim()}
+                            className="px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded text-sm text-foreground hover:border-tactical-green transition-colors disabled:opacity-60"
+                          >
+                            {isApplyingCoupon ? 'Applying...' : 'Apply'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="flex justify-between text-muted-foreground">
                       <span>Subtotal</span>
                       <span>${subtotal.toFixed(2)}</span>
@@ -706,6 +808,12 @@ const Checkout = () => {
                       <span>Shipping</span>
                       <span>${shipping.toFixed(2)}</span>
                     </div>
+                    {discount > 0 && (
+                      <div className="flex justify-between text-tactical-green">
+                        <span>Discount</span>
+                        <span>-${discount.toFixed(2)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-xl font-bold text-foreground pt-2 border-t border-tactical-green-dim/30">
                       <span>Total</span>
                       <span className="text-tactical-green">${total.toFixed(2)}</span>
