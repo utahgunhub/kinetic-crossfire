@@ -22,7 +22,7 @@ const ProductDetail = () => {
   const isMadeInUSA = product?.features.some((feature) =>
     feature.toLowerCase().includes("made in usa")
   );
-  const isOutOfStock = false;
+  const isOutOfStock = product?.inStock === false;
   const productDescription = isThompsonProduct
     ? "Forced reset trigger system for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
     : product.detailedDescription;
@@ -92,6 +92,11 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = () => {
+    if (isOutOfStock) {
+      toast.error("This product is currently out of stock.");
+      return;
+    }
+
     if (product) {
       addToCart(product, quantity);
       navigate('/checkout');

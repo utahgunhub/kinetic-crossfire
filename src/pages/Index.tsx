@@ -126,12 +126,21 @@ const Index = () => {
                 <div className="p-8 flex flex-col flex-1">
                   <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Thompson Platform</p>
                   <h3 className="text-3xl font-bold text-foreground mb-3">{thompsonChargingHandle.name}</h3>
+                  {thompsonChargingHandle.inStock === false && (
+                    <span className="inline-block mb-3 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
+                      Out of Stock
+                    </span>
+                  )}
                   <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
                     {thompsonChargingHandle.description}
                   </p>
                   <Link to={`/product/${thompsonChargingHandle.id}`}>
-                    <TacticalButton variant="primary" size="lg" className="w-full">
-                      Shop Charging Handle
+                    <TacticalButton
+                      variant={thompsonChargingHandle.inStock === false ? "secondary" : "primary"}
+                      size="lg"
+                      className="w-full"
+                    >
+                      {thompsonChargingHandle.inStock === false ? "View Product" : "Shop Charging Handle"}
                     </TacticalButton>
                   </Link>
                 </div>

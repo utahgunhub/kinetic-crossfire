@@ -20,6 +20,7 @@ export interface Product {
   };
   manufacturer?: string;
   isKineticCrossfireProduct: boolean;
+  inStock?: boolean;
 }
 
 export const products: Product[] = [
@@ -108,7 +109,8 @@ export const products: Product[] = [
       "Shipping": "Free shipping"
     },
     manufacturer: "Kinetic Crossfire",
-    isKineticCrossfireProduct: true
+    isKineticCrossfireProduct: true,
+    inStock: false
   },
   {
     id: "slide-stock-assist",

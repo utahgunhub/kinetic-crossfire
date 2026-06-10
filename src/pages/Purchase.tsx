@@ -75,6 +75,11 @@ const Purchase = () => {
                 <div className="p-8 flex flex-col flex-grow">
                   <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Thompson Platform</p>
                   <h2 className="text-3xl font-bold text-foreground mb-3">{thompsonChargingHandle.name}</h2>
+                  {thompsonChargingHandle.inStock === false && (
+                    <span className="inline-block mb-3 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
+                      Out of Stock
+                    </span>
+                  )}
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     Lightweight black anodized aluminum upgrade for easier M1 Thompson charging handle operation.
                   </p>
@@ -87,8 +92,12 @@ const Purchase = () => {
                     </span>
                   </div>
                   <Link to={`/product/${thompsonChargingHandle.id}`} className="mt-auto">
-                    <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">
-                      View Charging Handle
+                    <TacticalButton
+                      variant={thompsonChargingHandle.inStock === false ? "secondary" : "primary"}
+                      size="lg"
+                      className="w-full text-lg py-4"
+                    >
+                      {thompsonChargingHandle.inStock === false ? "View Product" : "View Charging Handle"}
                     </TacticalButton>
                   </Link>
                 </div>
