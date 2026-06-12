@@ -12,6 +12,12 @@ import {
   restrictedShippingStatesText,
   usStates,
 } from "@/lib/shippingRestrictions";
+import { hasRestrictedShipping } from "@/data/products";
+import {
+  calculateShippingCost,
+  formatShippingCost,
+  SHIPPING_POLICY_TEXT,
+} from "@/lib/shipping";
 
 interface ShippingInfo {
   firstName: string;
@@ -78,17 +84,26 @@ const Checkout = () => {
   });
 
   const subtotal = getTotalPrice();
-  const shipping = 0.00; // Free shipping
+  const shipping = calculateShippingCost(subtotal);
   const total = subtotal + shipping - discount;
+  const cartRequiresShippingRestriction = items.some((item) =>
+    hasRestrictedShipping(item.product)
+  );
+  const shippingStateOptions = cartRequiresShippingRestriction
+    ? allowedShippingStates
+    : usStates;
   const restrictedShippingState = getRestrictedShippingState(shippingInfo.state);
   const hasRestrictedShippingState =
-    shippingInfo.country === "United States" && restrictedShippingState !== null;
+    cartRequiresShippingRestriction &&
+    shippingInfo.country === "United States" &&
+    restrictedShippingState !== null;
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
   const orderItems = items.map(item => ({
     id: item.product.id,
     productId: item.product.id,
+    category: item.product.category,
     name: item.product.name,
     description: item.product.description,
     price: item.product.price,
@@ -117,7 +132,6 @@ const Checkout = () => {
         body: JSON.stringify({
           couponCode: trimmedCode,
           items: orderItems,
-          shipping,
         }),
       });
 
@@ -240,7 +254,6 @@ const Checkout = () => {
           billingInfo: finalBillingInfo,
           shippingInfo,
           items: orderItems,
-          shipping,
           couponCode: appliedCouponCode,
         }),
       });
@@ -378,12 +391,14 @@ const Checkout = () => {
                   <div className="bg-tactical-dark rounded-lg p-8 border border-tactical-green-dim/30">
                     <h2 className="text-2xl font-semibold text-foreground mb-6">Shipping Information</h2>
 
+                    {cartRequiresShippingRestriction && (
                     <div className="mb-6 rounded-lg border border-red-500/30 bg-tactical-surface p-4">
                       <p className="text-sm font-semibold text-red-400 mb-2">Shipping Restriction</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">
                         We cannot ship orders to {restrictedShippingStatesText}.
                       </p>
                     </div>
+                    )}
                     
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -484,7 +499,7 @@ const Checkout = () => {
                           className="w-full px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground"
                         >
                           <option value="">Select a state</option>
-                          {allowedShippingStates.map((state) => (
+                          {shippingStateOptions.map((state) => (
                             <option key={state} value={state}>
                               {state}
                             </option>
@@ -760,11 +775,19 @@ const Checkout = () => {
 
                   {/* Price Breakdown */}
                   <div className="border-t border-tactical-green-dim/30 pt-4 space-y-2">
+                    <div className="rounded border border-tactical-green-dim/30 bg-tactical-surface p-3 mb-2">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {SHIPPING_POLICY_TEXT}
+                      </p>
+                    </div>
+
+                    {cartRequiresShippingRestriction && (
                     <div className="rounded border border-red-500/30 bg-tactical-surface p-3 mb-2">
                       <p className="text-xs text-muted-foreground leading-relaxed">
                         Cannot ship to {restrictedShippingStatesText}.
                       </p>
                     </div>
+                    )}
 
                     <div className="mb-4 pb-4 border-b border-tactical-green-dim/30">
                       <label className="block text-sm font-medium text-foreground mb-2">
@@ -806,7 +829,7 @@ const Checkout = () => {
                     </div>
                     <div className="flex justify-between text-muted-foreground">
                       <span>Shipping</span>
-                      <span>${shipping.toFixed(2)}</span>
+                      <span>{formatShippingCost(shipping)}</span>
                     </div>
                     {discount > 0 && (
                       <div className="flex justify-between text-tactical-green">

@@ -8,8 +8,9 @@ const Purchase = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const arProduct = getProductById("slide-stock-assist");
+  const gunMat = getProductById("thompson-gun-mat");
 
-  if (!thompsonProduct || !thompsonChargingHandle || !arProduct) {
+  if (!thompsonProduct || !thompsonChargingHandle || !arProduct || !gunMat) {
     return null;
   }
 
@@ -23,11 +24,11 @@ const Purchase = () => {
           <div className="text-center max-w-4xl mx-auto relative z-10">
             <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Choose Your Platform</p>
             <h1 className="text-5xl md:text-6xl font-bold text-foreground tracking-wider mb-6">
-              Shop Thompson or AR
+              Shop Thompson, AR, or Apparel
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Thompson and AR products now live on separate pages so each platform has its own dedicated
-              buying experience.
+              Thompson, AR, and apparel products now live on separate pages so each line has its own
+              dedicated buying experience.
             </p>
           </div>
         </div>
@@ -103,7 +104,7 @@ const Purchase = () => {
                 </div>
               </div>
 
-              <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col lg:col-span-2 lg:w-[calc(50%-1rem)] lg:mx-auto">
+              <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
                 <img
                   src={arProduct.images[0].src}
                   alt={arProduct.images[0].alt}
@@ -125,6 +126,32 @@ const Purchase = () => {
                   <Link to="/shop/ar" className="mt-auto">
                     <TacticalButton variant="secondary" size="lg" className="w-full text-lg py-4">
                       Shop AR
+                    </TacticalButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
+                <img
+                  src="/hat2.jpg"
+                  alt="Chicago Typewriter Ball Cap"
+                  className="w-full h-80 object-cover bg-white"
+                />
+                <div className="p-8 flex flex-col flex-grow">
+                  <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Apparel & Accessories</p>
+                  <h2 className="text-3xl font-bold text-foreground mb-3">Gun Mats & Apparel</h2>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    Thompson gun mats, caps, and other gear—starting with the navy carbine mat and
+                    Chicago Typewriter ball cap.
+                  </p>
+                  <div className="flex items-center gap-3 mb-6 flex-wrap">
+                    <span className="text-3xl font-bold text-tactical-green">
+                      From ${gunMat.price.toFixed(2)}
+                    </span>
+                  </div>
+                  <Link to="/shop/apparel" className="mt-auto">
+                    <TacticalButton variant="secondary" size="lg" className="w-full text-lg py-4">
+                      Shop Apparel
                     </TacticalButton>
                   </Link>
                 </div>

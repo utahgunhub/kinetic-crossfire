@@ -3,6 +3,8 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { Link } from "react-router-dom";
 import { getProductById } from "@/data/products";
+import { thompsonFrtDemoVideos } from "@/data/thompsonVideos";
+import VimeoEmbed from "@/components/VimeoEmbed";
 import { Star, Quote } from "lucide-react";
 
 const Index = () => {
@@ -98,8 +100,8 @@ const Index = () => {
             <div className="grid lg:grid-cols-2 gap-8">
               <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
                 <img
-                  src="/thompson-frt/thompson-gun-4.webp"
-                  alt="Thompson platform"
+                  src="/Coverpic.jpg"
+                  alt="Thompson carbine"
                   className="w-full h-72 object-cover"
                 />
                 <div className="p-8 flex flex-col flex-1">
@@ -146,7 +148,7 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full lg:col-span-2 lg:w-[calc(50%-1rem)] lg:mx-auto">
+              <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
                 <img
                   src={arProduct.images[0].src}
                   alt={arProduct.images[0].alt}
@@ -161,6 +163,27 @@ const Index = () => {
                   <Link to={`/product/${slideStockAssist.id}`}>
                     <TacticalButton variant="secondary" size="lg" className="w-full">
                       Shop AR
+                    </TacticalButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
+                <img
+                  src="/hat2.jpg"
+                  alt="Chicago Typewriter Ball Cap"
+                  className="w-full h-72 object-cover bg-white"
+                />
+                <div className="p-8 flex flex-col flex-1">
+                  <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Apparel & Accessories</p>
+                  <h3 className="text-3xl font-bold text-foreground mb-3">Gun Mats & Apparel</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
+                    Thompson gun mats, caps, and other gear—starting with the navy carbine mat and
+                    Chicago Typewriter ball cap.
+                  </p>
+                  <Link to="/shop/apparel">
+                    <TacticalButton variant="secondary" size="lg" className="w-full">
+                      Shop Apparel
                     </TacticalButton>
                   </Link>
                 </div>
@@ -297,27 +320,24 @@ const Index = () => {
               See It In Action
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Watch the Thompson FRT deliver the fast, authentic feel it was built for.
+              Watch the Thompson FRT demos and see the fast, authentic feel it was built for.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://player.vimeo.com/video/1190161997?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
-                title="Thompson FRT Demonstration"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                className="absolute inset-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
-            </div>
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+            {thompsonFrtDemoVideos.map((video) => (
+              <div key={video.id}>
+                <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
+                  <VimeoEmbed src={video.embedUrl} title={video.title} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+                </div>
+                <p className="mt-4 text-center text-sm font-semibold text-foreground">{video.title}</p>
+              </div>
+            ))}
+          </div>
 
-            <div className="mt-8 text-center">
+          <div className="max-w-4xl mx-auto mt-8">
+            <div className="text-center">
               <p className="text-muted-foreground text-lg mb-4">
                 See the Thompson FRT running live before you head to the product page.
               </p>

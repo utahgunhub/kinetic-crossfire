@@ -72,6 +72,10 @@ function getRestrictedShippingState(value = '') {
   return restrictedShippingStateAliases[normalizedValue] || null;
 }
 
+function orderRequiresShippingRestriction(items = []) {
+  return items.some((item) => item.category !== 'apparel');
+}
+
 console.log('🚀 Server starting...');
 console.log('Environment:', ENVIRONMENT);
 console.log('API Endpoint:', `https://${API_ENDPOINT.hostname}${API_ENDPOINT.path}`);
@@ -155,7 +159,7 @@ app.get('/api/payment/client-key', (req, res) => {
 // Validate a coupon code and return the calculated discount
 app.post('/api/validate-coupon', (req, res) => {
   try {
-    const { couponCode, items, shipping = 0 } = req.body;
+    const { couponCode, items } = req.body;
 
     if (!couponCode || !items?.length) {
       return res.status(400).json({
@@ -172,7 +176,7 @@ app.post('/api/validate-coupon', (req, res) => {
       });
     }
 
-    const totals = calculateOrderTotals(items, shipping, coupon.code);
+    const totals = calculateOrderTotals(items, coupon.code);
 
     res.json({
       success: true,
@@ -194,7 +198,7 @@ app.post('/api/validate-coupon', (req, res) => {
 app.post('/api/process-payment', async (req, res) => {
   try {
     console.log('💳 Processing payment...');
-    const { cardData, billingInfo, shippingInfo, items, shipping, couponCode } = req.body;
+    const { cardData, billingInfo, shippingInfo, items, couponCode } = req.body;
 
     // Validate required fields
     if (!cardData || !billingInfo || !shippingInfo || !items?.length) {
@@ -210,7 +214,6 @@ app.post('/api/process-payment', async (req, res) => {
       });
     }
 
-    const shippingCost = Number(shipping) || 0;
     const normalizedCouponCode = couponCode ? String(couponCode).trim() : null;
 
     if (normalizedCouponCode && !validateCoupon(normalizedCouponCode)) {
@@ -220,9 +223,8 @@ app.post('/api/process-payment', async (req, res) => {
       });
     }
 
-    const { subtotal, discount, total } = calculateOrderTotals(
+    const { subtotal, shipping: shippingCost, discount, total } = calculateOrderTotals(
       items,
-      shippingCost,
       normalizedCouponCode
     );
 
@@ -243,7 +245,11 @@ app.post('/api/process-payment', async (req, res) => {
 
     const shippingCountry = String(shippingInfo.country || '').trim().toLowerCase();
     const restrictedShippingState = getRestrictedShippingState(shippingInfo.state);
-    if (shippingCountry === 'united states' && restrictedShippingState) {
+    if (
+      orderRequiresShippingRestriction(items) &&
+      shippingCountry === 'united states' &&
+      restrictedShippingState
+    ) {
       console.warn(`🚫 Blocked restricted shipping state: ${restrictedShippingState}`);
       return res.status(400).json({
         success: false,

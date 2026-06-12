@@ -1,7 +1,9 @@
+export type ProductCategory = "thompson" | "ar" | "apparel";
+
 export interface Product {
   id: string;
   name: string;
-  category: "thompson" | "ar";
+  category: ProductCategory;
   price: number;
   originalPrice?: number;
   description: string;
@@ -184,9 +186,73 @@ export const products: Product[] = [
     },
     manufacturer: "Slide Fire Solutions",
     isKineticCrossfireProduct: false
+  },
+  {
+    id: "thompson-gun-mat",
+    name: "Thompson Machine Carbine Gun Mat",
+    category: "apparel",
+    price: 36.00,
+    description: "12\" x 36\" navy blue heavy-duty gun mat with a textured, oil-resistant surface for full rifle-length Thompson maintenance.",
+    detailedDescription: "This is a 12\" x 36\" heavy duty gun mat in Navy Blue, with a texturized base for grip and oil resistant surface. As a full rifle length pad made from vulcanized rubber, it provides an excellent surface for maintaining your Thompson without scratching or scraping the gun, or table beneath.",
+    images: [
+      { src: "/gunmatfinished.JPG", alt: "Thompson Machine Carbine Gun Mat - Product View" },
+      { src: "/gunmatfinished2.JPG", alt: "Thompson Machine Carbine Gun Mat - With Thompson Carbine" }
+    ],
+    features: [
+      "12\" x 36\" full rifle-length coverage",
+      "Navy blue with Thompson Machine Carbine diagram",
+      "Texturized base for grip and oil-resistant surface",
+      "Vulcanized rubber protects gun and work surface",
+      "Made in the USA"
+    ],
+    specifications: {
+      "Dimensions": "12\" x 36\"",
+      "Color": "Navy Blue",
+      "Material": "Vulcanized rubber",
+      "Surface": "Texturized, oil-resistant"
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true
+  },
+  {
+    id: "chicago-typewriter-cap",
+    name: "Chicago Typewriter Ball Cap",
+    category: "apparel",
+    price: 32.00,
+    description: "'47 classic clean up ball cap with black stitched Chicago Typewriter logo on white cotton.",
+    detailedDescription: "This '47 classic clean up ball cap now represents the Chicago Typewriter in flawless form. A straightforward white cotton with a black stitched logo means it can be washed and worn hard without artwork cracking, fading or peeling like vinyl or ink. Size is adjusted via a strap and brass fitting.",
+    images: [
+      { src: "/hat2.jpg", alt: "Chicago Typewriter Ball Cap - Three-Quarter View" },
+      { src: "/hat1.jpg", alt: "Chicago Typewriter Ball Cap - Front View" },
+      { src: "/hat3.jpg", alt: "Chicago Typewriter Ball Cap - Back View" }
+    ],
+    features: [
+      "'47 classic clean up adjustable ball cap",
+      "Black stitched Typewriting 101 logo and Thompson silhouette",
+      "White cotton—no vinyl or ink to crack or peel",
+      "Adjustable strap with brass fitting",
+      "Machine washable"
+    ],
+    specifications: {
+      "Style": "'47 Classic Clean Up",
+      "Color": "White",
+      "Material": "Cotton",
+      "Closure": "Adjustable strap with brass fitting",
+      "Logo": "Embroidered black stitch"
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true
   }
 ];
 
 export const getProductById = (id: string): Product | undefined => {
   return products.find(product => product.id === id);
+};
+
+export const getProductsByCategory = (category: ProductCategory): Product[] => {
+  return products.filter((product) => product.category === category);
+};
+
+export const hasRestrictedShipping = (product: Product): boolean => {
+  return product.category !== "apparel";
 };

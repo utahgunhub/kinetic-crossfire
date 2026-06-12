@@ -1,5 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { thompsonFrtDemoVideos, thompsonFrtInstallVideo } from "@/data/thompsonVideos";
+import VimeoEmbed from "@/components/VimeoEmbed";
 
 const Videos = () => {
   const thompsonVideos = [
@@ -23,16 +25,24 @@ const Videos = () => {
       id: "1190161997",
       title: "Thompson Blow-Back Trigger Demo",
       description: "See the Thompson Blow-Back Trigger running live and get a feel for the platform in action.",
-      embedUrl: "https://player.vimeo.com/video/1190161997?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      link: "https://vimeo.com/1190161997",
+      embedUrl: thompsonFrtDemoVideos[0].embedUrl,
+      link: thompsonFrtDemoVideos[0].link,
       linkLabel: "Watch on Vimeo",
     },
     {
-      id: "1196397310",
+      id: "1200813203",
+      title: "Thompson FRT Demo 2",
+      description: "Another live look at the Thompson FRT in action.",
+      embedUrl: thompsonFrtDemoVideos[1].embedUrl,
+      link: thompsonFrtDemoVideos[1].link,
+      linkLabel: "Watch on Vimeo",
+    },
+    {
+      id: thompsonFrtInstallVideo.id,
       title: "Thompson Blow-Back Trigger Install",
       description: "Walk through the installation process before starting your Thompson build.",
-      embedUrl: "https://player.vimeo.com/video/1196397310?badge=0&autopause=0&player_id=0&app_id=58479",
-      link: "https://vimeo.com/1196397310",
+      embedUrl: thompsonFrtInstallVideo.embedUrl,
+      link: thompsonFrtInstallVideo.link,
       linkLabel: "Watch on Vimeo",
     }
   ];
@@ -97,17 +107,7 @@ const Videos = () => {
               {thompsonVideos.map((video) => (
                 <div key={video.id} className="bg-tactical-dark rounded-lg p-6 border border-tactical-green-dim/30">
                   <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={video.embedUrl}
-                      title={video.title}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                      className="absolute inset-0"
-                    />
+                    <VimeoEmbed src={video.embedUrl} title={video.title} />
                   </div>
                   <div className="mt-6">
                     <h3 className="text-2xl font-semibold text-foreground mb-2">{video.title}</h3>

@@ -3,7 +3,9 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getProductById } from "@/data/products";
+import { getProductById, hasRestrictedShipping } from "@/data/products";
+import { thompsonFrtDemoVideos, thompsonFrtInstallVideo } from "@/data/thompsonVideos";
+import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
@@ -16,13 +18,24 @@ const ProductDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const shopPath = product?.category === "thompson" ? "/shop" : "/shop/ar";
-  const shopLabel = product?.category === "thompson" ? "Shop" : "Shop AR";
+  const shopPath =
+    product?.category === "apparel"
+      ? "/shop/apparel"
+      : product?.category === "thompson"
+        ? "/shop"
+        : "/shop/ar";
+  const shopLabel =
+    product?.category === "apparel"
+      ? "Shop Apparel"
+      : product?.category === "thompson"
+        ? "Shop"
+        : "Shop AR";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
   const isMadeInUSA = product?.features.some((feature) =>
     feature.toLowerCase().includes("made in usa")
   );
   const isOutOfStock = product?.inStock === false;
+  const showShippingRestriction = product ? hasRestrictedShipping(product) : false;
   const productDescription = isThompsonProduct
     ? "Forced reset trigger system for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
     : product.detailedDescription;
@@ -328,12 +341,14 @@ const ProductDetail = () => {
                   </ul>
                 </div>
 
+                {showShippingRestriction && (
                 <div className="bg-tactical-dark/50 rounded-lg p-6 border border-red-500/30">
                   <h3 className="font-semibold text-red-400 mb-2">Shipping Restriction</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     This product cannot be shipped to {restrictedShippingStatesText}.
                   </p>
                 </div>
+                )}
               </div>
             </div>
           </div>
@@ -379,44 +394,29 @@ const ProductDetail = () => {
                 <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Video Guides</p>
                 <h2 className="text-3xl font-bold text-foreground mb-4">Watch the Install or Demo</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Choose the install walkthrough or the live demo.
+                  Choose the install walkthrough or either live demo.
                 </p>
               </div>
 
-              <div className="grid lg:grid-cols-2 gap-8">
+              <div className="grid lg:grid-cols-3 gap-8">
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold text-foreground">Install Video</h3>
                   <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
-                    <iframe
-                      width="560"
-                      height="315"
-                      src="https://player.vimeo.com/video/1196397310?badge=0&autopause=0&player_id=0&app_id=58479"
-                      title="Thompson FRT Install"
-                      frameBorder="0"
-                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                      className="absolute inset-0 h-full w-full"
+                    <VimeoEmbed
+                      src={thompsonFrtInstallVideo.embedUrl}
+                      title={thompsonFrtInstallVideo.title}
                     />
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-foreground">Demo Video</h3>
-                  <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src="https://player.vimeo.com/video/1190161997?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
-                      title="Thompson Blow-Back Trigger Demo"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen
-                      className="absolute inset-0 h-full w-full"
-                    />
+                {thompsonFrtDemoVideos.map((video) => (
+                  <div key={video.id} className="space-y-4">
+                    <h3 className="text-xl font-semibold text-foreground">{video.title}</h3>
+                    <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
+                      <VimeoEmbed src={video.embedUrl} title={video.title} />
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

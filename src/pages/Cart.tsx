@@ -7,6 +7,13 @@ import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
+import { hasRestrictedShipping } from "@/data/products";
+import {
+  calculateShippingCost,
+  formatShippingCost,
+  getAmountUntilFreeShipping,
+  SHIPPING_POLICY_TEXT,
+} from "@/lib/shipping";
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, getTotalPrice, getTotalItems } = useCart();
@@ -25,8 +32,12 @@ const Cart = () => {
   };
 
   const subtotal = getTotalPrice();
-  const shipping = 0.00;
+  const shipping = calculateShippingCost(subtotal);
   const total = subtotal + shipping;
+  const amountUntilFreeShipping = getAmountUntilFreeShipping(subtotal);
+  const cartRequiresShippingRestriction = items.some((item) =>
+    hasRestrictedShipping(item.product)
+  );
 
   if (items.length === 0) {
     return (
@@ -156,12 +167,26 @@ const Cart = () => {
                   <h2 className="text-2xl font-semibold text-foreground mb-6">Order Summary</h2>
                   
                   <div className="space-y-4">
+                    <div className="rounded-lg border border-tactical-green-dim/30 bg-tactical-surface p-4">
+                      <p className="text-sm font-semibold text-tactical-green mb-2">Shipping</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        {SHIPPING_POLICY_TEXT}
+                      </p>
+                      {amountUntilFreeShipping > 0 && (
+                        <p className="text-xs text-muted-foreground leading-relaxed mt-2">
+                          Add ${amountUntilFreeShipping.toFixed(2)} more to qualify for free shipping.
+                        </p>
+                      )}
+                    </div>
+
+                    {cartRequiresShippingRestriction && (
                     <div className="rounded-lg border border-red-500/30 bg-tactical-surface p-4">
                       <p className="text-sm font-semibold text-red-400 mb-2">Shipping Restriction</p>
                       <p className="text-xs text-muted-foreground leading-relaxed">
                         Orders cannot be shipped to {restrictedShippingStatesText}.
                       </p>
                     </div>
+                    )}
 
                     <div className="flex justify-between text-muted-foreground">
                       <span>Subtotal</span>
@@ -170,7 +195,7 @@ const Cart = () => {
                     
                     <div className="flex justify-between text-muted-foreground">
                       <span>Shipping</span>
-                      <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
+                      <span>{formatShippingCost(shipping)}</span>
                     </div>
 
                     <div className="border-t border-tactical-green-dim/30 pt-4">
