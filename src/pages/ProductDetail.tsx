@@ -9,6 +9,7 @@ import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
+import { SHIPPING_POLICY_TEXT } from "@/lib/shipping";
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -31,6 +32,7 @@ const ProductDetail = () => {
         ? "Shop"
         : "Shop AR";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
+  const isApparelProduct = product?.category === "apparel";
   const isMadeInUSA = product?.features.some((feature) =>
     feature.toLowerCase().includes("made in usa")
   );
@@ -198,11 +200,13 @@ const ProductDetail = () => {
                       </span>
                     </div>
                   )}
-                  {product.isKineticCrossfireProduct && (
+                  {(product.isKineticCrossfireProduct || isMadeInUSA) && (
                     <div className="flex flex-wrap gap-3 mb-2">
-                      <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green text-sm font-semibold">
-                        Free Shipping
-                      </span>
+                      {product.isKineticCrossfireProduct && !isApparelProduct && (
+                        <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green text-sm font-semibold">
+                          Free Shipping
+                        </span>
+                      )}
                       {isThompsonProduct && (
                         <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-dark/60 text-foreground text-sm font-semibold">
                           Patent Pending
@@ -219,6 +223,16 @@ const ProductDetail = () => {
 
                 {/* Product Description */}
                 <div className="space-y-4">
+                  {product.importantNotice && (
+                    <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-6">
+                      <div className="space-y-4 text-muted-foreground leading-relaxed text-sm">
+                        {product.importantNotice.split("\n\n").map((paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <h2 className="text-xl font-semibold text-foreground">Product Description</h2>
                   <p className="text-muted-foreground leading-relaxed">
                     {productDescription}
@@ -336,7 +350,11 @@ const ProductDetail = () => {
                         ? "Shipping times are 3-5 days, but due to the current high volume of orders this may be longer"
                         : "Ships within 1-2 business days"}
                     </li>
-                    {product.isKineticCrossfireProduct && <li>• Free shipping included</li>}
+                    {isApparelProduct ? (
+                      <li>• {SHIPPING_POLICY_TEXT}</li>
+                    ) : (
+                      product.isKineticCrossfireProduct && <li>• Free shipping included</li>
+                    )}
                     <li>• Secure packaging and tracking included</li>
                   </ul>
                 </div>
