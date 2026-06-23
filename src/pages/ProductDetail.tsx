@@ -4,7 +4,7 @@ import { TacticalButton } from "@/components/TacticalButton";
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProductById, hasRestrictedShipping } from "@/data/products";
-import { thompsonFrtDemoVideos, thompsonFrtInstallVideo } from "@/data/thompsonVideos";
+import { thompsonProductPageVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
@@ -410,24 +410,14 @@ const ProductDetail = () => {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-10">
                 <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Video Guides</p>
-                <h2 className="text-3xl font-bold text-foreground mb-4">Watch the Install or Demo</h2>
+                <h2 className="text-3xl font-bold text-foreground mb-4">Watch the Install, Demos, and Guides</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Choose the install walkthrough or either live demo.
+                  Install walkthroughs, live demos, and the Trigger Lifter guide for solving semi-auto fire.
                 </p>
               </div>
 
-              <div className="grid lg:grid-cols-3 gap-8">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-foreground">Install Video</h3>
-                  <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">
-                    <VimeoEmbed
-                      src={thompsonFrtInstallVideo.embedUrl}
-                      title={thompsonFrtInstallVideo.title}
-                    />
-                  </div>
-                </div>
-
-                {thompsonFrtDemoVideos.map((video) => (
+              <div className="grid md:grid-cols-2 gap-8">
+                {thompsonProductPageVideos.map((video) => (
                   <div key={video.id} className="space-y-4">
                     <h3 className="text-xl font-semibold text-foreground">{video.title}</h3>
                     <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-tactical-green-dim/30 bg-black shadow-2xl">

@@ -21,3 +21,17 @@ export const thompsonFrtDemoVideos = [
     link: "https://vimeo.com/1200813203",
   },
 ];
+
+export const thompsonTriggerLifterVideo = {
+  id: "1203915932",
+  title: "Trigger Lifter",
+  embedUrl:
+    "https://player.vimeo.com/video/1203915932?badge=0&autopause=0&player_id=0&app_id=58479",
+  link: "https://vimeo.com/1203915932",
+};
+
+export const thompsonProductPageVideos = [
+  thompsonFrtInstallVideo,
+  ...thompsonFrtDemoVideos,
+  thompsonTriggerLifterVideo,
+];

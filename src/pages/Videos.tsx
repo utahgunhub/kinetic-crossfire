@@ -1,6 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { thompsonFrtDemoVideos, thompsonFrtInstallVideo } from "@/data/thompsonVideos";
+import { thompsonFrtDemoVideos, thompsonFrtInstallVideo, thompsonTriggerLifterVideo } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 
 const Videos = () => {
@@ -43,6 +43,14 @@ const Videos = () => {
       description: "Walk through the installation process before starting your Thompson build.",
       embedUrl: thompsonFrtInstallVideo.embedUrl,
       link: thompsonFrtInstallVideo.link,
+      linkLabel: "Watch on Vimeo",
+    },
+    {
+      id: thompsonTriggerLifterVideo.id,
+      title: "Trigger Lifter",
+      description: "How to solve semi-auto fire on the Thompson platform.",
+      embedUrl: thompsonTriggerLifterVideo.embedUrl,
+      link: thompsonTriggerLifterVideo.link,
       linkLabel: "Watch on Vimeo",
     }
   ];
@@ -105,18 +113,18 @@ const Videos = () => {
             </h2>
             <div className="grid lg:grid-cols-2 gap-8">
               {thompsonVideos.map((video) => (
-                <div key={video.id} className="bg-tactical-dark rounded-lg p-6 border border-tactical-green-dim/30">
+                <div key={video.id} className="bg-tactical-dark rounded-lg p-6 border border-tactical-green-dim/30 flex flex-col h-full">
                   <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
                     <VimeoEmbed src={video.embedUrl} title={video.title} />
                   </div>
-                  <div className="mt-6">
+                  <div className="mt-6 flex flex-col flex-1">
                     <h3 className="text-2xl font-semibold text-foreground mb-2">{video.title}</h3>
-                    <p className="text-muted-foreground mb-4">{video.description}</p>
+                    <p className="text-muted-foreground mb-4 flex-1">{video.description}</p>
                     <a
                       href={video.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center text-tactical-green hover:text-tactical-green-glow transition-colors font-semibold"
+                      className="inline-flex items-center text-tactical-green hover:text-tactical-green-glow transition-colors font-semibold mt-auto"
                     >
                       {video.linkLabel ?? "Watch on YouTube"}
                       <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +149,7 @@ const Videos = () => {
           {arVideos.map((video, index) => (
             <div
               key={index}
-              className="bg-tactical-surface rounded-lg p-6 border border-tactical-green-dim/30"
+              className="bg-tactical-surface rounded-lg p-6 border border-tactical-green-dim/30 flex flex-col h-full"
             >
               <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
                 <iframe
@@ -156,14 +164,14 @@ const Videos = () => {
                   className="absolute inset-0"
                 />
               </div>
-              <div className="mt-6">
+              <div className="mt-6 flex flex-col flex-1">
                 <h3 className="text-2xl font-semibold text-foreground mb-2">{video.title}</h3>
-                <p className="text-muted-foreground mb-4">{video.description}</p>
+                <p className="text-muted-foreground mb-4 flex-1">{video.description}</p>
                 <a
                   href={video.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-tactical-green hover:text-tactical-green-glow transition-colors font-semibold"
+                  className="inline-flex items-center text-tactical-green hover:text-tactical-green-glow transition-colors font-semibold mt-auto"
                 >
                   {video.linkLabel ?? "Watch on YouTube"}
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
