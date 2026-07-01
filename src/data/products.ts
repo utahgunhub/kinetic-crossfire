@@ -114,8 +114,7 @@ export const products: Product[] = [
       "Shipping": "Free shipping"
     },
     manufacturer: "Kinetic Crossfire",
-    isKineticCrossfireProduct: true,
-    inStock: false
+    isKineticCrossfireProduct: true
   },
   {
     id: "thompson-top-charging-handle",
