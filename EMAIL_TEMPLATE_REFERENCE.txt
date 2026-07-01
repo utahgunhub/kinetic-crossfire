@@ -3,7 +3,7 @@ EMAILJS TEMPLATE SETUP - QUICK REFERENCE
 ==============================================================================
 
 Copy and paste this into your EmailJS template at:
-https://dashboard.emailjs.com/admin/templates/template_xba6pcp
+https://dashboard.emailjs.com/admin/templates/template_tl7gbn7
 
 ------------------------------------------------------------------------------
 SUBJECT LINE:
@@ -15,7 +15,7 @@ EMAIL BODY (HTML):
 ------------------------------------------------------------------------------
 <p>Hello {{customer_name}},</p>
 
-<p>Thank you for placing an order with Kinetic Crossfire, we will process it and ship it in the next two business days. Please remember that your bolt must be clean and lubricated more than usual, and to use .556 ammunition for best results with higher weight springs. Have fun on the range!</p>
+<p>{{order_message}}</p>
 
 <p>- Kinetic Crossfire</p>
 

@@ -81,18 +81,18 @@ export const products: Product[] = [
     id: "thompson-charging-handle",
     name: "Extended Thompson Charging Handle",
     category: "thompson",
-    price: 42.50,
-    description: "Extended, lightweight anodized aluminum charging handle for the M1 Thompson Auto Ordnance rifle with free shipping included.",
-    detailedDescription: "An extended, lightweight anodized aluminum charging handle for the M1 Thompson Auto Ordnance rifle. It is a tasteful upgrade for anyone who finds the small stock charging handle difficult to use. Machined from aluminum and anodized with a black finish.",
+    price: 38,
+    description: "Extended steel charging handle for the M1 Thompson Auto Ordnance rifle with black oxide finish. Free shipping included.",
+    detailedDescription: "An extended charging handle for the M1 Thompson Auto Ordnance rifle. It is a tasteful upgrade that complements your weapon for anyone who finds the small stock charging handle difficult to use. Machined from steel and coated with black oxide for durability.",
     images: [
       { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Charging Handle - Main Product View" },
-      { src: "/thompson-charging-handle/Handle4.jpg", alt: "Extended Thompson Charging Handle - Side View" },
-      { src: "/thompson-charging-handle/Handle5.jpg", alt: "Extended Thompson Charging Handle - Detail View" }
+      { src: "/thompson-charging-handle/Side%20Charging%20Handle%20on%20Gun.png", alt: "Extended Thompson Charging Handle - Installed on Rifle" },
+      { src: "/thompson-charging-handle/side%20charging%20handle.jpg", alt: "Extended Thompson Charging Handle - Product Packaging" }
     ],
     features: [
       "Extended handle for easier operation than the small stock charging handle",
-      "Lightweight aluminum construction",
-      "Black anodized finish",
+      "Machined steel construction with black oxide coating",
+      "Tasteful upgrade that complements your rifle",
       "Designed for the M1 Thompson Auto Ordnance rifle",
       "Free shipping included"
     ],
@@ -107,8 +107,8 @@ export const products: Product[] = [
     },
     specifications: {
       "Platform": "M1 Thompson Auto Ordnance rifle",
-      "Material": "Anodized aluminum",
-      "Finish": "Black anodized",
+      "Material": "Steel",
+      "Finish": "Black oxide",
       "Overall Length": "1 15/16 in.",
       "Handle Grip Length": "1 3/8 in.",
       "Shipping": "Free shipping"
@@ -116,6 +116,42 @@ export const products: Product[] = [
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true,
     inStock: false
+  },
+  {
+    id: "thompson-top-charging-handle",
+    name: "Contoured Top Thompson Charging Handle",
+    category: "thompson",
+    price: 40,
+    description: "Contoured top charging handle for the 1927A Thompson Auto Ordnance rifle with black oxide coated steel construction. Free shipping included.",
+    detailedDescription: "A contoured top charging handle for the 1927A Thompson Auto Ordnance rifle. It is made from black oxide coated steel for durability and improved looks. The front edges are rounded and chamfered to provide a comfortable grip for repeated use and dependable charging of the weapon.",
+    images: [
+      { src: "/top-charging-handle/Top%20Charging%20Handle%20on%20Gun.png", alt: "Contoured Top Thompson Charging Handle - Installed on Rifle" },
+      { src: "/top-charging-handle/top%20charging%20handle.jpg", alt: "Contoured Top Thompson Charging Handle - Product Packaging" }
+    ],
+    features: [
+      "Contoured design with rounded, chamfered front edges for a comfortable grip",
+      "Black oxide coated steel for durability and improved looks",
+      "Dependable charging for repeated use",
+      "Designed for the 1927A Thompson Auto Ordnance rifle",
+      "Free shipping included"
+    ],
+    compatibility: {
+      compatibleWith: [
+        "1927A Thompson Auto Ordnance rifle"
+      ],
+      usageNotes: [
+        "Intended as a replacement upgrade for the stock top charging handle",
+        "Confirm fitment with your rifle before installation"
+      ]
+    },
+    specifications: {
+      "Platform": "1927A Thompson Auto Ordnance rifle",
+      "Material": "Steel",
+      "Finish": "Black oxide",
+      "Shipping": "Free shipping"
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true
   },
   {
     id: "slide-stock-assist",
@@ -242,6 +278,34 @@ export const products: Product[] = [
       "Material": "Cotton",
       "Closure": "Adjustable strap with brass fitting",
       "Logo": "Embroidered black stitch"
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true
+  },
+  {
+    id: "public-enemy-hat",
+    name: "Public Enemy Ball Cap",
+    category: "apparel",
+    price: 32,
+    description: "'47 classic clean up ball cap with red and black stitched Public Enemy logo. Machine washable with adjustable brass fitting.",
+    detailedDescription: "Join the ranks of John Dillinger, Baby Face Nelson, and Pretty Boy Floyd as a Public Enemy. Red and black stitching of the logo means it won't fade, peel, or crack like ink or vinyl. This '47 classic clean up is machine washable and has an adjustable brass fitting.",
+    images: [
+      { src: "/public-enemy-hat/PE1.jpg", alt: "Public Enemy Ball Cap - Main Product View" },
+      { src: "/public-enemy-hat/PE2.jpg", alt: "Public Enemy Ball Cap - Side View" },
+      { src: "/public-enemy-hat/PE3.jpg", alt: "Public Enemy Ball Cap - Detail View" }
+    ],
+    features: [
+      "'47 classic clean up adjustable ball cap",
+      "Red and black stitched Public Enemy logo",
+      "Won't fade, peel, or crack like ink or vinyl",
+      "Machine washable",
+      "Adjustable strap with brass fitting"
+    ],
+    specifications: {
+      "Style": "'47 Classic Clean Up",
+      "Material": "Cotton",
+      "Closure": "Adjustable strap with brass fitting",
+      "Logo": "Red and black stitch"
     },
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true

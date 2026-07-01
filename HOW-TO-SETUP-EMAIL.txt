@@ -2,7 +2,7 @@
 HOW TO SETUP YOUR EMAILJS TEMPLATE - STEP BY STEP
 ================================================================================
 
-1. Go to: https://dashboard.emailjs.com/admin/templates/template_xba6pcp
+1. Go to: https://dashboard.emailjs.com/admin/templates/template_tl7gbn7
 
 2. In the EmailJS template editor:
    
@@ -33,6 +33,7 @@ IMPORTANT VARIABLES (Already in the HTML template):
 {{customer_phone}}     - Customer's phone number
 {{shipping_address}}   - Full shipping address
 {{items_list}}         - All ordered items with details
+{{order_message}}      - Order confirmation message body
 {{subtotal}}           - Subtotal amount
 {{shipping}}           - Shipping cost
 {{total}}              - Total amount paid

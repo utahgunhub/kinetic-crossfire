@@ -24,7 +24,7 @@ Order Confirmation - {{order_number}} - Kinetic Crossfire
 ```
 Hello {{customer_name}},
 
-Thank you for placing an order with Kinetic Crossfire, we will process it and ship it in the next two business days. Please remember that your bolt must be clean and lubricated more than usual, and to use .556 ammunition for best results with higher weight springs. Have fun on the range!
+{{order_message}}
 
 - Kinetic Crossfire
 
@@ -76,6 +76,7 @@ Make sure your EmailJS template includes these variables:
 - `{{customer_phone}}` - Customer's phone number
 - `{{shipping_address}}` - Full formatted shipping address
 - `{{items_list}}` - List of ordered items with details
+- `{{order_message}}` - Order confirmation message body
 - `{{subtotal}}` - Order subtotal
 - `{{shipping}}` - Shipping cost
 - `{{total}}` - Total order amount

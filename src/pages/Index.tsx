@@ -10,11 +10,13 @@ import { Star, Quote } from "lucide-react";
 const Index = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
+  const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");
   const arProduct = getProductById("ssar-15-sbs");
   const slideStockAssist = getProductById("slide-stock-assist");
+  const publicEnemyHat = getProductById("public-enemy-hat");
   const homepageThompsonTitle = "Thompson FRT";
 
-  if (!thompsonProduct || !thompsonChargingHandle || !arProduct || !slideStockAssist) {
+  if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !arProduct || !slideStockAssist || !publicEnemyHat) {
     return null;
   }
 
@@ -150,6 +152,26 @@ const Index = () => {
 
               <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
                 <img
+                  src={thompsonTopChargingHandle.images[0].src}
+                  alt={thompsonTopChargingHandle.images[0].alt}
+                  className="w-full h-72 object-cover bg-white"
+                />
+                <div className="p-8 flex flex-col flex-1">
+                  <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Thompson Platform</p>
+                  <h3 className="text-3xl font-bold text-foreground mb-3">{thompsonTopChargingHandle.name}</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
+                    {thompsonTopChargingHandle.description}
+                  </p>
+                  <Link to={`/product/${thompsonTopChargingHandle.id}`}>
+                    <TacticalButton variant="primary" size="lg" className="w-full">
+                      Shop Top Charging Handle
+                    </TacticalButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
+                <img
                   src={arProduct.images[0].src}
                   alt={arProduct.images[0].alt}
                   className="w-full h-72 object-cover bg-white"
@@ -170,16 +192,16 @@ const Index = () => {
 
               <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
                 <img
-                  src="/hat2.jpg"
-                  alt="Chicago Typewriter Ball Cap"
+                  src={publicEnemyHat.images[0].src}
+                  alt={publicEnemyHat.images[0].alt}
                   className="w-full h-72 object-cover bg-white"
                 />
                 <div className="p-8 flex flex-col flex-1">
                   <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">Apparel & Accessories</p>
                   <h3 className="text-3xl font-bold text-foreground mb-3">Gun Mats & Apparel</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
-                    Thompson gun mats, caps, and other gear—starting with the navy carbine mat and
-                    Chicago Typewriter ball cap.
+                    Thompson gun mats, caps, and other gear—including the Public Enemy ball cap and
+                    Chicago Typewriter cap.
                   </p>
                   <Link to="/shop/apparel">
                     <TacticalButton variant="secondary" size="lg" className="w-full">

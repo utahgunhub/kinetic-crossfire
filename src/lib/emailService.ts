@@ -6,6 +6,9 @@ const EMAILJS_ORDER_TEMPLATE_ID = 'template_tl7gbn7';
 const EMAILJS_CONTACT_TEMPLATE_ID = 'template_9bb08pc';
 const EMAILJS_PUBLIC_KEY = 'fHx6hqplnCkUeAcXP';
 
+const ORDER_CONFIRMATION_MESSAGE =
+  "Thank you for placing an order with Kinetic Crossfire, we will process it and ship it in the next two business days. Please remember that your bolt must be clean and lubricated more than usual. Be sure to read the User's Guide, and feel free to contact us with any questions. Have fun on the Range!";
+
 interface OrderEmailParams {
   transactionId: string;
   customerName: string;
@@ -65,6 +68,7 @@ export const sendOrderConfirmationEmail = async (orderData: OrderEmailParams): P
       customer_phone: orderData.customerPhone,
       shipping_address: orderData.shippingAddress,
       items_list: itemsListWithGuide,
+      order_message: ORDER_CONFIRMATION_MESSAGE,
       subtotal: `$${orderData.subtotal.toFixed(2)}`,
       shipping: `$${orderData.shipping.toFixed(2)}`,
       discount: orderData.discount && orderData.discount > 0

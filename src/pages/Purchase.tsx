@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 const Purchase = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
+  const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");
   const arProduct = getProductById("slide-stock-assist");
   const gunMat = getProductById("thompson-gun-mat");
+  const publicEnemyHat = getProductById("public-enemy-hat");
 
-  if (!thompsonProduct || !thompsonChargingHandle || !arProduct || !gunMat) {
+  if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !arProduct || !gunMat || !publicEnemyHat) {
     return null;
   }
 
@@ -82,7 +84,7 @@ const Purchase = () => {
                     </span>
                   )}
                   <p className="text-muted-foreground mb-6 leading-relaxed">
-                    Lightweight black anodized aluminum upgrade for easier M1 Thompson charging handle operation.
+                    Steel charging handle with black oxide finish for easier M1 Thompson charging handle operation.
                   </p>
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <span className="text-3xl font-bold text-tactical-green">
@@ -99,6 +101,34 @@ const Purchase = () => {
                       className="w-full text-lg py-4"
                     >
                       {thompsonChargingHandle.inStock === false ? "View Product" : "View Charging Handle"}
+                    </TacticalButton>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
+                <img
+                  src={thompsonTopChargingHandle.images[0].src}
+                  alt={thompsonTopChargingHandle.images[0].alt}
+                  className="w-full h-80 object-cover bg-white"
+                />
+                <div className="p-8 flex flex-col flex-grow">
+                  <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Thompson Platform</p>
+                  <h2 className="text-3xl font-bold text-foreground mb-3">{thompsonTopChargingHandle.name}</h2>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    Contoured steel top charging handle with rounded, chamfered edges for the 1927A Thompson.
+                  </p>
+                  <div className="flex items-center gap-3 mb-6 flex-wrap">
+                    <span className="text-3xl font-bold text-tactical-green">
+                      ${thompsonTopChargingHandle.price.toFixed(2)}
+                    </span>
+                    <span className="bg-tactical-green/15 text-tactical-green px-2 py-1 rounded text-xs font-bold border border-tactical-green/30">
+                      Free Shipping
+                    </span>
+                  </div>
+                  <Link to={`/product/${thompsonTopChargingHandle.id}`} className="mt-auto">
+                    <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">
+                      View Top Charging Handle
                     </TacticalButton>
                   </Link>
                 </div>
@@ -133,16 +163,16 @@ const Purchase = () => {
 
               <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
                 <img
-                  src="/hat2.jpg"
-                  alt="Chicago Typewriter Ball Cap"
+                  src={publicEnemyHat.images[0].src}
+                  alt={publicEnemyHat.images[0].alt}
                   className="w-full h-80 object-cover bg-white"
                 />
                 <div className="p-8 flex flex-col flex-grow">
                   <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Apparel & Accessories</p>
                   <h2 className="text-3xl font-bold text-foreground mb-3">Gun Mats & Apparel</h2>
                   <p className="text-muted-foreground mb-6 leading-relaxed">
-                    Thompson gun mats, caps, and other gear—starting with the navy carbine mat and
-                    Chicago Typewriter ball cap.
+                    Thompson gun mats, caps, and other gear—including the Public Enemy ball cap and
+                    Chicago Typewriter cap.
                   </p>
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <span className="text-3xl font-bold text-tactical-green">
