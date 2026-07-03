@@ -1,5 +1,6 @@
 // Coupon codes are server-side only — never expose these in frontend source.
 const { calculateShippingCost } = require('./shipping');
+const { resolveItemPrice, areCouponsAllowed } = require('./sale');
 const COUPONS = {
   KXFVETS2026: {
     type: 'percent',
@@ -27,7 +28,7 @@ function validateCoupon(code) {
 
 function calculateSubtotal(items = []) {
   return items.reduce((sum, item) => {
-    const price = Number(item.price);
+    const price = resolveItemPrice(item);
     const quantity = Number(item.quantity);
     if (!Number.isFinite(price) || !Number.isFinite(quantity) || quantity <= 0) {
       return sum;
@@ -43,6 +44,11 @@ function roundCurrency(amount) {
 function calculateOrderTotals(items, couponCode = null) {
   const subtotal = roundCurrency(calculateSubtotal(items));
   const shipping = calculateShippingCost(subtotal);
+
+  if (couponCode && !areCouponsAllowed()) {
+    return { subtotal, shipping, discount: 0, total: roundCurrency(subtotal + shipping), coupon: null, couponBlocked: true };
+  }
+
   const coupon = couponCode ? validateCoupon(couponCode) : null;
 
   let discount = 0;
@@ -58,4 +64,5 @@ function calculateOrderTotals(items, couponCode = null) {
 module.exports = {
   validateCoupon,
   calculateOrderTotals,
+  areCouponsAllowed,
 };

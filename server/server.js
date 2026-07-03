@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
-const { validateCoupon, calculateOrderTotals } = require('./coupons');
+const { validateCoupon, calculateOrderTotals, areCouponsAllowed } = require('./coupons');
 require('dotenv').config();
 
 const app = express();
@@ -168,6 +168,13 @@ app.post('/api/validate-coupon', (req, res) => {
       });
     }
 
+    if (!areCouponsAllowed()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Coupon codes cannot be combined with sale pricing during the 4th of July sale.',
+      });
+    }
+
     const coupon = validateCoupon(couponCode);
     if (!coupon) {
       return res.status(400).json({
@@ -215,6 +222,13 @@ app.post('/api/process-payment', async (req, res) => {
     }
 
     const normalizedCouponCode = couponCode ? String(couponCode).trim() : null;
+
+    if (normalizedCouponCode && !areCouponsAllowed()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Coupon codes cannot be combined with sale pricing during the 4th of July sale.',
+      });
+    }
 
     if (normalizedCouponCode && !validateCoupon(normalizedCouponCode)) {
       return res.status(400).json({

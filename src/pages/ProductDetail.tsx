@@ -10,6 +10,8 @@ import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
 import { SHIPPING_POLICY_TEXT } from "@/lib/shipping";
+import { isProductOnSale } from "@/lib/sale";
+import { SaleBadge, SalePrice } from "@/components/SalePrice";
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -178,20 +180,17 @@ const ProductDetail = () => {
                   <h1 className="text-4xl font-bold text-foreground tracking-wider mb-4">
                     {product.name}
                   </h1>
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="text-4xl font-bold text-tactical-green">
-                      ${product.price.toFixed(2)}
-                    </span>
-                    {product.originalPrice && (
-                      <>
-                        <span className="text-2xl text-muted-foreground line-through">
-                          ${product.originalPrice.toFixed(2)}
-                        </span>
-                        <span className="bg-tactical-green text-tactical-dark px-3 py-1 rounded text-sm font-bold">
-                          Save ${(product.originalPrice - product.price).toFixed(2)}
-                        </span>
-                      </>
-                    )}
+                  {isProductOnSale(product.id) && (
+                    <div className="mb-3">
+                      <SaleBadge />
+                    </div>
+                  )}
+                  <div className="mb-6">
+                    <SalePrice
+                      price={product.price}
+                      originalPrice={product.originalPrice}
+                      size="lg"
+                    />
                   </div>
                   {isOutOfStock && (
                     <div className="mb-4">

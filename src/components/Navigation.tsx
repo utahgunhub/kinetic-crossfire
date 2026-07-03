@@ -1,3 +1,5 @@
+import Navigation from "@/components/Navigation";
+import July4SaleBanner from "@/components/July4SaleBanner";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -8,7 +10,9 @@ const Navigation = () => {
   const totalItems = getTotalItems();
 
   return (
-    <nav className="bg-tactical-darker border-b border-tactical-green-dim/30 sticky top-0 z-50">
+    <>
+      <July4SaleBanner />
+      <nav className="bg-tactical-darker border-b border-tactical-green-dim/30 sticky top-0 z-50">
       <div className="container mx-auto px-6">
         <div className="relative flex items-center justify-between h-16">
           {/* Logo */}
@@ -59,6 +63,7 @@ const Navigation = () => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

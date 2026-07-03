@@ -13,6 +13,7 @@ import {
   usStates,
 } from "@/lib/shippingRestrictions";
 import { hasRestrictedShipping } from "@/data/products";
+import { areCouponsAllowed } from "@/lib/sale";
 import {
   calculateShippingCost,
   formatShippingCost,
@@ -89,6 +90,7 @@ const Checkout = () => {
   const cartRequiresShippingRestriction = items.some((item) =>
     hasRestrictedShipping(item.product)
   );
+  const couponsAllowed = areCouponsAllowed();
   const shippingStateOptions = cartRequiresShippingRestriction
     ? allowedShippingStates
     : usStates;
@@ -111,6 +113,15 @@ const Checkout = () => {
   }));
 
   const handleApplyCoupon = async () => {
+    if (!couponsAllowed) {
+      toast({
+        title: "Coupons Unavailable",
+        description: "Coupon codes cannot be combined with 4th of July sale pricing.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const trimmedCode = couponInput.trim();
     if (!trimmedCode) {
       toast({
@@ -172,6 +183,14 @@ const Checkout = () => {
     // Check if we're in a secure context (HTTPS or localhost)
     console.log('🔒 Secure context:', window.isSecureContext);
   }, []);
+
+  useEffect(() => {
+    if (!couponsAllowed && appliedCouponCode) {
+      setAppliedCouponCode(null);
+      setDiscount(0);
+      setCouponInput("");
+    }
+  }, [couponsAllowed, appliedCouponCode]);
 
   const handleShippingInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -789,39 +808,47 @@ const Checkout = () => {
                     </div>
                     )}
 
-                    <div className="mb-4 pb-4 border-b border-tactical-green-dim/30">
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Coupon Code
-                      </label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={couponInput}
-                          onChange={(e) => setCouponInput(e.target.value)}
-                          disabled={!!appliedCouponCode || isApplyingCoupon}
-                          placeholder="Enter code"
-                          className="flex-1 px-3 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground text-sm disabled:opacity-60"
-                        />
-                        {appliedCouponCode ? (
-                          <button
-                            type="button"
-                            onClick={handleRemoveCoupon}
-                            className="px-3 py-2 text-sm text-muted-foreground hover:text-red-400 transition-colors"
-                          >
-                            Remove
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={handleApplyCoupon}
-                            disabled={isApplyingCoupon || !couponInput.trim()}
-                            className="px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded text-sm text-foreground hover:border-tactical-green transition-colors disabled:opacity-60"
-                          >
-                            {isApplyingCoupon ? 'Applying...' : 'Apply'}
-                          </button>
-                        )}
+                    {couponsAllowed ? (
+                      <div className="mb-4 pb-4 border-b border-tactical-green-dim/30">
+                        <label className="block text-sm font-medium text-foreground mb-2">
+                          Coupon Code
+                        </label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={couponInput}
+                            onChange={(e) => setCouponInput(e.target.value)}
+                            disabled={!!appliedCouponCode || isApplyingCoupon}
+                            placeholder="Enter code"
+                            className="flex-1 px-3 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded focus:outline-none focus:border-tactical-green text-foreground text-sm disabled:opacity-60"
+                          />
+                          {appliedCouponCode ? (
+                            <button
+                              type="button"
+                              onClick={handleRemoveCoupon}
+                              className="px-3 py-2 text-sm text-muted-foreground hover:text-red-400 transition-colors"
+                            >
+                              Remove
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={handleApplyCoupon}
+                              disabled={isApplyingCoupon || !couponInput.trim()}
+                              className="px-4 py-2 bg-tactical-surface border border-tactical-green-dim/30 rounded text-sm text-foreground hover:border-tactical-green transition-colors disabled:opacity-60"
+                            >
+                              {isApplyingCoupon ? 'Applying...' : 'Apply'}
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="mb-4 pb-4 border-b border-tactical-green-dim/30">
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Coupon codes are unavailable during the 4th of July sale. Sale prices already reflect the discount.
+                        </p>
+                      </div>
+                    )}
 
                     <div className="flex justify-between text-muted-foreground">
                       <span>Subtotal</span>

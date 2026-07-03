@@ -6,6 +6,7 @@ import { getProductById } from "@/data/products";
 import { thompsonFrtDemoVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { Star, Quote } from "lucide-react";
+import { isProductOnSale } from "@/lib/sale";
 
 const Index = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
@@ -47,7 +48,7 @@ const Index = () => {
           <div className="w-full">
             <div className="max-w-3xl">
               <p className="text-tactical-green text-sm md:text-base font-semibold uppercase tracking-[0.4em] mb-4">
-                New Product Release
+                {isProductOnSale(thompsonProduct.id) ? "4th of July Sale" : "New Product Release"}
               </p>
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6">
                 {homepageThompsonTitle}
@@ -59,8 +60,18 @@ const Index = () => {
 
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="px-4 py-2 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green font-semibold">
-                  $275
+                  ${thompsonProduct.price.toFixed(0)}
+                  {thompsonProduct.originalPrice && (
+                    <span className="ml-2 line-through opacity-60 text-red-300">
+                      ${thompsonProduct.originalPrice.toFixed(0)}
+                    </span>
+                  )}
                 </span>
+                {isProductOnSale(thompsonProduct.id) && (
+                  <span className="px-4 py-2 rounded-full border border-red-500/40 bg-red-500/15 text-red-300 font-semibold uppercase text-sm tracking-wider">
+                    On Sale
+                  </span>
+                )}
                 <span className="px-4 py-2 rounded-full border border-tactical-green/30 bg-black/20 text-foreground font-semibold">
                   Free Shipping
                 </span>
@@ -324,7 +335,11 @@ const Index = () => {
               <div className="rounded-xl border border-tactical-green-dim/30 bg-tactical-dark p-6">
                 <h3 className="text-xl font-semibold text-foreground mb-3">Shipping</h3>
                 <p className="text-muted-foreground text-sm">
-                  Thompson orders are priced at $275 with free shipping included. Shipping times are 3-5 days,
+                  Thompson orders are priced at ${thompsonProduct.price.toFixed(0)}
+                  {thompsonProduct.originalPrice ? (
+                    <> (<span className="line-through">${thompsonProduct.originalPrice.toFixed(0)}</span> during our 4th of July sale)</>
+                  ) : null}{" "}
+                  with free shipping included. Shipping times are 3-5 days,
                   but due to the current high volume of orders this may be longer.
                 </p>
               </div>
@@ -389,9 +404,22 @@ const Index = () => {
               <div className="p-8">
                 <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
                   <h2 className="text-3xl font-bold text-foreground">{homepageThompsonTitle}</h2>
-                  <span className="bg-tactical-green text-tactical-dark px-3 py-1 rounded text-sm font-bold">
-                    ${thompsonProduct.price.toFixed(2)} with free shipping
-                  </span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {isProductOnSale(thompsonProduct.id) && (
+                      <span className="px-3 py-1 rounded-full border border-red-500/40 bg-red-500/15 text-red-400 text-xs font-bold uppercase tracking-wider">
+                        On Sale
+                      </span>
+                    )}
+                    <span className="bg-tactical-green text-tactical-dark px-3 py-1 rounded text-sm font-bold">
+                      ${thompsonProduct.price.toFixed(2)}
+                      {thompsonProduct.originalPrice && (
+                        <span className="ml-2 line-through opacity-70">
+                          ${thompsonProduct.originalPrice.toFixed(2)}
+                        </span>
+                      )}{" "}
+                      with free shipping
+                    </span>
+                  </div>
                 </div>
 
                 <p className="text-muted-foreground leading-relaxed mb-6">

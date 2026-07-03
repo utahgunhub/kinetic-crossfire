@@ -1,3 +1,5 @@
+import { applySalePricing } from "@/lib/sale";
+
 export type ProductCategory = "thompson" | "ar" | "apparel";
 
 export interface Product {
@@ -312,11 +314,15 @@ export const products: Product[] = [
 ];
 
 export const getProductById = (id: string): Product | undefined => {
-  return products.find(product => product.id === id);
+  const product = products.find((product) => product.id === id);
+  if (!product) return undefined;
+  return applySalePricing(product);
 };
 
 export const getProductsByCategory = (category: ProductCategory): Product[] => {
-  return products.filter((product) => product.category === category);
+  return products
+    .filter((product) => product.category === category)
+    .map(applySalePricing);
 };
 
 export const hasRestrictedShipping = (product: Product): boolean => {

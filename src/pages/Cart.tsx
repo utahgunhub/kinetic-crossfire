@@ -144,6 +144,11 @@ const Cart = () => {
                           </p>
                           <p className="text-xs text-muted-foreground">
                             ${item.product.price.toFixed(2)} each
+                            {item.product.originalPrice && (
+                              <span className="ml-1 line-through">
+                                ${item.product.originalPrice.toFixed(2)}
+                              </span>
+                            )}
                           </p>
                         </div>
                       </div>

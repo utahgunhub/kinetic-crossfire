@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product } from '@/data/products';
+import { Product, getProductById } from '@/data/products';
 
 export interface CartItem {
   product: Product;
@@ -19,10 +19,16 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const refreshCartPrices = (cartItems: CartItem[]): CartItem[] =>
+    cartItems.map((item) => {
+      const freshProduct = getProductById(item.product.id);
+      return freshProduct ? { ...item, product: freshProduct } : item;
+    });
+
   const [items, setItems] = useState<CartItem[]>(() => {
-    // Load cart from localStorage on initialization
     const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    if (!savedCart) return [];
+    return refreshCartPrices(JSON.parse(savedCart));
   });
 
   // Save cart to localStorage whenever it changes
@@ -30,20 +36,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
+  useEffect(() => {
+    setItems((currentItems) => refreshCartPrices(currentItems));
+  }, []);
+
   const addToCart = (product: Product, quantity: number) => {
+    const pricedProduct = getProductById(product.id) ?? product;
+
     setItems(currentItems => {
-      const existingItem = currentItems.find(item => item.product.id === product.id);
+      const existingItem = currentItems.find(item => item.product.id === pricedProduct.id);
       
       if (existingItem) {
-        // Update quantity if item already exists
         return currentItems.map(item =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+          item.product.id === pricedProduct.id
+            ? { ...item, quantity: item.quantity + quantity, product: pricedProduct }
             : item
         );
       } else {
-        // Add new item
-        return [...currentItems, { product, quantity }];
+        return [...currentItems, { product: pricedProduct, quantity }];
       }
     });
   };
@@ -59,11 +69,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     
     setItems(currentItems =>
-      currentItems.map(item =>
-        item.product.id === productId
-          ? { ...item, quantity }
-          : item
-      )
+      currentItems.map(item => {
+        if (item.product.id !== productId) return item;
+        const freshProduct = getProductById(productId);
+        return {
+          ...item,
+          quantity,
+          product: freshProduct ?? item.product,
+        };
+      })
     );
   };
 

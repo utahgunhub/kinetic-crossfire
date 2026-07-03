@@ -3,6 +3,8 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { getProductsByCategory } from "@/data/products";
 import { Link } from "react-router-dom";
+import { isProductOnSale } from "@/lib/sale";
+import { SaleBadge, SalePrice } from "@/components/SalePrice";
 
 const Apparel = () => {
   const apparelProducts = getProductsByCategory("apparel");
@@ -50,17 +52,22 @@ const Apparel = () => {
                       <h3 className="text-2xl font-bold text-foreground tracking-wider">
                         {product.name}
                       </h3>
-                      {product.manufacturer && (
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {isProductOnSale(product.id) && <SaleBadge />}
+                        {product.manufacturer && (
                         <span className="text-xs px-2 py-1 rounded-full whitespace-nowrap bg-tactical-green text-tactical-dark">
                           {product.manufacturer}
                         </span>
                       )}
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-4 mb-4 flex-wrap">
-                      <span className="text-3xl font-bold text-tactical-green">
-                        ${product.price.toFixed(2)}
-                      </span>
+                    <div className="mb-4">
+                      <SalePrice
+                        price={product.price}
+                        originalPrice={product.originalPrice}
+                        size="md"
+                      />
                     </div>
 
                     <p className="text-muted-foreground leading-relaxed mb-6">
