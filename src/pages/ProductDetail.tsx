@@ -223,12 +223,10 @@ const ProductDetail = () => {
                 {/* Product Description */}
                 <div className="space-y-4">
                   {product.importantNotice && (
-                    <div className="rounded-lg border border-amber-500/40 bg-amber-500/5 p-6">
-                      <div className="space-y-4 text-muted-foreground leading-relaxed text-sm">
-                        {product.importantNotice.split("\n\n").map((paragraph, index) => (
-                          <p key={index}>{paragraph}</p>
-                        ))}
-                      </div>
+                    <div className="rounded-lg border border-tactical-green/40 bg-tactical-green/10 p-6">
+                      <p className="text-tactical-green font-semibold uppercase tracking-wider text-sm">
+                        {product.importantNotice}
+                      </p>
                     </div>
                   )}
 

@@ -76,8 +76,7 @@ export const products: Product[] = [
     },
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true,
-    importantNotice:
-      "ATTENTION! As this kit has become more widely used we've found that some guns exhibit bolt bounce while others do not. Unfortunately, this is not kit related, and thus we cannot fix or resolve it by changing the kit. A kit which works in one gun can be installed in another and experience out of battery discharges.\n\nTherefore, I must warn more adamantly that your gun may not work with this kit. These kits are still for sale if you wish to experiment with your gun, as they work flawlessly with many of them. The primary promising solution we have discovered so far for guns with bolt bounce is a milled bolt. Going forward, I will be focusing on resolving critical and fundamental issues in the currently produced model of the Thompson semi-auto rifle."
+    importantNotice: "Bolt Bounce Solved"
   },
   {
     id: "thompson-charging-handle",
