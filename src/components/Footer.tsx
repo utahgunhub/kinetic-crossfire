@@ -8,7 +8,7 @@ const Footer = () => {
               KINETIC CROSSFIRE
             </h3>
             <p className="text-muted-foreground max-w-md">
-              Recreational firearm accessories for Thompson and AR platforms. Made in USA.
+              Recreational firearm accessories for Thompson platforms. Made in USA.
             </p>
             <div className="bg-tactical-surface border border-tactical-green-dim/50 rounded p-4 max-w-md">
               <h4 className="font-semibold text-tactical-green text-sm mb-2 uppercase tracking-wide">Important Disclaimer</h4>
@@ -60,7 +60,7 @@ const Footer = () => {
               <ul className="space-y-2 text-muted-foreground">
                 <li>
                   <a 
-                    href="https://www.youtube.com/channel/UCIXCfRaswceIBW404CCfuyQ" 
+                    href="https://www.youtube.com/@dallansilver5327" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-tactical-green transition-colors flex items-center gap-2"

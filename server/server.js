@@ -73,7 +73,7 @@ function getRestrictedShippingState(value = '') {
 }
 
 function orderRequiresShippingRestriction(items = []) {
-  return items.some((item) => item.category !== 'apparel');
+  return items.some((item) => item.productId === 'thompson-blow-back-trigger');
 }
 
 console.log('🚀 Server starting...');

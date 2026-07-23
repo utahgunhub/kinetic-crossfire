@@ -1,8 +1,8 @@
 export const thompsonFrtInstallVideo = {
-  id: "1196397310",
+  id: "1212401001",
   title: "Thompson FRT Install",
-  embedUrl: "https://player.vimeo.com/video/1196397310?badge=0&autopause=0&player_id=0&app_id=58479",
-  link: "https://vimeo.com/1196397310",
+  embedUrl: "https://player.vimeo.com/video/1212401001?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+  link: "https://vimeo.com/1212401001",
 };
 
 export const thompsonFrtDemoVideos = [

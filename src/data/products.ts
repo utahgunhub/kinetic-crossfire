@@ -1,6 +1,6 @@
 import { applySalePricing } from "@/lib/sale";
 
-export type ProductCategory = "thompson" | "ar" | "apparel";
+export type ProductCategory = "thompson" | "apparel";
 
 export interface Product {
   id: string;
@@ -34,8 +34,8 @@ export const products: Product[] = [
     name: "Thompson Blow-Back Trigger",
     category: "thompson",
     price: 275.00,
-    description: "Forced reset trigger system for Thompson carbines and pistols with free shipping included.",
-    detailedDescription: "The Thompson Blow-Back Trigger is an FRT designed for Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith. Turn your Thompson into the gun it was meant to be.",
+    description: "Two position forced reset trigger for Thompson carbines and pistols with free shipping included.",
+    detailedDescription: "The Thompson Blow-Back Trigger is a two position forced reset trigger for Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith. Turn your Thompson into the gun it was meant to be.",
     images: [
       { src: "/thompson-frt/new-product-image.webp", alt: "Thompson Blow-Back Trigger - Main Product View" },
       { src: "/thompson-frt/thompson-gun-2.webp", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
@@ -61,9 +61,9 @@ export const products: Product[] = [
       ],
       usageNotes: [
         "Read the User's Guide before installing and operating this product",
-        "Use only .45 ACP ball ammunition; hollow points and specialty ammunition may cause feeding issues",
-        "Oil the bolt more than usual and prefer thicker oils",
-        "Aluminum receivers require extra caution because the experience is tuned around original steel-gun behavior"
+        "Use only ball .45 ACP ammunition from a reputable American brand",
+        "Oil the bolt more than usual",
+        "This FRT kit must be fitted to the gun and will not drop in"
       ]
     },
     specifications: {
@@ -80,15 +80,16 @@ export const products: Product[] = [
   },
   {
     id: "thompson-charging-handle",
-    name: "Extended Thompson Charging Handle",
+    name: "Extended Thompson Side Charging Handle",
     category: "thompson",
     price: 38,
     description: "Extended steel charging handle for the M1 Thompson Auto Ordnance rifle with black oxide finish. Free shipping included.",
     detailedDescription: "An extended charging handle for the M1 Thompson Auto Ordnance rifle. It is a tasteful upgrade that complements your weapon for anyone who finds the small stock charging handle difficult to use. Machined from steel and coated with black oxide for durability.",
     images: [
-      { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Charging Handle - Main Product View" },
-      { src: "/thompson-charging-handle/Side%20Charging%20Handle%20on%20Gun.png", alt: "Extended Thompson Charging Handle - Installed on Rifle" },
-      { src: "/thompson-charging-handle/side%20charging%20handle.jpg", alt: "Extended Thompson Charging Handle - Product Packaging" }
+      { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Side Charging Handle - Main Product View" },
+      { src: "/thompson-charging-handle/Side%20Charging%20Handle%20on%20Gun.png", alt: "Extended Thompson Side Charging Handle - Installed on Rifle" },
+      { src: "/thompson-charging-handle/sidecharge1.JPG", alt: "Extended Thompson Side Charging Handle - Product Packaging" },
+      { src: "/thompson-charging-handle/sidecharge2.JPG", alt: "Extended Thompson Side Charging Handle - Close-Up View" }
     ],
     features: [
       "Extended handle for easier operation than the small stock charging handle",
@@ -126,7 +127,8 @@ export const products: Product[] = [
     detailedDescription: "A contoured top charging handle for the 1927A Thompson Auto Ordnance rifle. It is made from black oxide coated steel for durability and improved looks. The front edges are rounded and chamfered to provide a comfortable grip for repeated use and dependable charging of the weapon.",
     images: [
       { src: "/top-charging-handle/Top%20Charging%20Handle%20on%20Gun.png", alt: "Contoured Top Thompson Charging Handle - Installed on Rifle" },
-      { src: "/top-charging-handle/top%20charging%20handle.jpg", alt: "Contoured Top Thompson Charging Handle - Product Packaging" }
+      { src: "/top-charging-handle/topcharge1%20(2).JPG", alt: "Contoured Top Thompson Charging Handle - Product Packaging" },
+      { src: "/top-charging-handle/topcharge2.JPG", alt: "Contoured Top Thompson Charging Handle - Close-Up View" }
     ],
     features: [
       "Contoured design with rounded, chamfered front edges for a comfortable grip",
@@ -152,79 +154,6 @@ export const products: Product[] = [
     },
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true
-  },
-  {
-    id: "slide-stock-assist",
-    name: "Slide Stock Assist",
-    category: "ar",
-    price: 19.95,
-    originalPrice: 23.00,
-    description: "Precision-weighted accessory that enhances Slide Fire SSAR-15 SBS stocks for rapid, consistent follow-up shots.",
-    detailedDescription: "The Slide Stock Assist is a precision-weighted spring designed specifically to enhance the performance of Slide Fire Solutions SSAR-15 SBS stocks. This simple device attaches to your existing SSAR-15 SBS stock to deliver extremely rapid, consistent follow-up shots. There are no special tools or modifications required for installation, and no additional parts such as full-auto bolt carrier groups, buffer tube or trigger modifications are necessary. The Slide Assist enables all users to operate it without special technique, even one-handed. It is designed to function on all mil-spec parts. Made in the USA by Kinetic Crossfire.",
-    images: [
-      { src: "/product-1.webp", alt: "Slide Stock Assist - Main View" },
-      { src: "/product-2.webp", alt: "Slide Stock Assist - Detail View" },
-      { src: "/product-3.webp", alt: "Slide Stock Assist - Side View" },
-      { src: "/product-4.webp", alt: "Slide Stock Assist - Installation View" }
-    ],
-    features: [
-      "Simple Install - no modifications needed",
-      "Rapid, consistent follow-up shots",
-      "Compatible with Slide Fire SSAR-15 SBS stocks",
-      "Mil-spec AR-15 compatibility",
-      "One-handed operation",
-      "Made in USA by Kinetic Crossfire"
-    ],
-    compatibility: {
-      compatibleWith: [
-        "Slide Fire Solutions SSAR-15 SBS Stock",
-        "AR-15 rifle platform",
-        ".556 ammunition (recommended)",
-        "Mil-spec triggers and parts"
-      ],
-      usageNotes: [
-        "Requires Slide Fire Solutions SSAR-15 SBS stock",
-        "Run with more oil than usual",
-        "Clean frequently under high rates of fire",
-        "Monitor trigger retaining pins",
-        "Gas block adjustment may be necessary"
-      ]
-    },
-    manufacturer: "Kinetic Crossfire",
-    isKineticCrossfireProduct: true
-  },
-  {
-    id: "ssar-15-sbs",
-    name: "Slide Fire SSAR-15 SBS",
-    category: "ar",
-    price: 199.00,
-    description: "Premium bump stock by Slide Fire Solutions for AR-15 platforms. Works perfectly with our Slide Stock Assist accessory.",
-    detailedDescription: "The SSAR-15 SBS by Slide Fire Solutions is a precision-engineered bump stock designed for AR-15 platforms with carbine-style buffer tubes. This stock delivers smooth and reliable bump-fire operation with enhanced user features. Engineered for precision and built for performance, it provides the foundation for enhanced shooting experiences. For maximum performance, pair with our Kinetic Crossfire Slide Stock Assist accessory for even more rapid, consistent follow-up shots.",
-    images: [
-      { src: "/product-2-1.webp", alt: "Slide Fire SSAR-15 SBS - Main View" },
-      { src: "/product-2-2.webp", alt: "Slide Fire SSAR-15 SBS - Side View" },
-      { src: "/product-2-3.webp", alt: "Slide Fire SSAR-15 SBS - Detail View" },
-      { src: "/product-2-4.webp", alt: "Slide Fire SSAR-15 SBS - Installation View" }
-    ],
-    features: [
-      "Built for AR-15 Platforms: Compatible with carbine-style buffer tubes for easy integration",
-      "High-Strength Polymer Design: Durable construction for long-lasting performance",
-      "Quick Mode Selection: Switch between bump fire and semi-auto with the simple turn of the bump fire switch",
-      "Sling-Ready: Equipped with three-position mounts for nylon webbing sling attachments",
-      "Easy Installation: Includes interface block for fast, secure setup",
-      "Compatible with Kinetic Crossfire Slide Stock Assist for enhanced performance"
-    ],
-    specifications: {
-      "Manufacturer": "Slide Fire Solutions",
-      "Platform": "AR-15",
-      "Buffer Tube": "Carbine-style",
-      "Material": "High-Strength Polymer",
-      "Modes": "Bump Fire / Semi-Auto",
-      "Sling Mounts": "Three-position",
-      "Includes": "Interface block"
-    },
-    manufacturer: "Slide Fire Solutions",
-    isKineticCrossfireProduct: false
   },
   {
     id: "thompson-gun-mat",
@@ -261,9 +190,9 @@ export const products: Product[] = [
     description: "'47 classic clean up ball cap with black stitched Chicago Typewriter logo on white cotton.",
     detailedDescription: "This '47 classic clean up ball cap now represents the Chicago Typewriter in flawless form. A straightforward white cotton with a black stitched logo means it can be washed and worn hard without artwork cracking, fading or peeling like vinyl or ink. Size is adjusted via a strap and brass fitting.",
     images: [
-      { src: "/hat2.jpg", alt: "Chicago Typewriter Ball Cap - Three-Quarter View" },
-      { src: "/hat1.jpg", alt: "Chicago Typewriter Ball Cap - Front View" },
-      { src: "/hat3.jpg", alt: "Chicago Typewriter Ball Cap - Back View" }
+      { src: "/whitehat1.JPG", alt: "Chicago Typewriter Ball Cap - Front View" },
+      { src: "/whitehat2.JPG", alt: "Chicago Typewriter Ball Cap - Three-Quarter View" },
+      { src: "/whitehat3.JPG", alt: "Chicago Typewriter Ball Cap - Back View" }
     ],
     features: [
       "'47 classic clean up adjustable ball cap",
@@ -290,9 +219,9 @@ export const products: Product[] = [
     description: "'47 classic clean up ball cap with red and black stitched Public Enemy logo. Machine washable with adjustable brass fitting.",
     detailedDescription: "Join the ranks of John Dillinger, Baby Face Nelson, and Pretty Boy Floyd as a Public Enemy. Red and black stitching of the logo means it won't fade, peel, or crack like ink or vinyl. This '47 classic clean up is machine washable and has an adjustable brass fitting.",
     images: [
-      { src: "/public-enemy-hat/PE1.jpg", alt: "Public Enemy Ball Cap - Main Product View" },
-      { src: "/public-enemy-hat/PE2.jpg", alt: "Public Enemy Ball Cap - Side View" },
-      { src: "/public-enemy-hat/PE3.jpg", alt: "Public Enemy Ball Cap - Detail View" }
+      { src: "/public-enemy-hat/blackhat1.JPG", alt: "Public Enemy Ball Cap - Front View" },
+      { src: "/public-enemy-hat/blackhat2.JPG", alt: "Public Enemy Ball Cap - Three-Quarter View" },
+      { src: "/public-enemy-hat/blackhat3.JPG", alt: "Public Enemy Ball Cap - Back View" }
     ],
     features: [
       "'47 classic clean up adjustable ball cap",
@@ -324,6 +253,8 @@ export const getProductsByCategory = (category: ProductCategory): Product[] => {
     .map(applySalePricing);
 };
 
+export const RESTRICTED_SHIPPING_PRODUCT_ID = "thompson-blow-back-trigger";
+
 export const hasRestrictedShipping = (product: Product): boolean => {
-  return product.category !== "apparel";
+  return product.id === RESTRICTED_SHIPPING_PRODUCT_ID;
 };

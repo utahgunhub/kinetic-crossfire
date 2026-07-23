@@ -9,7 +9,6 @@ import { CartProvider } from "@/contexts/CartContext";
 import Index from "./pages/Index";
 import Videos from "./pages/Videos";
 import Purchase from "./pages/Purchase";
-import ARPlatform from "./pages/ARPlatform";
 import Apparel from "./pages/Apparel";
 import ProductDetail from "./pages/ProductDetail";
 import Contact from "./pages/Contact";
@@ -34,7 +33,6 @@ const App = () => (
             <Route path="/videos" element={<Videos />} />
             <Route path="/shop" element={<Purchase />} />
             <Route path="/purchase" element={<Purchase />} />
-            <Route path="/shop/ar" element={<ARPlatform />} />
             <Route path="/shop/apparel" element={<Apparel />} />
             <Route path="/product/:productId" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />

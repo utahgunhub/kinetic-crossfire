@@ -8,10 +8,10 @@ console.log('🧪 Testing GunTab Backend Server\n');
 const testOrder = {
   items: [
     {
-      productId: 'slide-stock-assist',
-      name: 'Slide Stock Assist',
-      price: 19.95,
-      quantity: 2
+      productId: 'thompson-blow-back-trigger',
+      name: 'Thompson Blow-Back Trigger',
+      price: 275.00,
+      quantity: 1
     }
   ],
   shippingInfo: {
@@ -25,9 +25,9 @@ const testOrder = {
     zipCode: '12345',
     country: 'United States'
   },
-  subtotal: 39.90,
-  shipping: 8.00,
-  total: 47.90
+  subtotal: 275.00,
+  shipping: 0,
+  total: 275.00
 };
 
 async function runTests() {

@@ -61,7 +61,7 @@ const Contact = () => {
               Contact Us
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Have questions about the Slide Stock Assist? Need technical support or compatibility information? 
+              Have questions about our Thompson products? Need technical support or compatibility information?
               We're here to help.
             </p>
           </div>

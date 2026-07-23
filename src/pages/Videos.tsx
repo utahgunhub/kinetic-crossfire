@@ -14,11 +14,11 @@ const Videos = () => {
       linkLabel: "Watch on Vimeo",
     },
     {
-      id: "1194096597",
-      title: "Out of Battery Troubleshooting",
-      description: "Troubleshooting guide for out-of-battery issues and how to safely deal with them on the Thompson platform.",
-      embedUrl: "https://player.vimeo.com/video/1194096597?badge=0&autopause=0&player_id=0&app_id=58479",
-      link: "https://vimeo.com/1194096597",
+      id: "1212401002",
+      title: "Firing Pin Fitment Video",
+      description: "Guide to firing pin fitment on the Thompson platform.",
+      embedUrl: "https://player.vimeo.com/video/1212401002?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      link: "https://vimeo.com/1212401002",
       linkLabel: "Watch on Vimeo",
     },
     {
@@ -55,42 +55,10 @@ const Videos = () => {
     }
   ];
 
-  const arVideos = [
-    {
-      title: "Slide Stock Assist - Main Demo",
-      description: "Watch the Slide Stock Assist deliver rapid, consistent follow-up shots with precision control.",
-      embedUrl: "https://player.vimeo.com/video/1190162058?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      link: "https://vimeo.com/1190162058",
-      linkLabel: "Watch on Vimeo"
-    },
-    {
-      title: "Field Range Testing",
-      description: "Comprehensive field testing of the Slide Stock Assist in real-world conditions.",
-      embedUrl: "https://player.vimeo.com/video/1190162013?h=325b94a27f",
-      link: "https://vimeo.com/1190162013?h=325b94a27f",
-      linkLabel: "Watch on Vimeo"
-    },
-    {
-      title: "Introduction Video",
-      description: "Learn about the Slide Stock Assist and its key features and benefits.",
-      embedUrl: "https://player.vimeo.com/video/1190165650?h=3a64dcdae6",
-      link: "https://vimeo.com/1190165650?h=3a64dcdae6",
-      linkLabel: "Watch on Vimeo"
-    },
-    {
-      title: "Product Demo",
-      description: "Detailed demonstration of the Slide Stock Assist in action.",
-      embedUrl: "https://player.vimeo.com/video/1190161998?h=30e4213d6a",
-      link: "https://vimeo.com/1190161998?h=30e4213d6a",
-      linkLabel: "Watch on Vimeo"
-    }
-  ];
-
   return (
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section */}
       <section className="relative py-24 bg-tactical-dark">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto">
@@ -98,13 +66,12 @@ const Videos = () => {
               Video Library
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Watch Thompson and AR videos, including installs, demos, and range footage.
+              Watch Thompson installs, demos, troubleshooting, and range footage.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Thompson Videos */}
       <section className="py-16 bg-tactical-surface">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
@@ -136,52 +103,6 @@ const Videos = () => {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* AR Video Grid */}
-      <section className="py-16 bg-tactical-dark">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-foreground mb-12 text-center tracking-wider">
-            AR Videos
-          </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {arVideos.map((video, index) => (
-            <div
-              key={index}
-              className="bg-tactical-surface rounded-lg p-6 border border-tactical-green-dim/30 flex flex-col h-full"
-            >
-              <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={video.embedUrl}
-                  title={video.title}
-                  frameBorder="0"
-                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                  className="absolute inset-0"
-                />
-              </div>
-              <div className="mt-6 flex flex-col flex-1">
-                <h3 className="text-2xl font-semibold text-foreground mb-2">{video.title}</h3>
-                <p className="text-muted-foreground mb-4 flex-1">{video.description}</p>
-                <a
-                  href={video.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-tactical-green hover:text-tactical-green-glow transition-colors font-semibold mt-auto"
-                >
-                  {video.linkLabel ?? "Watch on YouTube"}
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
         </div>
       </section>
 

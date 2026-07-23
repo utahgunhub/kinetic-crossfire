@@ -12,12 +12,10 @@ const Index = () => {
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");
-  const arProduct = getProductById("ssar-15-sbs");
-  const slideStockAssist = getProductById("slide-stock-assist");
   const publicEnemyHat = getProductById("public-enemy-hat");
   const homepageThompsonTitle = "Thompson FRT";
 
-  if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !arProduct || !slideStockAssist || !publicEnemyHat) {
+  if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !publicEnemyHat) {
     return null;
   }
 
@@ -54,7 +52,7 @@ const Index = () => {
                 {homepageThompsonTitle}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
-                An FRT for Thompson carbines and pistols, built to deliver blistering follow-up shots
+                A two position forced reset trigger for Thompson carbines and pistols, built to deliver blistering follow-up shots
                 with a feel true to the original Thompson platform.
               </p>
 
@@ -101,12 +99,12 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Shop By Platform</p>
+              <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Shop the Lineup</p>
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Thompson Leads, AR Still Available
+                Built for Thompsons
               </h2>
               <p className="text-muted-foreground max-w-3xl mx-auto">
-                The homepage now centers the Thompson lineup while keeping the AR products easy to find for returning customers.
+                Forced reset triggers, charging handles, and apparel made for the Thompson platform.
               </p>
             </div>
 
@@ -183,26 +181,6 @@ const Index = () => {
 
               <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
                 <img
-                  src={arProduct.images[0].src}
-                  alt={arProduct.images[0].alt}
-                  className="w-full h-72 object-cover bg-white"
-                />
-                <div className="p-8 flex flex-col flex-1">
-                  <p className="text-sm uppercase tracking-[0.3em] text-tactical-green mb-3">AR Platform</p>
-                  <h3 className="text-3xl font-bold text-foreground mb-3">{slideStockAssist.name}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed flex-1">
-                    {slideStockAssist.description}
-                  </p>
-                  <Link to={`/product/${slideStockAssist.id}`}>
-                    <TacticalButton variant="secondary" size="lg" className="w-full">
-                      Shop AR
-                    </TacticalButton>
-                  </Link>
-                </div>
-              </div>
-
-              <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
-                <img
                   src={publicEnemyHat.images[0].src}
                   alt={publicEnemyHat.images[0].alt}
                   className="w-full h-72 object-cover bg-white"
@@ -234,7 +212,7 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <div className="group relative rounded-2xl border border-tactical-green-dim/40 bg-gradient-to-b from-tactical-surface/90 to-tactical-dark/80 p-8 flex flex-col shadow-lg hover:shadow-[0_0_30px_-5px_hsl(var(--tactical-green)_/_0.15)] hover:border-tactical-green/40 transition-all duration-300">
                   <div className="absolute top-6 right-6 text-tactical-green/20 group-hover:text-tactical-green/35 transition-colors">
                     <Quote className="w-12 h-12" strokeWidth={1.5} aria-hidden />
@@ -268,24 +246,6 @@ const Index = () => {
                   <div className="flex items-center justify-between gap-3 pt-4 border-t border-tactical-green-dim/30">
                     <span className="font-semibold text-foreground uppercase tracking-wider text-sm">Larry</span>
                     <span className="text-xs uppercase tracking-wider text-tactical-green/80 bg-tactical-green/10 px-2.5 py-1 rounded-full">Thompson</span>
-                  </div>
-                </div>
-
-                <div className="group relative rounded-2xl border border-tactical-green-dim/40 bg-gradient-to-b from-tactical-surface/90 to-tactical-dark/80 p-8 flex flex-col shadow-lg hover:shadow-[0_0_30px_-5px_hsl(var(--tactical-green)_/_0.15)] hover:border-tactical-green/40 transition-all duration-300">
-                  <div className="absolute top-6 right-6 text-tactical-green/20 group-hover:text-tactical-green/35 transition-colors">
-                    <Quote className="w-12 h-12" strokeWidth={1.5} aria-hidden />
-                  </div>
-                  <div className="flex gap-1 mb-5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-tactical-green text-tactical-green shrink-0" aria-hidden />
-                    ))}
-                  </div>
-                  <p className="text-foreground/95 leading-relaxed flex-1 mb-6 text-[15px]">
-                    Dallan’s product for my AR has been a solid addition, and despite a few user-generated hiccups, his commitment to support stood out. He took the time to troubleshoot, even dedicating his own time to come to the range, analyze the issue, and formulate a concrete plan to resolve it. The product itself is great, and I’m looking forward to trying more of the products he develops.
-                  </p>
-                  <div className="flex items-center justify-between gap-3 pt-4 border-t border-tactical-green-dim/30">
-                    <span className="font-semibold text-foreground uppercase tracking-wider text-sm">C. Martin</span>
-                    <span className="text-xs uppercase tracking-wider text-tactical-green/80 bg-tactical-green/10 px-2.5 py-1 rounded-full">Slide Stock Assist</span>
                   </div>
                 </div>
               </div>

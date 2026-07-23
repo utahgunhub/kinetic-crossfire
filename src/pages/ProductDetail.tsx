@@ -22,17 +22,9 @@ const ProductDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const shopPath =
-    product?.category === "apparel"
-      ? "/shop/apparel"
-      : product?.category === "thompson"
-        ? "/shop"
-        : "/shop/ar";
+    product?.category === "apparel" ? "/shop/apparel" : "/shop";
   const shopLabel =
-    product?.category === "apparel"
-      ? "Shop Apparel"
-      : product?.category === "thompson"
-        ? "Shop"
-        : "Shop AR";
+    product?.category === "apparel" ? "Shop Apparel" : "Shop";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
   const isApparelProduct = product?.category === "apparel";
   const isMadeInUSA = product?.features.some((feature) =>
@@ -41,7 +33,7 @@ const ProductDetail = () => {
   const isOutOfStock = product?.inStock === false;
   const showShippingRestriction = product ? hasRestrictedShipping(product) : false;
   const productDescription = isThompsonProduct
-    ? "Forced reset trigger system for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
+    ? "Two position forced reset trigger for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
     : product.detailedDescription;
   const displayFeatures = isThompsonProduct
     ? [

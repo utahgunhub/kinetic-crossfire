@@ -14,8 +14,6 @@ const CATALOG_PRICES = {
   'thompson-blow-back-trigger': 275,
   'thompson-charging-handle': 38,
   'thompson-top-charging-handle': 40,
-  'slide-stock-assist': 19.95,
-  'ssar-15-sbs': 199,
   'thompson-gun-mat': 36,
   'chicago-typewriter-cap': 32,
   'public-enemy-hat': 32,
