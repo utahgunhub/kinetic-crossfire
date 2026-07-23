@@ -13,6 +13,7 @@ export interface Product {
   images: Array<{
     src: string;
     alt: string;
+    objectPosition?: string;
   }>;
   features: string[];
   compatibility?: {
@@ -86,7 +87,7 @@ export const products: Product[] = [
     description: "Extended steel charging handle for the M1 Thompson Auto Ordnance rifle with black oxide finish. Free shipping included.",
     detailedDescription: "An extended charging handle for the M1 Thompson Auto Ordnance rifle. It is a tasteful upgrade that complements your weapon for anyone who finds the small stock charging handle difficult to use. Machined from steel and coated with black oxide for durability.",
     images: [
-      { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Side Charging Handle - Main Product View" },
+      { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Side Charging Handle - Main Product View", objectPosition: "center 25%" },
       { src: "/thompson-charging-handle/Side%20Charging%20Handle%20on%20Gun.png", alt: "Extended Thompson Side Charging Handle - Installed on Rifle" },
       { src: "/thompson-charging-handle/sidecharge1.JPG", alt: "Extended Thompson Side Charging Handle - Product Packaging" },
       { src: "/thompson-charging-handle/sidecharge2.JPG", alt: "Extended Thompson Side Charging Handle - Close-Up View" }

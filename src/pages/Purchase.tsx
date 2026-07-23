@@ -72,6 +72,7 @@ const Purchase = () => {
                   src={thompsonChargingHandle.images[0].src}
                   alt={thompsonChargingHandle.images[0].alt}
                   className="w-full h-80 object-cover bg-white"
+                  style={{ objectPosition: thompsonChargingHandle.images[0].objectPosition ?? "center" }}
                 />
                 <div className="p-8 flex flex-col flex-grow">
                   <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Thompson Platform</p>

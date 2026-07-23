@@ -142,6 +142,12 @@ const ProductDetail = () => {
                     src={product.images[selectedImageIndex]?.src || product.images[0].src} 
                     alt={product.images[selectedImageIndex]?.alt || product.images[0].alt} 
                     className="w-full aspect-square object-cover rounded-lg border-2 border-tactical-green cursor-pointer hover:border-tactical-green/80 transition-all duration-300 hover:scale-[1.02]"
+                    style={{
+                      objectPosition:
+                        product.images[selectedImageIndex]?.objectPosition ??
+                        product.images[0].objectPosition ??
+                        "center",
+                    }}
                     onClick={() => openModal(selectedImageIndex)}
                   />
                 </div>
