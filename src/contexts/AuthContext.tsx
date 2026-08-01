@@ -48,11 +48,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   const refreshRoles = useCallback(async () => {
-    if (!supabase || !session?.user) {
+    if (!supabase) {
       setIsDealer(false);
       setIsAdmin(false);
       return;
     }
+
+    const {
+      data: { session: currentSession },
+    } = await supabase.auth.getSession();
+
+    if (!currentSession?.user) {
+      setIsDealer(false);
+      setIsAdmin(false);
+      return;
+    }
+
+    setSession(currentSession);
+    setUser(currentSession.user);
 
     const [{ data: adminData }, { data: dealerData }] = await Promise.all([
       supabase.rpc("check_is_admin"),
@@ -61,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     setIsAdmin(!!adminData);
     setIsDealer(!!dealerData);
-  }, [session?.user]);
+  }, []);
 
   const completeDealerRegistration = useCallback(async () => {
     await completeDealerRegistrationViaSupabase();

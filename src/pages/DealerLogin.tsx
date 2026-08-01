@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
-import { useAuth, completeDealerRegistrationViaSupabase } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { ArrowRight, LogIn } from "lucide-react";
 
 const inputClassName =
@@ -16,7 +16,7 @@ const buttonClassName =
 
 const DealerLogin = () => {
   const navigate = useNavigate();
-  const { refreshRoles } = useAuth();
+  const { completeDealerRegistration } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,13 +40,12 @@ const DealerLogin = () => {
       if (!data.session) throw new Error("Sign in did not return a session.");
 
       try {
-        await completeDealerRegistrationViaSupabase();
+        await completeDealerRegistration();
       } catch (regError) {
         await supabase.auth.signOut();
         throw regError;
       }
 
-      await refreshRoles();
       toast.success("Signed in with dealer pricing.");
       navigate("/shop");
     } catch (error) {

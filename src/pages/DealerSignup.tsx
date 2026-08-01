@@ -7,10 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
-import { completeDealerRegistrationViaSupabase } from "@/contexts/AuthContext";
+import { completeDealerRegistrationViaSupabase, useAuth } from "@/contexts/AuthContext";
 
 const DealerSignup = () => {
   const navigate = useNavigate();
+  const { completeDealerRegistration } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,38 +38,34 @@ const DealerSignup = () => {
     setIsSubmitting(true);
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const { data, error } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: normalizedEmail,
         password,
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
 
-      let session = data.session;
-      if (!session) {
-        const { data: signInData, error: signInError } =
-          await supabase.auth.signInWithPassword({
-            email: normalizedEmail,
-            password,
-          });
-        if (signInError) throw signInError;
-        session = signInData.session;
-      }
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email: normalizedEmail,
+          password,
+        });
 
-      if (!session) {
+      if (signInError) throw signInError;
+      if (!signInData.session) {
         throw new Error(
           "Account was created but could not be signed in. Contact support."
         );
       }
 
       try {
-        await completeDealerRegistrationViaSupabase();
+        await completeDealerRegistration();
       } catch (regError) {
         await supabase.auth.signOut();
         throw regError;
       }
 
-      toast.success("Dealer account created. Welcome!");
+      toast.success("Dealer account created. You're signed in.");
       navigate("/shop");
     } catch (error) {
       console.error(error);
