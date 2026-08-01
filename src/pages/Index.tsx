@@ -111,7 +111,7 @@ const Index = () => {
             <div className="grid lg:grid-cols-2 gap-8">
               <div className="rounded-2xl overflow-hidden border border-tactical-green-dim/30 bg-tactical-surface/70 flex flex-col h-full">
                 <img
-                  src="/Coverpic.jpg"
+                  src="/Coverpic.webp"
                   alt="Thompson carbine"
                   className="w-full h-72 object-cover"
                 />

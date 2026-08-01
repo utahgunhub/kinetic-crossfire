@@ -98,8 +98,26 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-8 pt-8 border-t border-tactical-green-dim/30 text-center text-muted-foreground">
-          <p>&copy; 2024 Kinetic Crossfire. All rights reserved.</p>
+        <div className="mt-8 pt-8 border-t border-tactical-green-dim/30 text-muted-foreground space-y-4">
+          <p className="text-xs leading-relaxed max-w-3xl mx-auto text-center">
+            Kinetic Crossfire is not owned by or affiliated with Kahr Arms or Auto Ordnance in any way.
+            Any use of their names or branding is solely to provide accurate information regarding the
+            compatibility of our products.
+          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm">
+            <p>&copy; 2024 Kinetic Crossfire. All rights reserved.</p>
+            <p>
+              Website Created by{" "}
+              <a
+                href="https://www.zensitemedia.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-tactical-green hover:text-tactical-green-glow transition-colors underline underline-offset-4"
+              >
+                Zensite Media
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

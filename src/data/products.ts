@@ -32,21 +32,23 @@ export interface Product {
 export const products: Product[] = [
   {
     id: "thompson-blow-back-trigger",
-    name: "Thompson Blow-Back Trigger",
+    name: "Thompson Blow Back Trigger Gen II",
     category: "thompson",
     price: 275.00,
-    description: "Two position forced reset trigger for Thompson carbines and pistols with free shipping included.",
-    detailedDescription: "The Thompson Blow-Back Trigger is a two position forced reset trigger for Thompson carbines and pistols. It delivers a blistering rate of fire true to the original Thompson submachine gun thanks to a smoothly integrated forced reset trigger principle. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith. Turn your Thompson into the gun it was meant to be.",
+    description: "Gen II two-position forced reset trigger for Thompson carbines and pistols with an oversized firing pin. Free shipping included.",
+    detailedDescription: "The Thompson Blow Back Trigger Gen II is a two position forced reset trigger for Thompson carbines and pistols. This is the second generation of the kit with an oversized firing pin. This oversized firing pin must be fitted to the gun, and provides a long trigger pull that slows the rate of fire and eliminates bolt bounce. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith.",
     images: [
-      { src: "/thompson-frt/new-product-image.webp", alt: "Thompson Blow-Back Trigger - Main Product View" },
-      { src: "/thompson-frt/thompson-gun-2.webp", alt: "Thompson Blow-Back Trigger - Thompson Side View" },
-      { src: "/thompson-frt/thompson-gun-3.webp", alt: "Thompson Blow-Back Trigger - Installed Detail" },
-      { src: "/thompson-frt/thompson-gun-4.webp", alt: "Thompson Blow-Back Trigger - Range Configuration" },
-      { src: "/thompson-frt/thompson-gun-5.webp", alt: "Thompson Blow-Back Trigger - Close-Up View" }
+      { src: "/new-firing-pin/kit1.JPG", alt: "Thompson Blow Back Trigger Gen II - Kit View" },
+      { src: "/new-firing-pin/kit2.JPG", alt: "Thompson Blow Back Trigger Gen II - Kit Components" },
+      { src: "/new-firing-pin/firingpin.JPG", alt: "Thompson Blow Back Trigger Gen II - Firing Pin" },
+      { src: "/new-firing-pin/disconnect.JPG", alt: "Thompson Blow Back Trigger Gen II - Disconnect" },
+      { src: "/new-firing-pin/fpvgun.jpg", alt: "Thompson Blow Back Trigger Gen II - Installed on Firearm" },
+      { src: "/new-firing-pin/1927%20pic.jpg", alt: "Thompson Blow Back Trigger Gen II - 1927 Thompson" }
     ],
     features: [
+      "Second generation (Gen II) kit with oversized firing pin",
+      "Long trigger pull slows rate of fire and eliminates bolt bounce; firing pin must be fitted to the gun",
       "Designed for Thompson carbines and pistols",
-      "Blistering rate of fire with a smooth forced reset trigger feel",
       "Machined from durable steel alloy for rapid fire and high heat use",
       "Simple installation with minimal tools, though fitment may require a gunsmith",
       "Made in the USA",
@@ -84,20 +86,19 @@ export const products: Product[] = [
     name: "Extended Thompson Side Charging Handle",
     category: "thompson",
     price: 38,
-    description: "Extended steel charging handle for the M1 Thompson Auto Ordnance rifle with black oxide finish. Free shipping included.",
+    description: "Extended steel charging handle for the M1 Thompson Auto Ordnance rifle with black oxide finish.",
     detailedDescription: "An extended charging handle for the M1 Thompson Auto Ordnance rifle. It is a tasteful upgrade that complements your weapon for anyone who finds the small stock charging handle difficult to use. Machined from steel and coated with black oxide for durability.",
     images: [
-      { src: "/thompson-charging-handle/Handle1.jpg", alt: "Extended Thompson Side Charging Handle - Main Product View", objectPosition: "center 25%" },
-      { src: "/thompson-charging-handle/Side%20Charging%20Handle%20on%20Gun.png", alt: "Extended Thompson Side Charging Handle - Installed on Rifle" },
-      { src: "/thompson-charging-handle/sidecharge1.JPG", alt: "Extended Thompson Side Charging Handle - Product Packaging" },
-      { src: "/thompson-charging-handle/sidecharge2.JPG", alt: "Extended Thompson Side Charging Handle - Close-Up View" }
+      { src: "/thompson-charging-handle/Handle1.webp", alt: "Extended Thompson Side Charging Handle - Main Product View", objectPosition: "center 12%" },
+      { src: "/thompson-charging-handle/side-charging-handle-on-gun.webp", alt: "Extended Thompson Side Charging Handle - Installed on Rifle" },
+      { src: "/thompson-charging-handle/sidecharge1.webp", alt: "Extended Thompson Side Charging Handle - Product Packaging" },
+      { src: "/thompson-charging-handle/sidecharge2.webp", alt: "Extended Thompson Side Charging Handle - Close-Up View" }
     ],
     features: [
       "Extended handle for easier operation than the small stock charging handle",
       "Machined steel construction with black oxide coating",
       "Tasteful upgrade that complements your rifle",
-      "Designed for the M1 Thompson Auto Ordnance rifle",
-      "Free shipping included"
+      "Designed for the M1 Thompson Auto Ordnance rifle"
     ],
     compatibility: {
       compatibleWith: [
@@ -113,8 +114,7 @@ export const products: Product[] = [
       "Material": "Steel",
       "Finish": "Black oxide",
       "Overall Length": "1 15/16 in.",
-      "Handle Grip Length": "1 3/8 in.",
-      "Shipping": "Free shipping"
+      "Handle Grip Length": "1 3/8 in."
     },
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true
@@ -124,19 +124,18 @@ export const products: Product[] = [
     name: "Contoured Top Thompson Charging Handle",
     category: "thompson",
     price: 40,
-    description: "Contoured top charging handle for the 1927A Thompson Auto Ordnance rifle with black oxide coated steel construction. Free shipping included.",
+    description: "Contoured top charging handle for the 1927A Thompson Auto Ordnance rifle with black oxide coated steel construction.",
     detailedDescription: "A contoured top charging handle for the 1927A Thompson Auto Ordnance rifle. It is made from black oxide coated steel for durability and improved looks. The front edges are rounded and chamfered to provide a comfortable grip for repeated use and dependable charging of the weapon.",
     images: [
-      { src: "/top-charging-handle/Top%20Charging%20Handle%20on%20Gun.png", alt: "Contoured Top Thompson Charging Handle - Installed on Rifle" },
-      { src: "/top-charging-handle/topcharge1%20(2).JPG", alt: "Contoured Top Thompson Charging Handle - Product Packaging" },
-      { src: "/top-charging-handle/topcharge2.JPG", alt: "Contoured Top Thompson Charging Handle - Close-Up View" }
+      { src: "/top-charging-handle/top-charging-handle-on-gun.webp", alt: "Contoured Top Thompson Charging Handle - Installed on Rifle" },
+      { src: "/top-charging-handle/topcharge1.webp", alt: "Contoured Top Thompson Charging Handle - Product Packaging" },
+      { src: "/top-charging-handle/topcharge2.webp", alt: "Contoured Top Thompson Charging Handle - Close-Up View" }
     ],
     features: [
       "Contoured design with rounded, chamfered front edges for a comfortable grip",
       "Black oxide coated steel for durability and improved looks",
       "Dependable charging for repeated use",
-      "Designed for the 1927A Thompson Auto Ordnance rifle",
-      "Free shipping included"
+      "Designed for the 1927A Thompson Auto Ordnance rifle"
     ],
     compatibility: {
       compatibleWith: [
@@ -150,8 +149,7 @@ export const products: Product[] = [
     specifications: {
       "Platform": "1927A Thompson Auto Ordnance rifle",
       "Material": "Steel",
-      "Finish": "Black oxide",
-      "Shipping": "Free shipping"
+      "Finish": "Black oxide"
     },
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true
@@ -164,8 +162,8 @@ export const products: Product[] = [
     description: "12\" x 36\" navy blue heavy-duty gun mat with a textured, oil-resistant surface for full rifle-length Thompson maintenance.",
     detailedDescription: "This is a 12\" x 36\" heavy duty gun mat in Navy Blue, with a texturized base for grip and oil resistant surface. As a full rifle length pad made from vulcanized rubber, it provides an excellent surface for maintaining your Thompson without scratching or scraping the gun, or table beneath.",
     images: [
-      { src: "/gunmatfinished.JPG", alt: "Thompson Machine Carbine Gun Mat - Product View" },
-      { src: "/gunmatfinished2.JPG", alt: "Thompson Machine Carbine Gun Mat - With Thompson Carbine" }
+      { src: "/gunmatfinished.webp", alt: "Thompson Machine Carbine Gun Mat - Product View" },
+      { src: "/gunmatfinished2.webp", alt: "Thompson Machine Carbine Gun Mat - With Thompson Carbine" }
     ],
     features: [
       "12\" x 36\" full rifle-length coverage",
@@ -191,9 +189,9 @@ export const products: Product[] = [
     description: "'47 classic clean up ball cap with black stitched Chicago Typewriter logo on white cotton.",
     detailedDescription: "This '47 classic clean up ball cap now represents the Chicago Typewriter in flawless form. A straightforward white cotton with a black stitched logo means it can be washed and worn hard without artwork cracking, fading or peeling like vinyl or ink. Size is adjusted via a strap and brass fitting.",
     images: [
-      { src: "/whitehat1.JPG", alt: "Chicago Typewriter Ball Cap - Front View" },
-      { src: "/whitehat2.JPG", alt: "Chicago Typewriter Ball Cap - Three-Quarter View" },
-      { src: "/whitehat3.JPG", alt: "Chicago Typewriter Ball Cap - Back View" }
+      { src: "/whitehat1.webp", alt: "Chicago Typewriter Ball Cap - Front View" },
+      { src: "/whitehat2.webp", alt: "Chicago Typewriter Ball Cap - Three-Quarter View" },
+      { src: "/whitehat3.webp", alt: "Chicago Typewriter Ball Cap - Back View" }
     ],
     features: [
       "'47 classic clean up adjustable ball cap",
@@ -220,9 +218,9 @@ export const products: Product[] = [
     description: "'47 classic clean up ball cap with red and black stitched Public Enemy logo. Machine washable with adjustable brass fitting.",
     detailedDescription: "Join the ranks of John Dillinger, Baby Face Nelson, and Pretty Boy Floyd as a Public Enemy. Red and black stitching of the logo means it won't fade, peel, or crack like ink or vinyl. This '47 classic clean up is machine washable and has an adjustable brass fitting.",
     images: [
-      { src: "/public-enemy-hat/blackhat1.JPG", alt: "Public Enemy Ball Cap - Front View" },
-      { src: "/public-enemy-hat/blackhat2.JPG", alt: "Public Enemy Ball Cap - Three-Quarter View" },
-      { src: "/public-enemy-hat/blackhat3.JPG", alt: "Public Enemy Ball Cap - Back View" }
+      { src: "/public-enemy-hat/blackhat1.webp", alt: "Public Enemy Ball Cap - Front View" },
+      { src: "/public-enemy-hat/blackhat2.webp", alt: "Public Enemy Ball Cap - Three-Quarter View" },
+      { src: "/public-enemy-hat/blackhat3.webp", alt: "Public Enemy Ball Cap - Back View" }
     ],
     features: [
       "'47 classic clean up adjustable ball cap",
@@ -257,5 +255,9 @@ export const getProductsByCategory = (category: ProductCategory): Product[] => {
 export const RESTRICTED_SHIPPING_PRODUCT_ID = "thompson-blow-back-trigger";
 
 export const hasRestrictedShipping = (product: Product): boolean => {
+  return product.id === RESTRICTED_SHIPPING_PRODUCT_ID;
+};
+
+export const hasFreeShippingIncluded = (product: Product): boolean => {
   return product.id === RESTRICTED_SHIPPING_PRODUCT_ID;
 };

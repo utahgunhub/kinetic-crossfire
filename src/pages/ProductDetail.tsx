@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getProductById, hasRestrictedShipping } from "@/data/products";
+import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping } from "@/data/products";
 import { thompsonProductPageVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
@@ -32,17 +32,9 @@ const ProductDetail = () => {
   );
   const isOutOfStock = product?.inStock === false;
   const showShippingRestriction = product ? hasRestrictedShipping(product) : false;
-  const productDescription = isThompsonProduct
-    ? "Two position forced reset trigger for Thompson carbines and pistols. Built from durable steel alloy for fast follow-up shots and straightforward installation with minimal tools, though fitment may require a gunsmith."
-    : product.detailedDescription;
-  const displayFeatures = isThompsonProduct
-    ? [
-        "Smooth forced reset operation with a fast, authentic Thompson feel",
-        "Durable steel alloy construction for rapid fire and high heat use",
-        "Straightforward installation with minimal tools, though fitment may require a gunsmith",
-      ]
-    : product.features;
-  const specificationEntries = product.specifications
+  const productDescription = product?.detailedDescription ?? "";
+  const displayFeatures = product?.features ?? [];
+  const specificationEntries = product?.specifications
     ? Object.entries(product.specifications).filter(([key]) =>
         isThompsonProduct ? !["Compatibility", "Shipping"].includes(key) : true
       )
@@ -199,7 +191,7 @@ const ProductDetail = () => {
                   )}
                   {(product.isKineticCrossfireProduct || isMadeInUSA) && (
                     <div className="flex flex-wrap gap-3 mb-2">
-                      {product.isKineticCrossfireProduct && !isApparelProduct && (
+                      {hasFreeShippingIncluded(product) && (
                         <span className="px-3 py-1 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green text-sm font-semibold">
                           Free Shipping
                         </span>
@@ -345,10 +337,10 @@ const ProductDetail = () => {
                         ? "Shipping times are 3-5 days, but due to the current high volume of orders this may be longer"
                         : "Ships within 1-2 business days"}
                     </li>
-                    {isApparelProduct ? (
-                      <li>• {SHIPPING_POLICY_TEXT}</li>
+                    {hasFreeShippingIncluded(product) ? (
+                      <li>• Free shipping included</li>
                     ) : (
-                      product.isKineticCrossfireProduct && <li>• Free shipping included</li>
+                      <li>• {SHIPPING_POLICY_TEXT}</li>
                     )}
                     <li>• Secure packaging and tracking included</li>
                   </ul>

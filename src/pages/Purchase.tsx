@@ -41,7 +41,7 @@ const Purchase = () => {
               <div className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col">
                 <img
                   src="/thompson-frt/new-product-image.webp"
-                  alt="Thompson Blow-Back Trigger"
+                  alt={thompsonProduct.name}
                   className="w-full h-80 object-cover"
                 />
                 <div className="p-8 flex flex-col flex-grow">
@@ -89,9 +89,6 @@ const Purchase = () => {
                     <span className="text-3xl font-bold text-tactical-green">
                       ${thompsonChargingHandle.price.toFixed(2)}
                     </span>
-                    <span className="bg-tactical-green/15 text-tactical-green px-2 py-1 rounded text-xs font-bold border border-tactical-green/30">
-                      Free Shipping
-                    </span>
                   </div>
                   <Link to={`/product/${thompsonChargingHandle.id}`} className="mt-auto">
                     <TacticalButton
@@ -120,9 +117,6 @@ const Purchase = () => {
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <span className="text-3xl font-bold text-tactical-green">
                       ${thompsonTopChargingHandle.price.toFixed(2)}
-                    </span>
-                    <span className="bg-tactical-green/15 text-tactical-green px-2 py-1 rounded text-xs font-bold border border-tactical-green/30">
-                      Free Shipping
                     </span>
                   </div>
                   <Link to={`/product/${thompsonTopChargingHandle.id}`} className="mt-auto">
