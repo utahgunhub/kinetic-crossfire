@@ -27,7 +27,7 @@ export async function completeDealerRegistrationViaSupabase(): Promise<void> {
     throw new Error("Supabase is not configured");
   }
 
-  const { data, error } = await supabase.rpc("complete_dealer_registration");
+  const { data, error } = await supabase.rpc("complete_dealer_registration", {});
 
   if (error) {
     throw new Error(error.message || "Dealer registration could not be completed");

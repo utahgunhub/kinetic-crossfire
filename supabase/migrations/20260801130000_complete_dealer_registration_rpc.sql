@@ -45,3 +45,5 @@ $$;
 
 revoke all on function public.complete_dealer_registration() from public;
 grant execute on function public.complete_dealer_registration() to authenticated;
+
+notify pgrst, 'reload schema';

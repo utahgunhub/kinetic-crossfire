@@ -19,6 +19,8 @@ Run SQL (in order if fresh):
 
 Then: Email auth on, Site URL (`http://localhost:8080` or prod), create **Authentication → Users** admin matching `admin_allowlist`.
 
+**Turn off dealer confirmation emails:** In Supabase go to **Authentication → Providers → Email** and disable **Confirm email**. Invited dealers should sign up and sign in immediately; the confirmation template is not used. Also run migration [`20260801140000_auto_confirm_dealer_signups.sql`](supabase/migrations/20260801140000_auto_confirm_dealer_signups.sql) so invited dealer accounts are auto-confirmed in the database.
+
 ### 2. Frontend env (`.env` / Vercel)
 
 | Variable | Notes |
@@ -50,7 +52,8 @@ New template ID in [`src/lib/emailService.ts`](src/lib/emailService.ts) — see 
 
 | Issue | Fix |
 |-------|-----|
-| Signup fails | Run RPC migration; invite email in `/admin` |
+| `complete_dealer_registration` / schema cache | Run [`supabase/fix_complete_dealer_registration.sql`](supabase/fix_complete_dealer_registration.sql) in SQL Editor; wait ~30s or restart project API |
+| Confirmation email on signup | Disable **Confirm email** under Auth → Email; run `20260801140000_auto_confirm_dealer_signups.sql` |
 | Dealer UI prices ≠ charge | Redeploy Render with current `server/` (dealerPricing on payment route) |
 | Retail broken | Unrelated to dealer — see [`PAYMENT-TESTING-GUIDE.md`](PAYMENT-TESTING-GUIDE.md) |
 

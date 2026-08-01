@@ -44,12 +44,21 @@ const DealerSignup = () => {
 
       if (error) throw error;
 
-      if (!data.session) {
-        toast.success(
-          "Check your email to confirm your account, then sign in."
+      let session = data.session;
+      if (!session) {
+        const { data: signInData, error: signInError } =
+          await supabase.auth.signInWithPassword({
+            email: normalizedEmail,
+            password,
+          });
+        if (signInError) throw signInError;
+        session = signInData.session;
+      }
+
+      if (!session) {
+        throw new Error(
+          "Account was created but could not be signed in. Contact support."
         );
-        navigate("/dealer/login");
-        return;
       }
 
       try {
