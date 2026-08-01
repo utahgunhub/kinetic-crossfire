@@ -1,0 +1,19 @@
+{
+  "FRT_PRODUCT_ID": "thompson-blow-back-trigger",
+  "FRT_MSRP": 275,
+  "OTHER_DEALER_DISCOUNT_PERCENT": 5,
+  "FRT_VOLUME_TIERS": [
+    { "minQty": 30, "discountPercent": 32 },
+    { "minQty": 20, "discountPercent": 26 },
+    { "minQty": 10, "discountPercent": 20 },
+    { "minQty": 1, "discountPercent": 16 }
+  ],
+  "CATALOG_PRICES": {
+    "thompson-blow-back-trigger": 275,
+    "thompson-charging-handle": 38,
+    "thompson-top-charging-handle": 40,
+    "thompson-gun-mat": 36,
+    "chicago-typewriter-cap": 32,
+    "public-enemy-hat": 32
+  }
+}

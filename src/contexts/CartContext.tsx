@@ -1,5 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, getProductById } from '@/data/products';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { Product, getProductById, products } from '@/data/products';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  applyDealerPricingToProduct,
+  countFrtQuantityInCart,
+} from '@/lib/dealerPricing';
 
 export interface CartItem {
   product: Product;
@@ -19,11 +24,29 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const refreshCartPrices = (cartItems: CartItem[]): CartItem[] =>
-    cartItems.map((item) => {
-      const freshProduct = getProductById(item.product.id);
-      return freshProduct ? { ...item, product: freshProduct } : item;
-    });
+  const { isDealer } = useAuth();
+
+  const resolveProductForCart = useCallback(
+    (productId: string, cartItems: CartItem[]): Product | undefined => {
+      if (isDealer) {
+        const base = products.find((p) => p.id === productId);
+        if (!base) return undefined;
+        const frtQty = countFrtQuantityInCart(cartItems);
+        return applyDealerPricingToProduct(base, frtQty);
+      }
+      return getProductById(productId);
+    },
+    [isDealer]
+  );
+
+  const refreshCartPrices = useCallback(
+    (cartItems: CartItem[]): CartItem[] =>
+      cartItems.map((item) => {
+        const freshProduct = resolveProductForCart(item.product.id, cartItems);
+        return freshProduct ? { ...item, product: freshProduct } : item;
+      }),
+    [resolveProductForCart]
+  );
 
   const [items, setItems] = useState<CartItem[]>(() => {
     const savedCart = localStorage.getItem('cart');
@@ -38,28 +61,40 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     setItems((currentItems) => refreshCartPrices(currentItems));
-  }, []);
+  }, [isDealer, refreshCartPrices]);
 
   const addToCart = (product: Product, quantity: number) => {
-    const pricedProduct = getProductById(product.id) ?? product;
+    setItems((currentItems) => {
+      const pricedProduct =
+        resolveProductForCart(product.id, currentItems) ?? product;
 
-    setItems(currentItems => {
-      const existingItem = currentItems.find(item => item.product.id === pricedProduct.id);
-      
+      const existingItem = currentItems.find(
+        (item) => item.product.id === pricedProduct.id
+      );
+
+      let nextItems: CartItem[];
       if (existingItem) {
-        return currentItems.map(item =>
+        nextItems = currentItems.map((item) =>
           item.product.id === pricedProduct.id
-            ? { ...item, quantity: item.quantity + quantity, product: pricedProduct }
+            ? {
+                ...item,
+                quantity: item.quantity + quantity,
+                product: pricedProduct,
+              }
             : item
         );
       } else {
-        return [...currentItems, { product: pricedProduct, quantity }];
+        nextItems = [...currentItems, { product: pricedProduct, quantity }];
       }
+
+      return refreshCartPrices(nextItems);
     });
   };
 
   const removeFromCart = (productId: string) => {
-    setItems(currentItems => currentItems.filter(item => item.product.id !== productId));
+    setItems((currentItems) =>
+      refreshCartPrices(currentItems.filter((item) => item.product.id !== productId))
+    );
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -69,15 +104,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     
     setItems(currentItems =>
-      currentItems.map(item => {
-        if (item.product.id !== productId) return item;
-        const freshProduct = getProductById(productId);
-        return {
-          ...item,
-          quantity,
-          product: freshProduct ?? item.product,
-        };
-      })
+      refreshCartPrices(
+        currentItems.map(item => {
+          if (item.product.id !== productId) return item;
+          return { ...item, quantity };
+        })
+      )
     );
   };
 

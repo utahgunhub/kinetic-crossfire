@@ -1,0 +1,33 @@
+DEALER APPLICATION — EMAILJS SETUP
+==================================
+
+Hardcoded in src/lib/emailService.ts:
+  Service:  service_2333go7
+  Template: template_hjy8hxt
+  Public:   fHx6hqplnCkUeAcXP
+
+EmailJS dashboard (template template_hjy8hxt)
+---------------------------------------------
+1. Service: service_2333go7
+2. Subject: {{subject}}
+3. To email: your inbox (KXF)
+4. Reply To: {{reply_to}}
+5. Content: paste HTML from emailjs-dealer-application-template.html
+
+Template variables (must match names exactly)
+---------------------------------------------
+dealer_name
+gunsmithing_services
+agent_name
+title
+business_phone
+contact_phone
+email
+reply_to
+website
+address
+city_state_zip
+signature_date
+agreement_accepted
+application_body
+subject

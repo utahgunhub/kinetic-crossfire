@@ -1,12 +1,17 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping } from "@/data/products";
+import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping, products } from "@/data/products";
 import { thompsonProductPageVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  applyDealerPricingToProduct,
+  countFrtQuantityInCart,
+} from "@/lib/dealerPricing";
 import { toast } from "sonner";
 import { restrictedShippingStatesText } from "@/lib/shippingRestrictions";
 import { SHIPPING_POLICY_TEXT } from "@/lib/shipping";
@@ -15,9 +20,17 @@ import { SaleBadge, SalePrice } from "@/components/SalePrice";
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
-  const product = productId ? getProductById(productId) : null;
+  const { addToCart, items } = useCart();
+  const { isDealer } = useAuth();
+  const product = useMemo(() => {
+    if (!productId) return null;
+    if (!isDealer) return getProductById(productId);
+    const base = products.find((p) => p.id === productId);
+    if (!base) return null;
+    const frtQty = countFrtQuantityInCart(items);
+    return applyDealerPricingToProduct(base, frtQty);
+  }, [productId, isDealer, items]);
   const navigate = useNavigate();
-  const { addToCart } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);

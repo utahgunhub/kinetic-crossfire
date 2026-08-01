@@ -4,6 +4,7 @@ import emailjs from '@emailjs/browser';
 const EMAILJS_SERVICE_ID = 'service_2333go7';
 const EMAILJS_ORDER_TEMPLATE_ID = 'template_tl7gbn7';
 const EMAILJS_CONTACT_TEMPLATE_ID = 'template_9bb08pc';
+const EMAILJS_DEALER_APPLICATION_TEMPLATE_ID = 'template_hjy8hxt';
 const EMAILJS_PUBLIC_KEY = 'fHx6hqplnCkUeAcXP';
 
 const ORDER_CONFIRMATION_MESSAGE =
@@ -115,6 +116,51 @@ export const sendContactEmail = async (contactData: ContactEmailParams): Promise
   await emailjs.send(
     EMAILJS_SERVICE_ID,
     EMAILJS_CONTACT_TEMPLATE_ID,
+    templateParams,
+    EMAILJS_PUBLIC_KEY
+  );
+};
+
+export interface DealerApplicationEmailParams {
+  dealerName: string;
+  gunsmithingServices: "yes" | "no";
+  agentName: string;
+  title: string;
+  businessPhone: string;
+  contactPhone: string;
+  email: string;
+  website: string;
+  address: string;
+  cityStateZip: string;
+  signatureDate: string;
+  agreementAccepted: boolean;
+  applicationBody: string;
+}
+
+export const sendDealerApplicationEmail = async (
+  application: DealerApplicationEmailParams
+): Promise<void> => {
+  const templateParams = {
+    dealer_name: application.dealerName,
+    gunsmithing_services: application.gunsmithingServices === "yes" ? "Yes" : "No",
+    agent_name: application.agentName,
+    title: application.title || "N/A",
+    business_phone: application.businessPhone,
+    contact_phone: application.contactPhone,
+    email: application.email,
+    reply_to: application.email,
+    website: application.website || "N/A",
+    address: application.address,
+    city_state_zip: application.cityStateZip,
+    signature_date: application.signatureDate,
+    agreement_accepted: application.agreementAccepted ? "Yes" : "No",
+    application_body: application.applicationBody,
+    subject: `Dealer application — ${application.dealerName}`,
+  };
+
+  await emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_DEALER_APPLICATION_TEMPLATE_ID,
     templateParams,
     EMAILJS_PUBLIC_KEY
   );

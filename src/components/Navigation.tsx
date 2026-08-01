@@ -3,9 +3,11 @@ import July4SaleBanner from "@/components/July4SaleBanner";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navigation = () => {
   const { getTotalPrice, getTotalItems } = useCart();
+  const { isDealer, user, signOut } = useAuth();
   const totalPrice = getTotalPrice();
   const totalItems = getTotalItems();
 
@@ -43,8 +45,30 @@ const Navigation = () => {
             </Link>
           </div>
           
-          {/* Cart */}
+          {/* Cart & dealer */}
           <div className="flex items-center space-x-4">
+            {isDealer && (
+              <span className="hidden sm:inline text-xs font-bold uppercase tracking-wide text-tactical-green border border-tactical-green/40 px-2 py-1 rounded">
+                Dealer
+              </span>
+            )}
+            {!isDealer && (
+              <Link
+                to="/dealer/login"
+                className="hidden md:inline text-xs uppercase tracking-wide text-muted-foreground hover:text-tactical-green"
+              >
+                Dealer Login
+              </Link>
+            )}
+            {user && isDealer && (
+              <button
+                type="button"
+                onClick={() => signOut()}
+                className="hidden md:inline text-xs uppercase tracking-wide text-muted-foreground hover:text-tactical-green"
+              >
+                Sign Out
+              </button>
+            )}
             <Link to="/cart">
               <div className="flex items-center space-x-2 bg-tactical-surface px-3 py-2 rounded hover:bg-tactical-surface/80 transition-colors cursor-pointer relative">
                 <ShoppingCart className="w-4 h-4 text-tactical-green" />

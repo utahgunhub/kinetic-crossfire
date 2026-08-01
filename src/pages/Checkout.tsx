@@ -14,6 +14,12 @@ import {
 } from "@/lib/shippingRestrictions";
 import { hasRestrictedShipping } from "@/data/products";
 import { areCouponsAllowed } from "@/lib/sale";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  calculateDealerShippingCost,
+  countFrtQuantityInCart,
+  DEALER_LARGE_ORDER_FRT_QTY,
+} from "@/lib/dealerPricing";
 import {
   calculateShippingCost,
   formatShippingCost,
@@ -50,6 +56,7 @@ interface BillingInfo {
 
 const Checkout = () => {
   const { items, getTotalPrice, clearCart } = useCart();
+  const { isDealer } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -85,12 +92,17 @@ const Checkout = () => {
   });
 
   const subtotal = getTotalPrice();
-  const shipping = calculateShippingCost(subtotal);
+  const shipping = isDealer
+    ? calculateDealerShippingCost(subtotal, items)
+    : calculateShippingCost(subtotal);
   const total = subtotal + shipping - discount;
+  const dealerFrtQty = countFrtQuantityInCart(items);
+  const showDealerLargeOrderNotice =
+    isDealer && dealerFrtQty >= DEALER_LARGE_ORDER_FRT_QTY;
   const cartRequiresShippingRestriction = items.some((item) =>
     hasRestrictedShipping(item.product)
   );
-  const couponsAllowed = areCouponsAllowed();
+  const couponsAllowed = areCouponsAllowed() && !isDealer;
   const shippingStateOptions = cartRequiresShippingRestriction
     ? allowedShippingStates
     : usStates;
@@ -143,6 +155,7 @@ const Checkout = () => {
         body: JSON.stringify({
           couponCode: trimmedCode,
           items: orderItems,
+          dealerCheckout: isDealer,
         }),
       });
 
@@ -274,6 +287,7 @@ const Checkout = () => {
           shippingInfo,
           items: orderItems,
           couponCode: appliedCouponCode,
+          dealerCheckout: isDealer,
         }),
       });
 
@@ -771,7 +785,20 @@ const Checkout = () => {
               <div className="lg:col-span-1">
                 <div className="bg-tactical-dark rounded-lg p-8 border border-tactical-green-dim/30 sticky top-24">
                   <h2 className="text-2xl font-semibold text-foreground mb-6">Order Summary</h2>
-                  
+
+                  {isDealer && (
+                    <div className="mb-4 rounded border border-tactical-green/40 bg-tactical-green/10 p-3 text-xs text-foreground">
+                      Dealer pricing is applied to this order. Coupon codes are not
+                      available on dealer checkout.
+                    </div>
+                  )}
+
+                  {showDealerLargeOrderNotice && (
+                    <div className="mb-4 rounded border border-amber-500/40 bg-amber-500/10 p-3 text-xs text-foreground">
+                      Orders of 50 or more FRT kits may require shipping time
+                      greater than one week.
+                    </div>
+                  )}
                   {/* Cart Items */}
                   <div className="space-y-4 mb-6">
                     {items.map(item => (
@@ -796,7 +823,11 @@ const Checkout = () => {
                   <div className="border-t border-tactical-green-dim/30 pt-4 space-y-2">
                     <div className="rounded border border-tactical-green-dim/30 bg-tactical-surface p-3 mb-2">
                       <p className="text-xs text-muted-foreground leading-relaxed">
-                        {SHIPPING_POLICY_TEXT}
+                        {isDealer
+                          ? dealerFrtQty > 0
+                            ? "This order includes an FRT kit — shipping is free. Other dealer items ship with the FRT."
+                            : "Dealer accessory orders: free shipping on $50+ subtotal; otherwise $8 shipping applies."
+                          : SHIPPING_POLICY_TEXT}
                       </p>
                     </div>
 
@@ -845,7 +876,9 @@ const Checkout = () => {
                     ) : (
                       <div className="mb-4 pb-4 border-b border-tactical-green-dim/30">
                         <p className="text-xs text-muted-foreground leading-relaxed">
-                          Coupon codes are unavailable during the 4th of July sale. Sale prices already reflect the discount.
+                          {isDealer
+                            ? "Coupon codes are not used on dealer orders."
+                            : "Coupon codes are unavailable during the 4th of July sale. Sale prices already reflect the discount."}
                         </p>
                       </div>
                     )}

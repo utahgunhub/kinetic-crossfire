@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealer Application</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0a; color: #fafafa;">
+
+  <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #0a0a0a;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+
+        <table role="presentation" style="max-width: 640px; width: 100%; border-collapse: collapse; background-color: #141414; border: 1px solid #2d5a6e; border-radius: 8px; overflow: hidden;">
+
+          <tr>
+            <td style="background: linear-gradient(135deg, #0a0a0a, #141414); padding: 36px 30px; text-align: center; border-bottom: 2px solid #5dceeb;">
+              <h1 style="margin: 0; color: #5dceeb; font-size: 26px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
+                KINETIC CROSSFIRE
+              </h1>
+              <p style="margin: 10px 0 0 0; color: #a6a6a6; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+                New dealer application
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 28px 30px 10px 30px;">
+              <p style="margin: 0 0 8px 0; color: #5dceeb; font-size: 22px; font-weight: bold;">
+                {{dealer_name}}
+              </p>
+              <p style="margin: 0; color: #a6a6a6; font-size: 14px;">
+                Agreement accepted: <strong style="color: #fafafa;">{{agreement_accepted}}</strong>
+                &nbsp;·&nbsp; Signed: <strong style="color: #fafafa;">{{signature_date}}</strong>
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 0 30px;">
+              <div style="height: 1px; background: linear-gradient(90deg, transparent, #2d5a6e, transparent);"></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 24px 30px;">
+              <h2 style="margin: 0 0 16px 0; color: #5dceeb; font-size: 16px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+                Contact &amp; business
+              </h2>
+
+              <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; width: 160px; vertical-align: top;">Gunsmithing</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{gunsmithing_services}}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Agent</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{agent_name}}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Title</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{title}}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Business phone</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{business_phone}}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Primary phone</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{contact_phone}}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Email</td>
+                  <td style="padding: 6px 0; color: #5dceeb; font-size: 14px;"><a href="mailto:{{email}}" style="color: #5dceeb;">{{email}}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Website</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{website}}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0; color: #888; font-size: 12px; text-transform: uppercase; vertical-align: top;">Address</td>
+                  <td style="padding: 6px 0; color: #fafafa; font-size: 14px;">{{address}}<br>{{city_state_zip}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 0 30px;">
+              <div style="height: 1px; background: linear-gradient(90deg, transparent, #2d5a6e, transparent);"></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 24px 30px 32px 30px;">
+              <h2 style="margin: 0 0 12px 0; color: #5dceeb; font-size: 16px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
+                Submitted agreement
+              </h2>
+              <div style="background-color: #0a0a0a; border: 1px solid #2d5a6e; border-radius: 6px; padding: 16px 18px; color: #c8c8c8; font-size: 12px; line-height: 1.55; white-space: pre-wrap; font-family: Georgia, 'Times New Roman', serif;">{{application_body}}</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding: 20px 30px; background-color: #0a0a0a; border-top: 1px solid #2d5a6e; text-align: center;">
+              <p style="margin: 0; color: #666; font-size: 11px; line-height: 1.5;">
+                Reply to this applicant using Reply in your mail client (Reply-To: {{reply_to}}).<br>
+                After review, add <strong style="color: #888;">{{email}}</strong> in the KXF admin dealer portal.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

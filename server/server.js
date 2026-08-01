@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const https = require('https');
 const { validateCoupon, calculateOrderTotals, areCouponsAllowed } = require('./coupons');
+const { calculateDealerOrderTotals } = require('./dealerPricing');
 require('dotenv').config();
 
 const app = express();
@@ -157,8 +158,15 @@ app.get('/api/payment/client-key', (req, res) => {
 });
 
 // Validate a coupon code and return the calculated discount
-app.post('/api/validate-coupon', (req, res) => {
+app.post('/api/validate-coupon', async (req, res) => {
   try {
+    if (req.body.dealerCheckout === true) {
+      return res.status(400).json({
+        success: false,
+        error: 'Coupon codes are not available on dealer orders.',
+      });
+    }
+
     const { couponCode, items } = req.body;
 
     if (!couponCode || !items?.length) {
@@ -205,7 +213,7 @@ app.post('/api/validate-coupon', (req, res) => {
 app.post('/api/process-payment', async (req, res) => {
   try {
     console.log('💳 Processing payment...');
-    const { cardData, billingInfo, shippingInfo, items, couponCode } = req.body;
+    const { cardData, billingInfo, shippingInfo, items, couponCode, dealerCheckout } = req.body;
 
     // Validate required fields
     if (!cardData || !billingInfo || !shippingInfo || !items?.length) {
@@ -223,6 +231,15 @@ app.post('/api/process-payment', async (req, res) => {
 
     const normalizedCouponCode = couponCode ? String(couponCode).trim() : null;
 
+    const isDealerOrder = dealerCheckout === true;
+
+    if (isDealerOrder && normalizedCouponCode) {
+      return res.status(400).json({
+        success: false,
+        error: 'Coupon codes are not available on dealer orders.',
+      });
+    }
+
     if (normalizedCouponCode && !areCouponsAllowed()) {
       return res.status(400).json({
         success: false,
@@ -237,10 +254,11 @@ app.post('/api/process-payment', async (req, res) => {
       });
     }
 
-    const { subtotal, shipping: shippingCost, discount, total } = calculateOrderTotals(
-      items,
-      normalizedCouponCode
-    );
+    const orderTotals = isDealerOrder
+      ? calculateDealerOrderTotals(items)
+      : calculateOrderTotals(items, normalizedCouponCode);
+
+    const { subtotal, shipping: shippingCost, discount, total } = orderTotals;
 
     if (total <= 0) {
       return res.status(400).json({

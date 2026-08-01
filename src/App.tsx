@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import ScrollToTop from "@/components/ScrollToTop";
 import { CartProvider } from "@/contexts/CartContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Videos from "./pages/Videos";
 import Purchase from "./pages/Purchase";
@@ -16,13 +17,18 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import NotFound from "./pages/NotFound";
+import Dealership from "./pages/Dealership";
+import DealerLogin from "./pages/DealerLogin";
+import DealerSignup from "./pages/DealerSignup";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <CartProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+      <TooltipProvider>
+        <CartProvider>
         <Toaster />
         <Sonner />
         <Analytics />
@@ -39,13 +45,18 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/dealership" element={<Dealership />} />
+            <Route path="/dealer/login" element={<DealerLogin />} />
+            <Route path="/dealer/signup" element={<DealerSignup />} />
+            <Route path="/admin" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </CartProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+        </CartProvider>
+      </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
 );
 
 export default App;
