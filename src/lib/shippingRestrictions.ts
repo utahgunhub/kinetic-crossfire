@@ -1,5 +1,6 @@
 export const restrictedShippingStates = [
   "California",
+  "Colorado",
   "Connecticut",
   "Delaware",
   "Hawaii",
@@ -74,6 +75,8 @@ export const allowedShippingStates = usStates.filter(
 const restrictedShippingStateAliases: Record<string, string> = {
   ca: "California",
   california: "California",
+  co: "Colorado",
+  colorado: "Colorado",
   ct: "Connecticut",
   connecticut: "Connecticut",
   de: "Delaware",

@@ -48,6 +48,8 @@ const API_ENDPOINT = ENVIRONMENT === 'production'
 const restrictedShippingStateAliases = {
   ca: 'California',
   california: 'California',
+  co: 'Colorado',
+  colorado: 'Colorado',
   ct: 'Connecticut',
   connecticut: 'Connecticut',
   de: 'Delaware',
