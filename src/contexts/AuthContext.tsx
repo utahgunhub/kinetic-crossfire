@@ -64,9 +64,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    setSession(currentSession);
-    setUser(currentSession.user);
-
     const [{ data: adminData }, { data: dealerData }] = await Promise.all([
       supabase.rpc("check_is_admin"),
       supabase.rpc("check_is_dealer"),
@@ -104,13 +101,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    if (!session?.user) {
+    const userId = session?.user?.id;
+    if (!userId) {
       setIsDealer(false);
       setIsAdmin(false);
       return;
     }
-    refreshRoles();
-  }, [session?.user, refreshRoles]);
+    void refreshRoles();
+  }, [session?.user?.id, refreshRoles]);
 
   const signOut = useCallback(async () => {
     if (supabase) {
