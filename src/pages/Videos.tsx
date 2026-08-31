@@ -6,6 +6,16 @@ import VimeoEmbed from "@/components/VimeoEmbed";
 const Videos = () => {
   const thompsonVideos = [
     {
+      id: "1222715929",
+      title: "Thompson Troubleshooting Video",
+      description:
+        "There is a lot to talk about with these guns, this has been condensed and contains only the most important information. To show the replacement of pawl springs, and answer questions like why aluminum receivers are to be avoided, and why one of the bolts has an extended groove cut, more videos will be made.",
+      embedUrl:
+        "https://player.vimeo.com/video/1222715929?badge=0&autopause=0&player_id=0&app_id=58479",
+      link: "https://vimeo.com/1222715929",
+      linkLabel: "Watch on Vimeo",
+    },
+    {
       id: "1212401002",
       title: "Firing Pin Fitment Video",
       description: "Guide to firing pin fitment on the Thompson platform.",
@@ -58,7 +68,7 @@ const Videos = () => {
               Video Library
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Watch Thompson installs, demos, and range footage.
+              Watch Thompson installs, demos, troubleshooting, and range footage.
             </p>
           </div>
         </div>
