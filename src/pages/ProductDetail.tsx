@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping, products } from "@/data/products";
+import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping, isContactOnlyProduct, products } from "@/data/products";
 import { thompsonProductPageVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
@@ -39,6 +39,7 @@ const ProductDetail = () => {
   const shopLabel =
     product?.category === "apparel" ? "Shop Apparel" : "Shop";
   const isThompsonProduct = product?.id === "thompson-blow-back-trigger";
+  const isContactOnly = product ? isContactOnlyProduct(product) : false;
   const isApparelProduct = product?.category === "apparel";
   const isMadeInUSA = product?.features.some((feature) =>
     feature.toLowerCase().includes("made in usa")
@@ -46,6 +47,9 @@ const ProductDetail = () => {
   const isOutOfStock = product?.inStock === false;
   const showShippingRestriction = product ? hasRestrictedShipping(product) : false;
   const productDescription = product?.detailedDescription ?? "";
+  const productDescriptionParagraphs = productDescription
+    ? productDescription.split("\n\n").filter(Boolean)
+    : [];
   const displayFeatures = product?.features ?? [];
   const specificationEntries = product?.specifications
     ? Object.entries(product.specifications).filter(([key]) =>
@@ -175,6 +179,43 @@ const ProductDetail = () => {
                     ))}
                   </div>
                 )}
+
+                {isContactOnly && (
+                  <>
+                    <div className="space-y-4">
+                      <h2 className="text-xl font-semibold text-foreground">Key Features:</h2>
+                      <ul className="space-y-2 text-muted-foreground">
+                        {displayFeatures.map((feature, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <span className="mt-1 w-2 h-2 bg-tactical-green rounded-full flex-shrink-0"></span>
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {specificationEntries.length > 0 && (
+                      <div className="space-y-4">
+                        <h2 className="text-xl font-semibold text-foreground">Specifications:</h2>
+                        <div className="bg-tactical-dark/50 rounded-lg p-6 border border-tactical-green-dim/30">
+                          <div className="grid grid-cols-1 gap-4">
+                            {specificationEntries.map(([key, value]) => (
+                              <div
+                                key={key}
+                                className="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-8 sm:items-baseline"
+                              >
+                                <span className="text-muted-foreground shrink-0">{key}:</span>
+                                <span className="text-foreground font-medium sm:text-right leading-relaxed">
+                                  {value}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Product Details */}
@@ -183,17 +224,23 @@ const ProductDetail = () => {
                   <h1 className="text-4xl font-bold text-foreground tracking-wider mb-4">
                     {product.name}
                   </h1>
-                  {isProductOnSale(product.id) && (
+                  {isProductOnSale(product.id) && !isContactOnly && (
                     <div className="mb-3">
                       <SaleBadge />
                     </div>
                   )}
                   <div className="mb-6">
-                    <SalePrice
-                      price={product.price}
-                      originalPrice={product.originalPrice}
-                      size="lg"
-                    />
+                    {isContactOnly ? (
+                      <p className="text-2xl font-bold text-tactical-green tracking-wide">
+                        Custom Build, Contact for Pricing
+                      </p>
+                    ) : (
+                      <SalePrice
+                        price={product.price}
+                        originalPrice={product.originalPrice}
+                        size="lg"
+                      />
+                    )}
                   </div>
                   {isOutOfStock && (
                     <div className="mb-4">
@@ -234,9 +281,25 @@ const ProductDetail = () => {
                   )}
 
                   <h2 className="text-xl font-semibold text-foreground">Product Description</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {productDescription}
-                  </p>
+                  <div className="space-y-4 text-muted-foreground leading-relaxed">
+                    {productDescriptionParagraphs.map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
+                  </div>
+                  {isContactOnly && product.buildProposalPdf && (
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Download the{" "}
+                      <a
+                        href={product.buildProposalPdf}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
+                      >
+                        Annihilator Customer Build Proposal
+                      </a>
+                      {" "}for full build specifications.
+                    </p>
+                  )}
                   {isThompsonProduct && product.compatibility?.usageNotes && (
                     <div className="pt-2">
                       <h3 className="text-sm font-semibold text-tactical-green uppercase tracking-wider mb-3">
@@ -269,6 +332,8 @@ const ProductDetail = () => {
                   )}
                 </div>
 
+                {!isContactOnly && (
+                  <>
                 {/* Key Features */}
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold text-foreground">Key Features:</h2>
@@ -287,20 +352,54 @@ const ProductDetail = () => {
                   <div className="space-y-4">
                     <h2 className="text-xl font-semibold text-foreground">Specifications:</h2>
                     <div className="bg-tactical-dark/50 rounded-lg p-6 border border-tactical-green-dim/30">
-                      <div className="grid grid-cols-1 gap-3">
+                      <div className="grid grid-cols-1 gap-4">
                         {specificationEntries.map(([key, value]) => (
-                          <div key={key} className="flex justify-between items-center">
-                            <span className="text-muted-foreground">{key}:</span>
-                            <span className="text-foreground font-medium">{value}</span>
+                          <div
+                            key={key}
+                            className="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-x-8 sm:items-baseline"
+                          >
+                            <span className="text-muted-foreground shrink-0">{key}:</span>
+                            <span className="text-foreground font-medium sm:text-right leading-relaxed">
+                              {value}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
                 )}
+                  </>
+                )}
 
-                {/* Quantity and Add to Cart */}
+                {/* Quantity and Add to Cart / Contact */}
                 <div className="space-y-4">
+                  {isContactOnly ? (
+                    <>
+                      <Link to="/contact?subject=Annihilator%20Custom%20Build">
+                        <TacticalButton variant="primary" size="lg" className="w-full text-xl py-6">
+                          Request Pricing &amp; Details
+                        </TacticalButton>
+                      </Link>
+                      <p className="text-sm text-muted-foreground leading-relaxed text-center mt-6">
+                        The Annihilator is custom built to order. Submit the contact form to
+                        request pricing, lead times, and further details.
+                        {product.buildProposalPdf && (
+                          <>
+                            {" "}
+                            <a
+                              href={product.buildProposalPdf}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"
+                            >
+                              View Customer Build Proposal (PDF)
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    </>
+                  ) : (
+                    <>
                   {!isOutOfStock && (
                     <div className="flex items-center gap-4">
                       <label className="text-foreground font-medium">Quantity:</label>
@@ -338,8 +437,11 @@ const ProductDetail = () => {
                       This item is currently unavailable and cannot be ordered online right now.
                     </p>
                   )}
+                    </>
+                  )}
                 </div>
 
+                {!isContactOnly && (
                 <div className="bg-tactical-dark/50 rounded-lg p-6 border border-tactical-green-dim/30">
                   <h3 className="font-semibold text-tactical-green mb-2">Shipping & Returns</h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
@@ -358,6 +460,7 @@ const ProductDetail = () => {
                     <li>• Secure packaging and tracking included</li>
                   </ul>
                 </div>
+                )}
 
                 {showShippingRestriction && (
                 <div className="bg-tactical-dark/50 rounded-lg p-6 border border-red-500/30">

@@ -10,8 +10,9 @@ const Purchase = () => {
   const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");
   const gunMat = getProductById("thompson-gun-mat");
   const publicEnemyHat = getProductById("public-enemy-hat");
+  const annihilatorProduct = getProductById("annihilator");
 
-  if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !gunMat || !publicEnemyHat) {
+  if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !gunMat || !publicEnemyHat || !annihilatorProduct) {
     return null;
   }
 
@@ -153,6 +154,40 @@ const Purchase = () => {
                 </div>
               </div>
             </div>
+
+            {annihilatorProduct && (
+              <div className="mt-16">
+                <div className="max-w-3xl mx-auto">
+                  <div className="bg-tactical-dark/80 rounded-2xl border border-tactical-green-dim/20 overflow-hidden flex flex-col md:flex-row">
+                    <img
+                      src={annihilatorProduct.images[0].src}
+                      alt={annihilatorProduct.images[0].alt}
+                      className="w-full md:w-72 h-64 md:h-auto object-cover object-top grayscale-[30%]"
+                      style={{
+                        objectPosition: annihilatorProduct.images[0].objectPosition ?? "center",
+                      }}
+                    />
+                    <div className="p-8 flex flex-col flex-grow">
+                      <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground mb-2">
+                        Custom Build
+                      </p>
+                      <h2 className="text-2xl font-bold text-foreground mb-3">
+                        {annihilatorProduct.name}
+                      </h2>
+                      <p className="text-sm text-muted-foreground mb-6 leading-relaxed flex-grow">
+                        John Thompson&apos;s original design, custom built to order. Contact us for
+                        pricing and details.
+                      </p>
+                      <Link to={`/product/${annihilatorProduct.id}`} className="mt-auto">
+                        <TacticalButton variant="secondary" size="lg" className="w-full text-lg py-4">
+                          View Annihilator
+                        </TacticalButton>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

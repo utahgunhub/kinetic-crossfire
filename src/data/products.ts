@@ -27,6 +27,9 @@ export interface Product {
   isKineticCrossfireProduct: boolean;
   inStock?: boolean;
   importantNotice?: string;
+  /** Custom builds sold via contact form—not checkout */
+  contactOnly?: boolean;
+  buildProposalPdf?: string;
 }
 
 export const products: Product[] = [
@@ -35,8 +38,8 @@ export const products: Product[] = [
     name: "Thompson Blow Back Trigger Gen II",
     category: "thompson",
     price: 275.00,
-    description: "Gen II two-position forced reset trigger for Thompson carbines and pistols with an oversized firing pin. Free shipping included.",
-    detailedDescription: "The Thompson Blow Back Trigger Gen II is a two position forced reset trigger for Thompson carbines and pistols. This is the second generation of the kit with an oversized firing pin. This oversized firing pin must be fitted to the gun, and provides a long trigger pull that slows the rate of fire and eliminates bolt bounce. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith.",
+    description: "Gen II two-position forced reset trigger for Thompson and Annihilator carbines and pistols with an oversized firing pin. Free shipping included.",
+    detailedDescription: "The Thompson Blow Back Trigger Gen II is a two position forced reset trigger for the Thompson and the Annihilator carbines and pistols. This is the second generation of the kit with an oversized firing pin. This oversized firing pin must be fitted to the gun, and provides a long trigger pull that slows the rate of fire and eliminates bolt bounce. Made in the USA, the parts are machined from an extremely robust and durable steel alloy built for rapid fire and high heat environments. Installation is simple and straightforward with minimal tools, but fitment may require a gunsmith.",
     images: [
       { src: "/new-firing-pin/kit1.JPG", alt: "Thompson Blow Back Trigger Gen II - Kit View" },
       { src: "/new-firing-pin/kit2.JPG", alt: "Thompson Blow Back Trigger Gen II - Kit Components" },
@@ -48,7 +51,7 @@ export const products: Product[] = [
     features: [
       "Second generation (Gen II) kit with oversized firing pin",
       "Long trigger pull slows rate of fire and eliminates bolt bounce; firing pin must be fitted to the gun",
-      "Designed for Thompson carbines and pistols",
+      "Designed for Thompson and Annihilator carbines and pistols",
       "Machined from durable steel alloy for rapid fire and high heat use",
       "Simple installation with minimal tools, though fitment may require a gunsmith",
       "Made in the USA",
@@ -60,6 +63,7 @@ export const products: Product[] = [
         "Kahr Arms Thompson carbines",
         "Auto Ordnance Thompson pistols",
         "Kahr Arms Thompson pistols",
+        "Annihilator carbines and pistols",
         ".45 ACP ball ammunition"
       ],
       usageNotes: [
@@ -70,7 +74,7 @@ export const products: Product[] = [
       ]
     },
     specifications: {
-      "Platform": "Thompson carbine and pistol variants",
+      "Platform": "Thompson and Annihilator carbine and pistol variants",
       "Compatibility": "Auto Ordnance / Kahr Arms",
       "Ammunition": ".45 ACP ball",
       "Material": "High-strength steel alloy",
@@ -237,6 +241,45 @@ export const products: Product[] = [
     },
     manufacturer: "Kinetic Crossfire",
     isKineticCrossfireProduct: true
+  },
+  {
+    id: "annihilator",
+    name: "The Annihilator",
+    category: "thompson",
+    price: 0,
+    description:
+      "John Thompson's original submachine gun design, custom built to order as a steel frame pistol with three position FRT fire control.",
+    detailedDescription:
+      "The Annihilator was designed by John Thompson as the world's first true submachine gun. Intended for the trenches of the First World War, it entered production on the civilian market rebranded as the more mild \"Thompson\". Identical in all respects to the more docile Thompson, the Annihilator now tears itself from the pages of history to reclaim its throne as the original and ultimate weapon of war.\n\nAs it wakes to the 21st Century, the civilian model of the Annihilator is sold from the factory with a three position FRT fire control group, featuring safe, semi, and forced reset positions. With a frame made entirely from steel, it is only offered as a pistol with a 10.5\" barrel. It comes from the factory with a walnut pistol brace. As designed by John Thompson and his engineers, it accepts all drum magazines on the market as well as stick magazines. Unlike the modern reproduction 1927A1 Thompsons which are of nearly identical design, the Annihilator retains its original magazine catch configuration that allows it to function with what are commonly called \"GI Thompson\" magazines. This means users will have access to a larger selection of better performing magazines, at a lower cost, and will not need to modify the magazine or the gun to use them. This does mean that users must source their own GI magazines according to their preferred distributor.\n\nOther features that will be appreciated by gun enthusiasts, are the original spherical top cocking handle, and lower receiver that is unnotched where it meets the handgrip. The grip tang which has been noted to break easily on GI Thompsons and reproduction semi automatic Thompsons has been altered on the Annihilator so that it is held in place with a screw. This also makes it removable, greatly easing the process for doing barrel changes. Left in its \"Trench Broom\" configuration, the Annihilator does not come with a compensator, but \"press fit\" models fit on the barrel should the user choose to install one.\n\nIf you are looking to upgrade your arsenal to include what is possibly the most iconic and aggressive handheld weapon ever designed, the Annihilator is the final choice. Guns are custom built to order for the time being. Please send a contact form to request pricing and further details.",
+    images: [
+      {
+        src: "/The%20Annihilator.jpg",
+        alt: "The Annihilator, John Thompson with the original prototype",
+        objectPosition: "center 20%",
+      },
+    ],
+    features: [
+      "Three position FRT fire control: safe, semi, and forced reset",
+      "Steel frame pistol with 10.5\" finned barrel and walnut pistol brace",
+      "Accepts drum magazines and GI Thompson stick magazines without modification",
+      "Original spherical top cocking handle and unnotched lower receiver at the handgrip",
+      "Screw retained grip tang for durability and easier barrel changes",
+      "Trench Broom configuration without compensator; press fit compensators optional",
+      "Custom built to order, contact us for pricing and details",
+      "Made in the USA",
+    ],
+    specifications: {
+      Caliber: ".45 ACP",
+      Frame: "Steel",
+      Furniture: "Walnut, including pistol brace",
+      Barrel: '10.5" finned barrel',
+      Magazines: "Drums and 20/30 round GI stick magazines (user sourced)",
+    },
+    manufacturer: "Kinetic Crossfire",
+    isKineticCrossfireProduct: true,
+    contactOnly: true,
+    buildProposalPdf: "/Annihilator%20Customer%20Build%20Proposal.pdf",
+    importantNotice: "Custom Built to Order",
   }
 ];
 
@@ -260,4 +303,8 @@ export const hasRestrictedShipping = (product: Product): boolean => {
 
 export const hasFreeShippingIncluded = (product: Product): boolean => {
   return product.id === RESTRICTED_SHIPPING_PRODUCT_ID;
+};
+
+export const isContactOnlyProduct = (product: Product): boolean => {
+  return product.contactOnly === true;
 };

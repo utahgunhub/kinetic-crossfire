@@ -1,11 +1,13 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { sendContactEmail } from "@/lib/emailService";
 
 const Contact = () => {
+  const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -14,6 +16,18 @@ const Contact = () => {
     subject: "General Inquiry",
     message: "",
   });
+
+  useEffect(() => {
+    const subject = searchParams.get("subject");
+    const message = searchParams.get("message");
+    if (!subject && !message) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      ...(subject ? { subject } : {}),
+      ...(message ? { message } : {}),
+    }));
+  }, [searchParams]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -136,6 +150,7 @@ const Contact = () => {
                       className="w-full px-4 py-3 bg-tactical-surface border border-tactical-green-dim/30 rounded-lg text-foreground focus:border-tactical-green focus:outline-none"
                     >
                       <option>General Inquiry</option>
+                      <option>Annihilator Custom Build</option>
                       <option>Technical Support</option>
                       <option>Compatibility Question</option>
                       <option>Order Support</option>
