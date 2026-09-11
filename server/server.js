@@ -66,6 +66,8 @@ const restrictedShippingStateAliases = {
   'new jersey': 'New Jersey',
   ny: 'New York',
   'new york': 'New York',
+  or: 'Oregon',
+  oregon: 'Oregon',
   wa: 'Washington',
   washington: 'Washington',
 };

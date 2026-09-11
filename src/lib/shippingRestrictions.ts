@@ -10,6 +10,7 @@ export const restrictedShippingStates = [
   "Nevada",
   "New Jersey",
   "New York",
+  "Oregon",
   "Washington",
 ] as const;
 
@@ -95,6 +96,8 @@ const restrictedShippingStateAliases: Record<string, string> = {
   "new jersey": "New Jersey",
   ny: "New York",
   "new york": "New York",
+  or: "Oregon",
+  oregon: "Oregon",
   wa: "Washington",
   washington: "Washington",
 };
