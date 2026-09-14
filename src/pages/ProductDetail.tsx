@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping, isContactOnlyProduct, products } from "@/data/products";
+import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping, isContactOnlyProduct, getStockStatusLabel, products } from "@/data/products";
 import { thompsonProductPageVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
@@ -45,6 +45,7 @@ const ProductDetail = () => {
     feature.toLowerCase().includes("made in usa")
   );
   const isOutOfStock = product?.inStock === false;
+  const stockStatusLabel = product ? getStockStatusLabel(product) : "Out of Stock";
   const showShippingRestriction = product ? hasRestrictedShipping(product) : false;
   const productDescription = product?.detailedDescription ?? "";
   const productDescriptionParagraphs = productDescription
@@ -99,7 +100,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (isOutOfStock) {
-      toast.error("This product is currently out of stock.");
+      toast.error(`This product is ${stockStatusLabel.toLowerCase()}.`);
       return;
     }
 
@@ -111,7 +112,7 @@ const ProductDetail = () => {
 
   const handleBuyNow = () => {
     if (isOutOfStock) {
-      toast.error("This product is currently out of stock.");
+      toast.error(`This product is ${stockStatusLabel.toLowerCase()}.`);
       return;
     }
 
@@ -245,7 +246,7 @@ const ProductDetail = () => {
                   {isOutOfStock && (
                     <div className="mb-4">
                       <span className="px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-semibold uppercase tracking-wider">
-                        Out of Stock
+                        {stockStatusLabel}
                       </span>
                     </div>
                   )}
@@ -430,11 +431,11 @@ const ProductDetail = () => {
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
                   >
-                    {isOutOfStock ? "Out of Stock" : `Add to Cart - $${(product.price * quantity).toFixed(2)}`}
+                    {isOutOfStock ? stockStatusLabel : `Add to Cart - $${(product.price * quantity).toFixed(2)}`}
                   </TacticalButton>
                   {isOutOfStock && (
                     <p className="text-sm text-muted-foreground">
-                      This item is currently unavailable and cannot be ordered online right now.
+                      This item is {stockStatusLabel.toLowerCase()} and cannot be ordered online right now.
                     </p>
                   )}
                     </>

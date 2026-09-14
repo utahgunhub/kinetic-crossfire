@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
-import { getProductById } from "@/data/products";
+import { getProductById, getStockStatusLabel } from "@/data/products";
 import { Link } from "react-router-dom";
 
 const Purchase = () => {
@@ -80,7 +80,7 @@ const Purchase = () => {
                   <h2 className="text-3xl font-bold text-foreground mb-3">{thompsonChargingHandle.name}</h2>
                   {thompsonChargingHandle.inStock === false && (
                     <span className="inline-block mb-3 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
-                      Out of Stock
+                      {getStockStatusLabel(thompsonChargingHandle)}
                     </span>
                   )}
                   <p className="text-muted-foreground mb-6 leading-relaxed">

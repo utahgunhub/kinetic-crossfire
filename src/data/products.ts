@@ -26,6 +26,7 @@ export interface Product {
   manufacturer?: string;
   isKineticCrossfireProduct: boolean;
   inStock?: boolean;
+  stockStatusLabel?: string;
   importantNotice?: string;
   /** Custom builds sold via contact form—not checkout */
   contactOnly?: boolean;
@@ -121,7 +122,9 @@ export const products: Product[] = [
       "Handle Grip Length": "1 3/8 in."
     },
     manufacturer: "Kinetic Crossfire",
-    isKineticCrossfireProduct: true
+    isKineticCrossfireProduct: true,
+    inStock: false,
+    stockStatusLabel: "Temporarily Out of Stock",
   },
   {
     id: "thompson-top-charging-handle",
@@ -294,6 +297,9 @@ export const getProductsByCategory = (category: ProductCategory): Product[] => {
     .filter((product) => product.category === category)
     .map(applySalePricing);
 };
+
+export const getStockStatusLabel = (product: Product): string =>
+  product.stockStatusLabel ?? "Out of Stock";
 
 export const RESTRICTED_SHIPPING_PRODUCT_ID = "thompson-blow-back-trigger";
 
