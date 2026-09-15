@@ -38,13 +38,13 @@ function getSalePrice(productId) {
   return JULY4_SALE.prices[productId];
 }
 
-function resolveItemPrice(item) {
+function resolveItemPrice(item, priceMap = CATALOG_PRICES) {
   const productId = item.productId || item.id;
   const salePrice = getSalePrice(productId);
   if (salePrice !== undefined) return salePrice;
 
-  const catalogPrice = CATALOG_PRICES[productId];
-  if (catalogPrice !== undefined) return catalogPrice;
+  const catalogPrice = priceMap[productId];
+  if (catalogPrice !== undefined) return Number(catalogPrice);
 
   return Number(item.price);
 }

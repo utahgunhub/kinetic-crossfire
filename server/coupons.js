@@ -1,34 +1,18 @@
-// Coupon codes are server-side only — never expose these in frontend source.
-const { calculateShippingCost } = require('./shipping');
-const { resolveItemPrice, areCouponsAllowed } = require('./sale');
-const COUPONS = {
-  KXFVETS2026: {
-    type: 'percent',
-    value: 15,
-  },
-  KXFCOPS2026: {
-    type: 'percent',
-    value: 15,
-  },
-};
+const { calculateShippingCost } = require("./shipping");
+const { resolveItemPrice, areCouponsAllowed } = require("./sale");
+const { findActiveCoupon } = require("./catalog");
 
-function normalizeCouponCode(code = '') {
+function normalizeCouponCode(code = "") {
   return String(code).trim().toUpperCase();
 }
 
-function validateCoupon(code) {
-  const normalized = normalizeCouponCode(code);
-  if (!normalized) return null;
-
-  const coupon = COUPONS[normalized];
-  if (!coupon) return null;
-
-  return { code: normalized, ...coupon };
+async function validateCoupon(code) {
+  return findActiveCoupon(code);
 }
 
-function calculateSubtotal(items = []) {
+function calculateSubtotal(items = [], priceMap) {
   return items.reduce((sum, item) => {
-    const price = resolveItemPrice(item);
+    const price = resolveItemPrice(item, priceMap);
     const quantity = Number(item.quantity);
     if (!Number.isFinite(price) || !Number.isFinite(quantity) || quantity <= 0) {
       return sum;
@@ -41,22 +25,42 @@ function roundCurrency(amount) {
   return Math.round(amount * 100) / 100;
 }
 
-function calculateOrderTotals(items, couponCode = null) {
-  const subtotal = roundCurrency(calculateSubtotal(items));
+async function calculateOrderTotals(items, couponCode = null, priceMap) {
+  const subtotal = roundCurrency(calculateSubtotal(items, priceMap));
   const shipping = calculateShippingCost(subtotal);
 
   if (couponCode && !areCouponsAllowed()) {
-    return { subtotal, shipping, discount: 0, total: roundCurrency(subtotal + shipping), coupon: null, couponBlocked: true };
+    return {
+      subtotal,
+      shipping,
+      discount: 0,
+      total: roundCurrency(subtotal + shipping),
+      coupon: null,
+      couponBlocked: true,
+    };
   }
 
-  const coupon = couponCode ? validateCoupon(couponCode) : null;
+  const coupon = couponCode ? await validateCoupon(couponCode) : null;
 
   let discount = 0;
-  if (coupon?.type === 'percent') {
+  if (coupon?.type === "percent") {
     discount = roundCurrency(subtotal * (coupon.value / 100));
+  } else if (coupon?.type === "fixed") {
+    discount = roundCurrency(Math.min(subtotal, coupon.value));
   }
 
-  const total = roundCurrency(subtotal + shipping - discount);
+  if (coupon?.min_subtotal != null && subtotal < coupon.min_subtotal) {
+    return {
+      subtotal,
+      shipping,
+      discount: 0,
+      total: roundCurrency(subtotal + shipping),
+      coupon: null,
+      belowMinimum: true,
+    };
+  }
+
+  const total = roundCurrency(Math.max(0, subtotal + shipping - discount));
 
   return { subtotal, shipping, discount, total, coupon };
 }
@@ -65,4 +69,5 @@ module.exports = {
   validateCoupon,
   calculateOrderTotals,
   areCouponsAllowed,
+  normalizeCouponCode,
 };

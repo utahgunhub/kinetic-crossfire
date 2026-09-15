@@ -1,9 +1,19 @@
+require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
 const { validateCoupon, calculateOrderTotals, areCouponsAllowed } = require('./coupons');
 const { calculateDealerOrderTotals } = require('./dealerPricing');
-require('dotenv').config();
+const {
+  loadPublishedProducts,
+  buildPriceMap,
+  requireAdmin,
+  assertInventory,
+  decrementInventory,
+  incrementCouponRedemption,
+} = require('./catalog');
+const { fetchAnalyticsSummary } = require('./analytics');
 
 const app = express();
 
@@ -187,7 +197,7 @@ app.post('/api/validate-coupon', async (req, res) => {
       });
     }
 
-    const coupon = validateCoupon(couponCode);
+    const coupon = await validateCoupon(couponCode);
     if (!coupon) {
       return res.status(400).json({
         success: false,
@@ -195,7 +205,16 @@ app.post('/api/validate-coupon', async (req, res) => {
       });
     }
 
-    const totals = calculateOrderTotals(items, coupon.code);
+    const productRows = await loadPublishedProducts();
+    const priceMap = buildPriceMap(productRows);
+    const totals = await calculateOrderTotals(items, coupon.code, priceMap);
+
+    if (totals.belowMinimum) {
+      return res.status(400).json({
+        success: false,
+        error: `This code requires a minimum subtotal of $${coupon.min_subtotal.toFixed(2)}.`,
+      });
+    }
 
     res.json({
       success: true,
@@ -251,16 +270,35 @@ app.post('/api/process-payment', async (req, res) => {
       });
     }
 
-    if (normalizedCouponCode && !validateCoupon(normalizedCouponCode)) {
+    if (normalizedCouponCode && !(await validateCoupon(normalizedCouponCode))) {
       return res.status(400).json({
         success: false,
         error: 'Invalid coupon code',
       });
     }
 
+    const productRows = await loadPublishedProducts();
+    const priceMap = buildPriceMap(productRows);
+
+    try {
+      await assertInventory(items);
+    } catch (stockError) {
+      return res.status(400).json({
+        success: false,
+        error: stockError.message || 'One or more items are out of stock',
+      });
+    }
+
     const orderTotals = isDealerOrder
-      ? calculateDealerOrderTotals(items)
-      : calculateOrderTotals(items, normalizedCouponCode);
+      ? calculateDealerOrderTotals(items, priceMap)
+      : await calculateOrderTotals(items, normalizedCouponCode, priceMap);
+
+    if (orderTotals.belowMinimum) {
+      return res.status(400).json({
+        success: false,
+        error: 'This coupon requires a higher cart subtotal.',
+      });
+    }
 
     const { subtotal, shipping: shippingCost, discount, total } = orderTotals;
 
@@ -362,6 +400,15 @@ app.post('/api/process-payment', async (req, res) => {
           console.log('✅ Transaction approved');
           console.log('Transaction ID:', txn.transId);
           console.log('Auth Code:', txn.authCode);
+
+          try {
+            await decrementInventory(items);
+            if (normalizedCouponCode) {
+              await incrementCouponRedemption(normalizedCouponCode);
+            }
+          } catch (postError) {
+            console.error('Post-payment catalog update failed:', postError);
+          }
           
           res.json({
             success: true,
@@ -430,7 +477,18 @@ app.post('/api/process-payment', async (req, res) => {
   }
 });
 
-// Get transaction details (for order confirmation)
+app.get('/api/admin/analytics', requireAdmin, async (req, res) => {
+  try {
+    const summary = await fetchAnalyticsSummary(req.query.range);
+    res.json({ success: true, ...summary });
+  } catch (error) {
+    console.error('Analytics error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to load analytics',
+    });
+  }
+});
 app.get('/api/transaction/:transactionId', async (req, res) => {
   try {
     const { transactionId } = req.params;
@@ -510,6 +568,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`  GET    /api/payment/client-key`);
   console.log(`  POST   /api/validate-coupon`);
   console.log(`  POST   /api/process-payment`);
+  console.log(`  GET    /api/admin/analytics`);
   console.log(`  GET    /api/transaction/:id`);
   console.log('');
   console.log('💳 Payment Gateway: Authorize.net (Direct API)');

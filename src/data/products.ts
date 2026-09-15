@@ -31,6 +31,10 @@ export interface Product {
   /** Custom builds sold via contact form—not checkout */
   contactOnly?: boolean;
   buildProposalPdf?: string;
+  quantityOnHand?: number;
+  sortOrder?: number;
+  featured?: boolean;
+  isPublished?: boolean;
 }
 
 export const products: Product[] = [

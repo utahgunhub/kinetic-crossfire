@@ -41,6 +41,9 @@ const Navigation = () => {
             <Link to="/shop" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
               Shop
             </Link>
+            <Link to="/dealers" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
+              Locate a Dealer
+            </Link>
             <Link to="/contact" className="text-foreground hover:text-tactical-green transition-colors font-medium uppercase tracking-wide text-sm">
               Contact
             </Link>

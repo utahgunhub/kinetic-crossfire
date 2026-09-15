@@ -1,12 +1,13 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
-import { getProductsByCategory } from "@/data/products";
+import { useProductCatalog } from "@/contexts/ProductCatalogContext";
 import { Link } from "react-router-dom";
 import { isProductOnSale } from "@/lib/sale";
 import { SaleBadge, SalePrice } from "@/components/SalePrice";
 
 const Apparel = () => {
+  const { getProductsByCategory } = useProductCatalog();
   const apparelProducts = getProductsByCategory("apparel");
 
   return (

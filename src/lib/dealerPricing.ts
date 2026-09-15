@@ -55,12 +55,27 @@ export function getDealerUnitPrice(
   return roundCurrency(msrp * (1 - OTHER_DISCOUNT / 100));
 }
 
+export function getDealerUnitPriceFromMsrp(
+  productId: string,
+  msrp: number,
+  totalFrtQtyInOrder: number
+): number {
+  if (!Number.isFinite(msrp) || msrp <= 0) return 0;
+
+  if (productId === FRT_PRODUCT_ID) {
+    const discount = getFrtDiscountPercent(totalFrtQtyInOrder);
+    return roundCurrency(msrp * (1 - discount / 100));
+  }
+
+  return roundCurrency(msrp * (1 - OTHER_DISCOUNT / 100));
+}
+
 export function applyDealerPricingToProduct(
   product: Product,
   totalFrtQtyInOrder: number
 ): Product {
-  const msrp = getCatalogMsrp(product.id) || product.price;
-  const dealerPrice = getDealerUnitPrice(product.id, totalFrtQtyInOrder);
+  const msrp = product.price || getCatalogMsrp(product.id);
+  const dealerPrice = getDealerUnitPriceFromMsrp(product.id, msrp, totalFrtQtyInOrder);
   return {
     ...product,
     originalPrice: msrp,

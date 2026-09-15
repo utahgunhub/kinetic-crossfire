@@ -6,7 +6,9 @@ const OTHER_DISCOUNT = catalog.OTHER_DEALER_DISCOUNT_PERCENT;
 const CATALOG_PRICES = catalog.CATALOG_PRICES;
 const FRT_TIERS = catalog.FRT_VOLUME_TIERS;
 
-function getCatalogMsrp(productId) {
+function getCatalogMsrp(productId, priceMap = CATALOG_PRICES) {
+  const mapped = priceMap[productId];
+  if (mapped !== undefined) return Number(mapped);
   return CATALOG_PRICES[productId];
 }
 
@@ -30,9 +32,9 @@ function roundCurrency(amount) {
   return Math.round(amount * 100) / 100;
 }
 
-function getDealerUnitPrice(productId, totalFrtQtyInOrder) {
-  const msrp = getCatalogMsrp(productId);
-  if (msrp === undefined) {
+function getDealerUnitPrice(productId, totalFrtQtyInOrder, priceMap = CATALOG_PRICES) {
+  const msrp = getCatalogMsrp(productId, priceMap);
+  if (msrp === undefined || msrp === null || Number.isNaN(Number(msrp))) {
     return null;
   }
 
@@ -44,9 +46,9 @@ function getDealerUnitPrice(productId, totalFrtQtyInOrder) {
   return roundCurrency(msrp * (1 - OTHER_DISCOUNT / 100));
 }
 
-function resolveDealerItemPrice(item, totalFrtQty) {
+function resolveDealerItemPrice(item, totalFrtQty, priceMap) {
   const productId = item.productId || item.id;
-  const price = getDealerUnitPrice(productId, totalFrtQty);
+  const price = getDealerUnitPrice(productId, totalFrtQty, priceMap);
   if (price === null) return null;
   return price;
 }
@@ -60,11 +62,11 @@ function calculateDealerShippingCost(subtotal, items = []) {
   return calculateShippingCost(subtotal);
 }
 
-function calculateDealerOrderTotals(items = []) {
+function calculateDealerOrderTotals(items = [], priceMap = CATALOG_PRICES) {
   const frtQty = countFrtQuantity(items);
   const subtotal = roundCurrency(
     items.reduce((sum, item) => {
-      const price = resolveDealerItemPrice(item, frtQty);
+      const price = resolveDealerItemPrice(item, frtQty, priceMap);
       const quantity = Number(item.quantity);
       if (price === null || !Number.isFinite(quantity) || quantity <= 0) {
         return sum;

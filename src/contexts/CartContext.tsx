@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Product, getProductById, products } from '@/data/products';
+import { Product } from '@/data/products';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProductCatalog } from '@/contexts/ProductCatalogContext';
 import {
   applyDealerPricingToProduct,
   countFrtQuantityInCart,
@@ -25,6 +26,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isDealer } = useAuth();
+  const { products, getProductById } = useProductCatalog();
 
   const resolveProductForCart = useCallback(
     (productId: string, cartItems: CartItem[]): Product | undefined => {
@@ -36,7 +38,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return getProductById(productId);
     },
-    [isDealer]
+    [isDealer, products, getProductById]
   );
 
   const refreshCartPrices = useCallback(

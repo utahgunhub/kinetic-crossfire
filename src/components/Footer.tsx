@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="py-12 bg-tactical-darker border-t border-tactical-green-dim/30">
@@ -21,11 +23,12 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-foreground">Navigation</h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/" className="hover:text-tactical-green transition-colors">Home</a></li>
-              <li><a href="/videos" className="hover:text-tactical-green transition-colors">Videos</a></li>
-              <li><a href="/shop" className="hover:text-tactical-green transition-colors">Shop</a></li>
-              <li><a href="/contact" className="hover:text-tactical-green transition-colors">Contact</a></li>
-              <li><a href="/dealership" className="hover:text-tactical-green transition-colors">Become a Dealer</a></li>
+              <li><Link to="/" className="hover:text-tactical-green transition-colors">Home</Link></li>
+              <li><Link to="/videos" className="hover:text-tactical-green transition-colors">Videos</Link></li>
+              <li><Link to="/shop" className="hover:text-tactical-green transition-colors">Shop</Link></li>
+              <li><Link to="/dealers" className="hover:text-tactical-green transition-colors">Locate a Dealer</Link></li>
+              <li><Link to="/contact" className="hover:text-tactical-green transition-colors">Contact</Link></li>
+              <li><Link to="/dealership" className="hover:text-tactical-green transition-colors">Become a Dealer</Link></li>
             </ul>
             
             <div className="pt-4">

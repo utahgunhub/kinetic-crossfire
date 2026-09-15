@@ -3,7 +3,8 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getProductById, hasFreeShippingIncluded, hasRestrictedShipping, isContactOnlyProduct, getStockStatusLabel, products } from "@/data/products";
+import { hasFreeShippingIncluded, hasRestrictedShipping, isContactOnlyProduct, getStockStatusLabel } from "@/data/products";
+import { useProductCatalog } from "@/contexts/ProductCatalogContext";
 import { thompsonProductPageVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { useCart } from "@/contexts/CartContext";
@@ -22,14 +23,15 @@ const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const { addToCart, items } = useCart();
   const { isDealer } = useAuth();
+  const { getProductById, products } = useProductCatalog();
   const product = useMemo(() => {
     if (!productId) return null;
-    if (!isDealer) return getProductById(productId);
+    if (!isDealer) return getProductById(productId) ?? null;
     const base = products.find((p) => p.id === productId);
     if (!base) return null;
     const frtQty = countFrtQuantityInCart(items);
     return applyDealerPricingToProduct(base, frtQty);
-  }, [productId, isDealer, items]);
+  }, [productId, isDealer, items, getProductById, products]);
   const navigate = useNavigate();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);

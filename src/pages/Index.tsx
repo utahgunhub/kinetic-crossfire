@@ -2,13 +2,15 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { Link } from "react-router-dom";
-import { getProductById, getStockStatusLabel } from "@/data/products";
+import { getStockStatusLabel } from "@/data/products";
+import { useProductCatalog } from "@/contexts/ProductCatalogContext";
 import { thompsonFrtDemoVideos } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { Star, Quote } from "lucide-react";
 import { isProductOnSale } from "@/lib/sale";
 
 const Index = () => {
+  const { getProductById } = useProductCatalog();
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");

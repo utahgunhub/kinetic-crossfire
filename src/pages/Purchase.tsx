@@ -1,16 +1,27 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
-import { getProductById, getStockStatusLabel } from "@/data/products";
+import { getStockStatusLabel } from "@/data/products";
+import { useProductCatalog } from "@/contexts/ProductCatalogContext";
 import { Link } from "react-router-dom";
 
 const Purchase = () => {
+  const { getProductById, products } = useProductCatalog();
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");
   const gunMat = getProductById("thompson-gun-mat");
   const publicEnemyHat = getProductById("public-enemy-hat");
   const annihilatorProduct = getProductById("annihilator");
+  const extraProducts = products.filter(
+    (product) =>
+      ![
+        "thompson-blow-back-trigger",
+        "thompson-charging-handle",
+        "thompson-top-charging-handle",
+        "annihilator",
+      ].includes(product.id) && product.category !== "apparel"
+  );
 
   if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !gunMat || !publicEnemyHat || !annihilatorProduct) {
     return null;
@@ -154,6 +165,47 @@ const Purchase = () => {
                 </div>
               </div>
             </div>
+
+            {extraProducts.length > 0 && (
+              <div className="grid lg:grid-cols-2 gap-8 mt-8">
+                {extraProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="bg-tactical-dark rounded-2xl border border-tactical-green-dim/30 overflow-hidden flex flex-col"
+                  >
+                    {product.images[0] && (
+                      <img
+                        src={product.images[0].src}
+                        alt={product.images[0].alt}
+                        className="w-full h-80 object-cover bg-white"
+                      />
+                    )}
+                    <div className="p-8 flex flex-col flex-grow">
+                      <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">
+                        {product.category === "apparel" ? "Apparel" : "Thompson Platform"}
+                      </p>
+                      <h2 className="text-3xl font-bold text-foreground mb-3">{product.name}</h2>
+                      {product.inStock === false && (
+                        <span className="inline-block mb-3 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
+                          {getStockStatusLabel(product)}
+                        </span>
+                      )}
+                      <p className="text-muted-foreground mb-6 leading-relaxed">{product.description}</p>
+                      <div className="flex items-center gap-3 mb-6 flex-wrap">
+                        <span className="text-3xl font-bold text-tactical-green">
+                          ${product.price.toFixed(2)}
+                        </span>
+                      </div>
+                      <Link to={`/product/${product.id}`} className="mt-auto">
+                        <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">
+                          View Product
+                        </TacticalButton>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {annihilatorProduct && (
               <div className="mt-16">

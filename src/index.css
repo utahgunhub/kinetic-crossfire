@@ -126,3 +126,9 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+.leaflet-container {
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+}
