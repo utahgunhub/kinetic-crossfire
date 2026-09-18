@@ -29,7 +29,6 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProductEdit from "./pages/admin/AdminProductEdit";
 import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
-import GoogleAnalytics from "./components/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +42,6 @@ const App = () => (
         <Sonner />
         <Analytics />
         <BrowserRouter>
-          <GoogleAnalytics />
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
