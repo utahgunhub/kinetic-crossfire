@@ -1,10 +1,31 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { thompsonFrtDemoVideos, thompsonFrtInstallVideo, thompsonTriggerLifterVideo } from "@/data/thompsonVideos";
+import {
+  thompsonFiringPinFitmentVideo,
+  thompsonFrtDemoVideos,
+  thompsonFrtInstallVideo,
+  thompsonTriggerLifterVideo,
+} from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 
 const Videos = () => {
   const thompsonVideos = [
+    {
+      id: thompsonFiringPinFitmentVideo.id,
+      title: "Firing Pin Fitment Video",
+      description: "Guide to firing pin fitment on the Thompson platform.",
+      embedUrl: thompsonFiringPinFitmentVideo.embedUrl,
+      link: thompsonFiringPinFitmentVideo.link,
+      linkLabel: "Watch on Vimeo",
+    },
+    {
+      id: thompsonFrtInstallVideo.id,
+      title: "Thompson Blow-Back Trigger Install",
+      description: "Walk through the installation process before starting your Thompson build.",
+      embedUrl: thompsonFrtInstallVideo.embedUrl,
+      link: thompsonFrtInstallVideo.link,
+      linkLabel: "Watch on Vimeo",
+    },
     {
       id: "1222715929",
       title: "Thompson Troubleshooting Video",
@@ -13,14 +34,6 @@ const Videos = () => {
       embedUrl:
         "https://player.vimeo.com/video/1222715929?badge=0&autopause=0&player_id=0&app_id=58479",
       link: "https://vimeo.com/1222715929",
-      linkLabel: "Watch on Vimeo",
-    },
-    {
-      id: "1212401002",
-      title: "Firing Pin Fitment Video",
-      description: "Guide to firing pin fitment on the Thompson platform.",
-      embedUrl: "https://player.vimeo.com/video/1212401002?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      link: "https://vimeo.com/1212401002",
       linkLabel: "Watch on Vimeo",
     },
     {
@@ -37,14 +50,6 @@ const Videos = () => {
       description: "Another live look at the Thompson FRT in action.",
       embedUrl: thompsonFrtDemoVideos[1].embedUrl,
       link: thompsonFrtDemoVideos[1].link,
-      linkLabel: "Watch on Vimeo",
-    },
-    {
-      id: thompsonFrtInstallVideo.id,
-      title: "Thompson Blow-Back Trigger Install",
-      description: "Walk through the installation process before starting your Thompson build.",
-      embedUrl: thompsonFrtInstallVideo.embedUrl,
-      link: thompsonFrtInstallVideo.link,
       linkLabel: "Watch on Vimeo",
     },
     {

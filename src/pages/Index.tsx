@@ -4,7 +4,11 @@ import { TacticalButton } from "@/components/TacticalButton";
 import { Link } from "react-router-dom";
 import { getStockStatusLabel } from "@/data/products";
 import { useProductCatalog } from "@/contexts/ProductCatalogContext";
-import { thompsonFrtDemoVideos } from "@/data/thompsonVideos";
+import {
+  thompsonFiringPinFitmentVideo,
+  thompsonFrtDemoVideos,
+  thompsonFrtInstallVideo,
+} from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { Star, Quote } from "lucide-react";
 import { isProductOnSale } from "@/lib/sale";
@@ -360,7 +364,11 @@ const Index = () => {
           </div>
 
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
-            {thompsonFrtDemoVideos.map((video) => (
+            {[
+              thompsonFiringPinFitmentVideo,
+              thompsonFrtInstallVideo,
+              ...thompsonFrtDemoVideos,
+            ].map((video) => (
               <div key={video.id}>
                 <div className="relative aspect-video rounded-lg overflow-hidden border-2 border-tactical-green-dim/30 shadow-2xl">
                   <VimeoEmbed src={video.embedUrl} title={video.title} />

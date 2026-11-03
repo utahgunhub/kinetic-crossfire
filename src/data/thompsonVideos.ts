@@ -1,8 +1,15 @@
+export const thompsonFiringPinFitmentVideo = {
+  id: "1242914028",
+  title: "Firing Pin Fitment Video",
+  embedUrl: "https://player.vimeo.com/video/1242914028?badge=0&autopause=0&player_id=0&app_id=58479",
+  link: "https://vimeo.com/1242914028",
+};
+
 export const thompsonFrtInstallVideo = {
-  id: "1212401001",
+  id: "1242912751",
   title: "Thompson FRT Install",
-  embedUrl: "https://player.vimeo.com/video/1212401001?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-  link: "https://vimeo.com/1212401001",
+  embedUrl: "https://player.vimeo.com/video/1242912751?badge=0&autopause=0&player_id=0&app_id=58479",
+  link: "https://vimeo.com/1242912751",
 };
 
 export const thompsonFrtDemoVideos = [
@@ -31,6 +38,7 @@ export const thompsonTriggerLifterVideo = {
 };
 
 export const thompsonProductPageVideos = [
+  thompsonFiringPinFitmentVideo,
   thompsonFrtInstallVideo,
   ...thompsonFrtDemoVideos,
   thompsonTriggerLifterVideo,
