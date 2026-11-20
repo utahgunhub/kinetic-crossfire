@@ -232,7 +232,7 @@ const OrderConfirmation = () => {
                 </p>
                 <div className="mt-6 flex justify-center">
                   <a
-                    href="/user-guide.pdf"
+                    href="/USER%20GUIDE.pdf"
                     target="_blank"
                     rel="noreferrer"
                   >

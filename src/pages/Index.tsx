@@ -471,7 +471,7 @@ const Index = () => {
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                   Download the{" "}
                   <a
-                    href="/user-guide.pdf"
+                    href="/USER%20GUIDE.pdf"
                     target="_blank"
                     rel="noreferrer"
                     className="text-tactical-green hover:text-tactical-green-glow underline underline-offset-4"

@@ -6,10 +6,10 @@ export const thompsonFiringPinFitmentVideo = {
 };
 
 export const thompsonFrtInstallVideo = {
-  id: "1242912751",
+  id: "1248761743",
   title: "Thompson FRT Install",
-  embedUrl: "https://player.vimeo.com/video/1242912751?badge=0&autopause=0&player_id=0&app_id=58479",
-  link: "https://vimeo.com/1242912751",
+  embedUrl: "https://player.vimeo.com/video/1248761743?autopause=0&player_id=0&app_id=58479",
+  link: "https://vimeo.com/1248761743",
 };
 
 export const thompsonFrtDemoVideos = [
