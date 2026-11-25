@@ -3,11 +3,12 @@ require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') }
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
-const { validateCoupon, calculateOrderTotals, areCouponsAllowed } = require('./coupons');
+const { validateCoupon, calculateOrderTotals, areCouponsAllowed, getCouponBlockedMessage } = require('./coupons');
 const { calculateDealerOrderTotals } = require('./dealerPricing');
 const {
   loadPublishedProducts,
   buildPriceMap,
+  buildProductMetaMap,
   requireAdmin,
   assertInventory,
   decrementInventory,
@@ -193,7 +194,7 @@ app.post('/api/validate-coupon', async (req, res) => {
     if (!areCouponsAllowed()) {
       return res.status(400).json({
         success: false,
-        error: 'Coupon codes cannot be combined with sale pricing during the 4th of July sale.',
+        error: getCouponBlockedMessage(),
       });
     }
 
@@ -207,7 +208,8 @@ app.post('/api/validate-coupon', async (req, res) => {
 
     const productRows = await loadPublishedProducts();
     const priceMap = buildPriceMap(productRows);
-    const totals = await calculateOrderTotals(items, coupon.code, priceMap);
+    const productMetaMap = buildProductMetaMap(productRows);
+    const totals = await calculateOrderTotals(items, coupon.code, priceMap, productMetaMap);
 
     if (totals.belowMinimum) {
       return res.status(400).json({
@@ -266,7 +268,7 @@ app.post('/api/process-payment', async (req, res) => {
     if (normalizedCouponCode && !areCouponsAllowed()) {
       return res.status(400).json({
         success: false,
-        error: 'Coupon codes cannot be combined with sale pricing during the 4th of July sale.',
+        error: getCouponBlockedMessage(),
       });
     }
 
@@ -279,6 +281,7 @@ app.post('/api/process-payment', async (req, res) => {
 
     const productRows = await loadPublishedProducts();
     const priceMap = buildPriceMap(productRows);
+    const productMetaMap = buildProductMetaMap(productRows);
 
     try {
       await assertInventory(items);
@@ -291,7 +294,7 @@ app.post('/api/process-payment', async (req, res) => {
 
     const orderTotals = isDealerOrder
       ? calculateDealerOrderTotals(items, priceMap)
-      : await calculateOrderTotals(items, normalizedCouponCode, priceMap);
+      : await calculateOrderTotals(items, normalizedCouponCode, priceMap, productMetaMap);
 
     if (orderTotals.belowMinimum) {
       return res.status(400).json({

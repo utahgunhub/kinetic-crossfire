@@ -1,0 +1,11 @@
+{
+  "active": true,
+  "name": "Black Friday Sale",
+  "discountPercent": 15,
+  "excludedProductIds": [
+    "thompson-charging-handle",
+    "thompson-top-charging-handle",
+    "annihilator"
+  ],
+  "allowCoupons": false
+}

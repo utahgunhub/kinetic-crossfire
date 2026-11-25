@@ -45,6 +45,7 @@ async function loadPublishedProducts() {
   if (!supabase) {
     return Object.entries(catalogJson.CATALOG_PRICES).map(([id, price]) => ({
       id,
+      name: "",
       price,
       quantity_on_hand: 999,
       contact_only: false,
@@ -54,7 +55,7 @@ async function loadPublishedProducts() {
 
   const { data, error } = await supabase
     .from("products")
-    .select("id, price, quantity_on_hand, contact_only, is_published")
+    .select("id, name, price, quantity_on_hand, contact_only, is_published")
     .eq("is_published", true);
 
   if (error) {
@@ -68,6 +69,17 @@ function buildPriceMap(productRows) {
   const map = { ...catalogJson.CATALOG_PRICES };
   for (const row of productRows) {
     map[row.id] = Number(row.price);
+  }
+  return map;
+}
+
+function buildProductMetaMap(productRows) {
+  const map = {};
+  for (const row of productRows) {
+    map[row.id] = {
+      name: row.name || "",
+      contact_only: row.contact_only === true,
+    };
   }
   return map;
 }
@@ -184,6 +196,7 @@ module.exports = {
   requireAdmin,
   loadPublishedProducts,
   buildPriceMap,
+  buildProductMetaMap,
   findActiveCoupon,
   incrementCouponRedemption,
   assertInventory,

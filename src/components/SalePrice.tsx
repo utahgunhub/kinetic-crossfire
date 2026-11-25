@@ -1,3 +1,5 @@
+import { ACTIVE_SALE } from "@/lib/sale";
+
 interface SalePriceProps {
   price: number;
   originalPrice?: number;
@@ -43,8 +45,8 @@ export function SalePrice({
 
 export function SaleBadge() {
   return (
-    <span className="inline-block px-3 py-1 rounded-full border border-red-500/40 bg-red-500/15 text-red-400 text-xs font-bold uppercase tracking-wider">
-      4th of July Sale
+    <span className="inline-block px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/15 text-amber-300 text-xs font-bold uppercase tracking-wider">
+      {ACTIVE_SALE.name} · {ACTIVE_SALE.discountPercent}% Off
     </span>
   );
 }

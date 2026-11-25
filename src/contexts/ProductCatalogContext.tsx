@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import type { Product, ProductCategory } from "@/data/products";
 import { applySalePricing } from "@/lib/sale";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   fetchPublishedProducts,
   getCachedProducts,
@@ -30,6 +31,7 @@ const ProductCatalogContext = createContext<ProductCatalogContextType | undefine
 export const ProductCatalogProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { isDealer } = useAuth();
   const [products, setProducts] = useState<Product[]>(getCachedProducts());
   const [loading, setLoading] = useState(true);
 
@@ -49,18 +51,21 @@ export const ProductCatalogProvider: React.FC<{ children: React.ReactNode }> = (
   }, [refresh]);
 
   const value = useMemo(() => {
+    const maybeApplySale = (product: Product): Product =>
+      isDealer ? product : applySalePricing(product);
+
     const getProductById = (id: string): Product | undefined => {
       const product = products.find((item) => item.id === id);
       if (!product) return undefined;
-      return applySalePricing(product);
+      return maybeApplySale(product);
     };
     const getProductsByCategory = (category: ProductCategory): Product[] =>
       products
         .filter((item) => item.category === category)
-        .map(applySalePricing);
+        .map(maybeApplySale);
     const featuredProducts = products
       .filter((item) => item.featured)
-      .map(applySalePricing);
+      .map(maybeApplySale);
 
     return {
       products,
@@ -70,7 +75,7 @@ export const ProductCatalogProvider: React.FC<{ children: React.ReactNode }> = (
       getProductsByCategory,
       featuredProducts,
     };
-  }, [products, loading, refresh]);
+  }, [products, loading, refresh, isDealer]);
 
   return (
     <ProductCatalogContext.Provider value={value}>

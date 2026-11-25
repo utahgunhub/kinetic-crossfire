@@ -2,11 +2,13 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { useProductCatalog } from "@/contexts/ProductCatalogContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { isProductOnSale } from "@/lib/sale";
 import { SaleBadge, SalePrice } from "@/components/SalePrice";
 
 const Apparel = () => {
+  const { isDealer } = useAuth();
   const { getProductsByCategory } = useProductCatalog();
   const apparelProducts = getProductsByCategory("apparel");
 
@@ -54,7 +56,7 @@ const Apparel = () => {
                         {product.name}
                       </h3>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        {isProductOnSale(product.id) && <SaleBadge />}
+                        {!isDealer && isProductOnSale(product) && <SaleBadge />}
                         {product.manufacturer && (
                         <span className="text-xs px-2 py-1 rounded-full whitespace-nowrap bg-tactical-green text-tactical-dark">
                           {product.manufacturer}

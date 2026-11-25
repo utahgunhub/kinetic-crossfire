@@ -227,7 +227,7 @@ const ProductDetail = () => {
                   <h1 className="text-4xl font-bold text-foreground tracking-wider mb-4">
                     {product.name}
                   </h1>
-                  {isProductOnSale(product.id) && !isContactOnly && (
+                  {!isDealer && isProductOnSale(product) && !isContactOnly && (
                     <div className="mb-3">
                       <SaleBadge />
                     </div>

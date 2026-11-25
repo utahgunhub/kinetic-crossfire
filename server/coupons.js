@@ -1,5 +1,5 @@
 const { calculateShippingCost } = require("./shipping");
-const { resolveItemPrice, areCouponsAllowed } = require("./sale");
+const { resolveItemPrice, areCouponsAllowed, getCouponBlockedMessage } = require("./sale");
 const { findActiveCoupon } = require("./catalog");
 
 function normalizeCouponCode(code = "") {
@@ -10,9 +10,9 @@ async function validateCoupon(code) {
   return findActiveCoupon(code);
 }
 
-function calculateSubtotal(items = [], priceMap) {
+function calculateSubtotal(items = [], priceMap, productMetaMap) {
   return items.reduce((sum, item) => {
-    const price = resolveItemPrice(item, priceMap);
+    const price = resolveItemPrice(item, priceMap, productMetaMap);
     const quantity = Number(item.quantity);
     if (!Number.isFinite(price) || !Number.isFinite(quantity) || quantity <= 0) {
       return sum;
@@ -22,11 +22,11 @@ function calculateSubtotal(items = [], priceMap) {
 }
 
 function roundCurrency(amount) {
-  return Math.round(amount * 100) / 100;
+  return Math.round((amount + Number.EPSILON) * 100) / 100;
 }
 
-async function calculateOrderTotals(items, couponCode = null, priceMap) {
-  const subtotal = roundCurrency(calculateSubtotal(items, priceMap));
+async function calculateOrderTotals(items, couponCode = null, priceMap, productMetaMap) {
+  const subtotal = roundCurrency(calculateSubtotal(items, priceMap, productMetaMap));
   const shipping = calculateShippingCost(subtotal);
 
   if (couponCode && !areCouponsAllowed()) {
@@ -69,5 +69,6 @@ module.exports = {
   validateCoupon,
   calculateOrderTotals,
   areCouponsAllowed,
+  getCouponBlockedMessage,
   normalizeCouponCode,
 };

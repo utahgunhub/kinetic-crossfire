@@ -3,29 +3,42 @@ import Footer from "@/components/Footer";
 import { TacticalButton } from "@/components/TacticalButton";
 import { getStockStatusLabel } from "@/data/products";
 import { useProductCatalog } from "@/contexts/ProductCatalogContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { applySalePricing, isProductOnSale } from "@/lib/sale";
+import { SaleBadge, SalePrice } from "@/components/SalePrice";
 import { Link } from "react-router-dom";
 
 const Purchase = () => {
-  const { getProductById, products } = useProductCatalog();
+  const { isDealer } = useAuth();
+  const { getProductById, getProductsByCategory, products } = useProductCatalog();
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
   const thompsonTopChargingHandle = getProductById("thompson-top-charging-handle");
   const gunMat = getProductById("thompson-gun-mat");
   const publicEnemyHat = getProductById("public-enemy-hat");
   const annihilatorProduct = getProductById("annihilator");
-  const extraProducts = products.filter(
-    (product) =>
-      ![
-        "thompson-blow-back-trigger",
-        "thompson-charging-handle",
-        "thompson-top-charging-handle",
-        "annihilator",
-      ].includes(product.id) && product.category !== "apparel"
-  );
+  const apparelProducts = getProductsByCategory("apparel");
+  const extraProducts = products
+    .filter(
+      (product) =>
+        ![
+          "thompson-blow-back-trigger",
+          "thompson-charging-handle",
+          "thompson-top-charging-handle",
+          "annihilator",
+        ].includes(product.id) && product.category !== "apparel"
+    )
+    .map((product) => (isDealer ? product : applySalePricing(product)));
 
   if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !gunMat || !publicEnemyHat || !annihilatorProduct) {
     return null;
   }
+
+  const thompsonOnSale = !isDealer && isProductOnSale(thompsonProduct);
+  const apparelOnSale = !isDealer && apparelProducts.some((p) => isProductOnSale(p));
+  const lowestApparelPrice = apparelProducts.length > 0
+    ? Math.min(...apparelProducts.map((p) => p.price))
+    : gunMat.price;
 
   return (
     <div className="min-h-screen">
@@ -58,15 +71,20 @@ const Purchase = () => {
                 />
                 <div className="p-8 flex flex-col flex-grow">
                   <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Thompson Platform</p>
-                  <h2 className="text-3xl font-bold text-foreground mb-3">{thompsonProduct.name}</h2>
+                  <div className="flex items-center gap-3 flex-wrap mb-3">
+                    <h2 className="text-3xl font-bold text-foreground">{thompsonProduct.name}</h2>
+                    {thompsonOnSale && <SaleBadge />}
+                  </div>
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     Go straight to the Thompson product page for pricing, compatibility, usage details,
                     and checkout.
                   </p>
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
-                    <span className="text-3xl font-bold text-tactical-green">
-                      ${thompsonProduct.price.toFixed(2)}
-                    </span>
+                    <SalePrice
+                      price={thompsonProduct.price}
+                      originalPrice={thompsonOnSale ? thompsonProduct.originalPrice : undefined}
+                      size="md"
+                    />
                     <span className="bg-tactical-green/15 text-tactical-green px-2 py-1 rounded text-xs font-bold border border-tactical-green/30">
                       Free Shipping
                     </span>
@@ -147,14 +165,17 @@ const Purchase = () => {
                 />
                 <div className="p-8 flex flex-col flex-grow">
                   <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">Apparel & Accessories</p>
-                  <h2 className="text-3xl font-bold text-foreground mb-3">Gun Mats & Apparel</h2>
+                  <div className="flex items-center gap-3 flex-wrap mb-3">
+                    <h2 className="text-3xl font-bold text-foreground">Gun Mats & Apparel</h2>
+                    {apparelOnSale && <SaleBadge />}
+                  </div>
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     Thompson gun mats, caps, and other gear—including the Public Enemy ball cap and
                     Chicago Typewriter cap.
                   </p>
                   <div className="flex items-center gap-3 mb-6 flex-wrap">
                     <span className="text-3xl font-bold text-tactical-green">
-                      From ${gunMat.price.toFixed(2)}
+                      From ${lowestApparelPrice.toFixed(2)}
                     </span>
                   </div>
                   <Link to="/shop/apparel" className="mt-auto">
@@ -184,7 +205,10 @@ const Purchase = () => {
                       <p className="text-sm uppercase tracking-[0.35em] text-tactical-green mb-3">
                         {product.category === "apparel" ? "Apparel" : "Thompson Platform"}
                       </p>
-                      <h2 className="text-3xl font-bold text-foreground mb-3">{product.name}</h2>
+                      <div className="flex items-center gap-3 flex-wrap mb-3">
+                        <h2 className="text-3xl font-bold text-foreground">{product.name}</h2>
+                        {!isDealer && isProductOnSale(product) && <SaleBadge />}
+                      </div>
                       {product.inStock === false && (
                         <span className="inline-block mb-3 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
                           {getStockStatusLabel(product)}
@@ -192,9 +216,11 @@ const Purchase = () => {
                       )}
                       <p className="text-muted-foreground mb-6 leading-relaxed">{product.description}</p>
                       <div className="flex items-center gap-3 mb-6 flex-wrap">
-                        <span className="text-3xl font-bold text-tactical-green">
-                          ${product.price.toFixed(2)}
-                        </span>
+                        <SalePrice
+                          price={product.price}
+                          originalPrice={!isDealer ? product.originalPrice : undefined}
+                          size="md"
+                        />
                       </div>
                       <Link to={`/product/${product.id}`} className="mt-auto">
                         <TacticalButton variant="primary" size="lg" className="w-full text-lg py-4">

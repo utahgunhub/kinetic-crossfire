@@ -1,5 +1,4 @@
-import July4SaleBanner from "@/components/July4SaleBanner";
-import OrderProcessingBanner from "@/components/OrderProcessingBanner";
+import SaleBanner from "@/components/SaleBanner";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -13,8 +12,7 @@ const Navigation = () => {
 
   return (
     <>
-      <OrderProcessingBanner />
-      <July4SaleBanner />
+      <SaleBanner />
       <nav className="bg-tactical-darker border-b border-tactical-green-dim/30 sticky top-0 z-50">
       <div className="container mx-auto px-6">
         <div className="relative flex items-center justify-between h-16">

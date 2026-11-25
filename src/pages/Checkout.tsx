@@ -13,7 +13,7 @@ import {
   usStates,
 } from "@/lib/shippingRestrictions";
 import { hasRestrictedShipping } from "@/data/products";
-import { areCouponsAllowed } from "@/lib/sale";
+import { ACTIVE_SALE, areCouponsAllowed } from "@/lib/sale";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   calculateDealerShippingCost,
@@ -128,7 +128,7 @@ const Checkout = () => {
     if (!couponsAllowed) {
       toast({
         title: "Coupons Unavailable",
-        description: "Coupon codes cannot be combined with 4th of July sale pricing.",
+        description: `Discount codes cannot be stacked with ${ACTIVE_SALE.name} pricing.`,
         variant: "destructive",
       });
       return;
@@ -878,7 +878,7 @@ const Checkout = () => {
                         <p className="text-xs text-muted-foreground leading-relaxed">
                           {isDealer
                             ? "Coupon codes are not used on dealer orders."
-                            : "Coupon codes are unavailable during the 4th of July sale. Sale prices already reflect the discount."}
+                            : `Discount codes cannot be stacked during the ${ACTIVE_SALE.name}. Eligible items already reflect ${ACTIVE_SALE.discountPercent}% off.`}
                         </p>
                       </div>
                     )}

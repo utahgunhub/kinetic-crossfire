@@ -1,42 +1,87 @@
-export const JULY4_SALE = {
-  name: "4th of July Sale",
-  startDate: "2026-07-03",
-  endDate: "2026-07-05",
-  prices: {
-    "thompson-blow-back-trigger": 250,
-    "thompson-gun-mat": 25,
-    "chicago-typewriter-cap": 25,
-    "public-enemy-hat": 25,
-  } as Record<string, number>,
-} as const;
+import saleConfig from "../../shared/saleConfig.json";
 
-function getChicagoDateString(date = new Date()): string {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Chicago",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
+export interface SaleConfig {
+  active: boolean;
+  name: string;
+  discountPercent: number;
+  excludedProductIds: string[];
+  allowCoupons: boolean;
 }
 
-export function isSaleActive(date = new Date()): boolean {
-  const today = getChicagoDateString(date);
-  return today >= JULY4_SALE.startDate && today <= JULY4_SALE.endDate;
+export const ACTIVE_SALE: SaleConfig = saleConfig;
+
+const CHARGING_HANDLE_PATTERN = /charging[\s_-]*handle/i;
+
+function roundCurrency(amount: number): number {
+  return Math.round((amount + Number.EPSILON) * 100) / 100;
 }
 
-export function getSalePrice(productId: string): number | undefined {
+export function isSaleActive(): boolean {
+  return Boolean(ACTIVE_SALE.active);
+}
+
+export function isExcludedFromSale(
+  productId: string,
+  productName?: string,
+  contactOnly?: boolean
+): boolean {
+  if (contactOnly === true) return true;
+  if (ACTIVE_SALE.excludedProductIds.includes(productId)) return true;
+  if (CHARGING_HANDLE_PATTERN.test(productId)) return true;
+  if (productName && CHARGING_HANDLE_PATTERN.test(productName)) return true;
+  return false;
+}
+
+export function getSalePrice(
+  basePrice: number,
+  productId: string,
+  productName?: string,
+  contactOnly?: boolean
+): number | undefined {
   if (!isSaleActive()) return undefined;
-  return JULY4_SALE.prices[productId];
+  if (isExcludedFromSale(productId, productName, contactOnly)) return undefined;
+  if (!Number.isFinite(basePrice) || basePrice <= 0) return undefined;
+
+  const discounted = roundCurrency(
+    basePrice * (1 - ACTIVE_SALE.discountPercent / 100)
+  );
+  return discounted < basePrice ? discounted : undefined;
 }
 
-export function isProductOnSale(productId: string): boolean {
-  return getSalePrice(productId) !== undefined;
+export function isProductOnSale(
+  productOrId:
+    | string
+    | { id: string; name?: string; price?: number; originalPrice?: number; contactOnly?: boolean }
+): boolean {
+  if (!isSaleActive()) return false;
+
+  if (typeof productOrId === "string") {
+    return !isExcludedFromSale(productOrId);
+  }
+
+  if (isExcludedFromSale(productOrId.id, productOrId.name, productOrId.contactOnly)) {
+    return false;
+  }
+
+  const referencePrice = productOrId.originalPrice ?? productOrId.price;
+  return referencePrice === undefined || referencePrice > 0;
 }
 
-export function applySalePricing<T extends { id: string; price: number; originalPrice?: number }>(
-  product: T
-): T {
-  const salePrice = getSalePrice(product.id);
+export function applySalePricing<
+  T extends {
+    id: string;
+    name?: string;
+    price: number;
+    originalPrice?: number;
+    contactOnly?: boolean;
+  }
+>(product: T): T {
+  const salePrice = getSalePrice(
+    product.price,
+    product.id,
+    product.name,
+    product.contactOnly
+  );
   if (salePrice === undefined) return product;
 
   return {
@@ -47,5 +92,9 @@ export function applySalePricing<T extends { id: string; price: number; original
 }
 
 export function areCouponsAllowed(): boolean {
-  return !isSaleActive();
+  return !isSaleActive() || Boolean(ACTIVE_SALE.allowCoupons);
+}
+
+export function formatDisplayPrice(price: number): string {
+  return Number.isInteger(price) ? price.toFixed(0) : price.toFixed(2);
 }

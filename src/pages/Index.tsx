@@ -11,9 +11,11 @@ import {
 } from "@/data/thompsonVideos";
 import VimeoEmbed from "@/components/VimeoEmbed";
 import { Star, Quote } from "lucide-react";
-import { isProductOnSale } from "@/lib/sale";
+import { ACTIVE_SALE, formatDisplayPrice, isProductOnSale } from "@/lib/sale";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
+  const { isDealer } = useAuth();
   const { getProductById } = useProductCatalog();
   const thompsonProduct = getProductById("thompson-blow-back-trigger");
   const thompsonChargingHandle = getProductById("thompson-charging-handle");
@@ -25,6 +27,8 @@ const Index = () => {
   if (!thompsonProduct || !thompsonChargingHandle || !thompsonTopChargingHandle || !publicEnemyHat || !annihilatorProduct) {
     return null;
   }
+
+  const thompsonOnSale = !isDealer && isProductOnSale(thompsonProduct);
 
   const homepageThompsonFeatures = thompsonProduct.features.filter(
     (feature) => feature !== "Made in the USA" && feature !== "Free shipping included"
@@ -53,7 +57,9 @@ const Index = () => {
           <div className="w-full">
             <div className="max-w-3xl">
               <p className="text-tactical-green text-sm md:text-base font-semibold uppercase tracking-[0.4em] mb-4">
-                {isProductOnSale(thompsonProduct.id) ? "4th of July Sale" : "New Product Release"}
+                {thompsonOnSale
+                  ? `${ACTIVE_SALE.name} · ${ACTIVE_SALE.discountPercent}% Off`
+                  : "New Product Release"}
               </p>
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6">
                 {homepageThompsonTitle}
@@ -65,16 +71,16 @@ const Index = () => {
 
               <div className="flex flex-wrap gap-3 mb-8">
                 <span className="px-4 py-2 rounded-full border border-tactical-green/30 bg-tactical-green/10 text-tactical-green font-semibold">
-                  ${thompsonProduct.price.toFixed(0)}
+                  ${formatDisplayPrice(thompsonProduct.price)}
                   {thompsonProduct.originalPrice && (
-                    <span className="ml-2 line-through opacity-60 text-red-300">
-                      ${thompsonProduct.originalPrice.toFixed(0)}
+                    <span className="ml-2 line-through opacity-60 text-amber-300">
+                      ${formatDisplayPrice(thompsonProduct.originalPrice)}
                     </span>
                   )}
                 </span>
-                {isProductOnSale(thompsonProduct.id) && (
-                  <span className="px-4 py-2 rounded-full border border-red-500/40 bg-red-500/15 text-red-300 font-semibold uppercase text-sm tracking-wider">
-                    On Sale
+                {thompsonOnSale && (
+                  <span className="px-4 py-2 rounded-full border border-amber-500/40 bg-amber-500/15 text-amber-300 font-semibold uppercase text-sm tracking-wider">
+                    {ACTIVE_SALE.discountPercent}% Off
                   </span>
                 )}
                 <span className="px-4 py-2 rounded-full border border-tactical-green/30 bg-black/20 text-foreground font-semibold">
@@ -337,9 +343,9 @@ const Index = () => {
               <div className="rounded-xl border border-tactical-green-dim/30 bg-tactical-dark p-6">
                 <h3 className="text-xl font-semibold text-foreground mb-3">Shipping</h3>
                 <p className="text-muted-foreground text-sm">
-                  Thompson orders are priced at ${thompsonProduct.price.toFixed(0)}
-                  {thompsonProduct.originalPrice ? (
-                    <> (<span className="line-through">${thompsonProduct.originalPrice.toFixed(0)}</span> during our 4th of July sale)</>
+                  Thompson orders are priced at ${formatDisplayPrice(thompsonProduct.price)}
+                  {thompsonOnSale && thompsonProduct.originalPrice ? (
+                    <> (<span className="line-through">${formatDisplayPrice(thompsonProduct.originalPrice)}</span> during our {ACTIVE_SALE.name})</>
                   ) : null}{" "}
                   with free shipping included. Shipping times are 3-5 days,
                   but due to the current high volume of orders this may be longer.
@@ -411,9 +417,9 @@ const Index = () => {
                 <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
                   <h2 className="text-3xl font-bold text-foreground">{homepageThompsonTitle}</h2>
                   <div className="flex items-center gap-2 flex-wrap">
-                    {isProductOnSale(thompsonProduct.id) && (
-                      <span className="px-3 py-1 rounded-full border border-red-500/40 bg-red-500/15 text-red-400 text-xs font-bold uppercase tracking-wider">
-                        On Sale
+                    {thompsonOnSale && (
+                      <span className="px-3 py-1 rounded-full border border-amber-500/40 bg-amber-500/15 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                        {ACTIVE_SALE.name} · {ACTIVE_SALE.discountPercent}% Off
                       </span>
                     )}
                     <span className="bg-tactical-green text-tactical-dark px-3 py-1 rounded text-sm font-bold">
